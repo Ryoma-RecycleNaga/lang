@@ -12,9 +12,9 @@ obseleted by *Monarch* : uses [Jison](http://zaa.ch/jison/docs/#specifying-a-lan
 - the editor itself will be based on [Monaco, VSCode's editor](https://microsoft.github.io/monaco-editor/monarch.html) and will be extended via autocomplete protocols
 and visuals aids.
 
-- the language also needs VSCode extension based on markdown, enabling previews.
+- the language also needs a VSCode extension based on markdown, enabling previews.
 
 ##  Model remarks
 
-- [custom elements, aka webomcomponents](https://developer.mozilla.org/en-US/docs/Web/Web_Components/Using_custom_elements) will be accessed via [markdown-it](https://github.com/markdown-it/markdown-it) and rendered as ordinary 'custom-elements' (shadow-dom), see [@ibm/delite]()
+- [custom elements, aka *web components*](https://developer.mozilla.org/en-US/docs/Web/Web_Components/Using_custom_elements) will be accessed via [markdown-it](https://github.com/markdown-it/markdown-it) and rendered as ordinary 'custom-elements' (shadow-dom), see [@ibm/delite](https://github.com/ibm-js/delite)
 
