@@ -1,5 +1,6 @@
-# lang
-PP Cross language, utilized in academy, one-army, help-desk &amp; factory
+# Precious Plastic Language
+
+System wide cross language, utilized in academy, one-army, help-desk &amp; factory & rocket-chat.
 
 ## tech
 
