@@ -19,3 +19,28 @@ and visuals aids.
 
 - [custom elements, aka *web components*](https://developer.mozilla.org/en-US/docs/Web/Web_Components/Using_custom_elements) will be accessed via [markdown-it](https://github.com/markdown-it/markdown-it) and rendered as ordinary 'custom-elements' (shadow-dom), see [@ibm/delite](https://github.com/ibm-js/delite)
 
+## Input
+
+- existing sessions, wizards (json)
+- DOM snapshots (forum, etc..)
+- preset xml
+- markdown
+
+## Output
+
+the language should output the following formats
+
+- cduc (ocaml & friends)
+- xml
+- json
+
+platform specific 
+
+- discord (crappy formatting!)
+- forum
+- wiki
+- academy
+- one-army
+- email
+- HTML (full)
+
