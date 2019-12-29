@@ -1,41 +1,24 @@
 import * as CLI from 'yargs';
-import { defaultOptions, sanitize } from '../argv';
-import { Options } from '../types';
-import { render as output } from '../output';
-
 import { debug } from '..';
 import * as path from 'path';
-import { sync as exists } from '@xblox/fs/exists';
-import { sync as dir } from '@xblox/fs/dir';
-
-import { Process, Helper } from '../lib/process/index';
-const fg = require('fast-glob');
-
+import { Helper } from '../lib/process/index';
 import * as bluebird from 'bluebird';
 
-// no extra options, using defaults
-const options = (yargs: CLI.Argv) => defaultOptions(yargs);
+const fg = require('fast-glob');
 
-const convert = (file: string, dst: string) => {
-    const cprocess = new Process({
-        bin: 'magick'
-    });
-    console.log(path.parse(file));
-    const inParts = path.parse(file);
-    // magick convert leg.pdf -quality 100 -density 250 -trim -flatten -resize 200% -sharpen 0x1.0 leg.jpg
-    const target = path.resolve(dst + '/' + inParts.name + '.jpg');
-    const p = cprocess.exec('convert', {}, [
-        path.resolve(file),
-        '-quality 100',
-        '-density 250',
-        '-trim',
-        '-flatten',
-        '-resize 200%',
-        '-sharpen 0x1.0',
-        target
-    ]);
-}
-const convertFiles = (files, dst) => {
+const defaultOptions = (yargs: CLI.Argv) => {
+    return yargs.option('input', {
+        default: './',
+        describe: 'The sources'
+    }).option('debug', {
+        default: 'false',
+        describe: 'Enable internal debug message'
+    })
+};
+
+let options = (yargs: CLI.Argv) => defaultOptions(yargs);
+
+const convertFiles = (files) => {
     return bluebird.mapSeries(files, (file: string) => {
         const inParts = path.parse(file);
         // magick convert leg.pdf -quality 100 -density 250 -trim -flatten -resize 200% -sharpen 0x1.0 leg.jpg
@@ -59,15 +42,10 @@ export const register = (cli: CLI.Argv) => {
     return cli.command('pdf2jpg', '', options, async (argv: CLI.Arguments) => {
         if (argv.help) { return; }
         const src = path.resolve('' + argv.input);
-        const dst = path.resolve('' + argv.output);
-        if (!exists(dst)) {
-            dir(dst);
-        }
         const files = fg.sync('*.pdf', { dot: true, cwd: src, absolute: true });
-        convertFiles(files, dst);
+        convertFiles(files);
         if (argv.debug) {
             debug(`Converted ${files.length} files`);
         }
-
     });
 };

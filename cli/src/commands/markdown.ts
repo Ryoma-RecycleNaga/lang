@@ -6,7 +6,6 @@ import { sync as read } from '@xblox/fs/read';
 import { sync as exists } from '@xblox/fs/exists';
 import { sync as dir } from '@xblox/fs/dir';
 import { sync as write } from '@xblox/fs/write';
-
 import { Converter } from 'showdown';
 
 const fg = require('fast-glob');
@@ -34,7 +33,7 @@ const defaultData = (override: any) => {
     }
 };
 
-const defaultOptions2 = (yargs: CLI.Argv) => {
+const defaultOptions = (yargs: CLI.Argv) => {
     return yargs.option('input', {
         default: './',
         describe: 'The sources'
@@ -47,7 +46,7 @@ const defaultOptions2 = (yargs: CLI.Argv) => {
     })
 };
 
-let options = (yargs: CLI.Argv) => defaultOptions2(yargs);
+let options = (yargs: CLI.Argv) => defaultOptions(yargs);
 
 const convert = (input: string, data: any) => {
     input = utils.replace(input, null, defaultData(data), {
@@ -69,7 +68,6 @@ const convertFiles = (files,dst) =>{
     })
 }
 // npm run build ; node ./build/main.js markdown --input=../pages --output=../out
-// 
 export const register = (cli: CLI.Argv) => {
     return cli.command('markdown', 'Converts md files to html using showdown', options, async (argv: CLI.Arguments) => {
         if (argv.help) { return; }
@@ -83,12 +81,5 @@ export const register = (cli: CLI.Argv) => {
         if (argv.debug) {
             debug(`Converted ${files.length} files`);
         }
-        /*
-        output({
-            files : file.length
-        },{
-            format: OutputFormat.json
-        })
-        */
     });
 };
