@@ -37,7 +37,7 @@ const convertFiles = (files) => {
     });
 
 }
-// npm run build ; node ./build/main.js pdf2jpg --input=../drawings --output=../drawings
+// npm run build ; node ./build/main.js pdf2jpg --input=../drawings
 export const register = (cli: CLI.Argv) => {
     return cli.command('pdf2jpg', '', options, async (argv: CLI.Arguments) => {
         if (argv.help) { return; }

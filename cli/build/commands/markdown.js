@@ -21,7 +21,7 @@ const fg = require('fast-glob');
 const defaultData = (override) => {
     return Object.assign({ PART_PARENT: 'my parent', PART_INVENTORY: '', PART_NAME: 'Front Shield', PART_VERSION: 1, PART_VERSIONS: '1 2', PART_ID: 'Z_4_FRONT_SHIELD', PART_DRAWING: 'https://a360.co/37pDdVD', PART_PREVIEW_IMAGE: '', PART_COMPAT: '', PART_CAPS: '', PART_ASSEMBLY: '', PART_TOOLS: '', PART_TEMPLATES: '', PART_STOCK: '', PART_MACHINES: '', PART_STEPS: '', PART_EDIT: '' }, override);
 };
-const defaultOptions2 = (yargs) => {
+const defaultOptions = (yargs) => {
     return yargs.option('input', {
         default: './',
         describe: 'The sources'
@@ -33,7 +33,7 @@ const defaultOptions2 = (yargs) => {
         describe: 'Enable internal debug message'
     });
 };
-let options = (yargs) => defaultOptions2(yargs);
+let options = (yargs) => defaultOptions(yargs);
 const convert = (input, data) => {
     input = utils.replace(input, null, defaultData(data), {
         begin: '<%',
@@ -52,7 +52,6 @@ const convertFiles = (files, dst) => {
     });
 };
 // npm run build ; node ./build/main.js markdown --input=../pages --output=../out
-// 
 exports.register = (cli) => {
     return cli.command('markdown', 'Converts md files to html using showdown', options, (argv) => __awaiter(void 0, void 0, void 0, function* () {
         if (argv.help) {
@@ -68,13 +67,6 @@ exports.register = (cli) => {
         if (argv.debug) {
             __1.debug(`Converted ${files.length} files`);
         }
-        /*
-        output({
-            files : file.length
-        },{
-            format: OutputFormat.json
-        })
-        */
     }));
 };
 //# sourceMappingURL=markdown.js.map
