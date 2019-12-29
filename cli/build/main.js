@@ -10,6 +10,8 @@ const yargonaut = require('yargonaut').style('blue').helpStyle('green');
 //import { register as registerClean } from './commands/clean'; registerClean(cli);
 const markdown_1 = require("./commands/markdown");
 markdown_1.register(cli);
+const pdf2jpg_1 = require("./commands/pdf2jpg");
+pdf2jpg_1.register(cli);
 const argv = cli.argv;
 if (argv.h || argv.help) {
     cli.showHelp();

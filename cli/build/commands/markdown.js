@@ -52,6 +52,7 @@ const convertFiles = (files, dst) => {
     });
 };
 // npm run build ; node ./build/main.js markdown --input=../pages --output=../out
+// 
 exports.register = (cli) => {
     return cli.command('markdown', 'Converts md files to html using showdown', options, (argv) => __awaiter(void 0, void 0, void 0, function* () {
         if (argv.help) {

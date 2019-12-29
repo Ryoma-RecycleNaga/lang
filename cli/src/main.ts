@@ -11,6 +11,7 @@ import { defaultOptions, sanitize } from './argv';
 //import { register as registerDetail } from './commands/detail'; registerDetail(cli);
 //import { register as registerClean } from './commands/clean'; registerClean(cli);
 import { register as registerMarkdown } from './commands/markdown'; registerMarkdown(cli);
+import { register as registerPDF2JPG } from './commands/pdf2jpg'; registerPDF2JPG(cli);
 
 const argv = cli.argv;
 
