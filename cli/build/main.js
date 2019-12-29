@@ -5,12 +5,11 @@ const _cli_1 = require("./_cli");
 _cli_1.defaults();
 const cli = require("yargs");
 const yargonaut = require('yargonaut').style('blue').helpStyle('green');
-const summary_1 = require("./commands/summary");
-summary_1.register(cli);
-const detail_1 = require("./commands/detail");
-detail_1.register(cli);
-const clean_1 = require("./commands/clean");
-clean_1.register(cli);
+//import { register as registerSummary } from './commands/summary'; registerSummary(cli);
+//import { register as registerDetail } from './commands/detail'; registerDetail(cli);
+//import { register as registerClean } from './commands/clean'; registerClean(cli);
+const markdown_1 = require("./commands/markdown");
+markdown_1.register(cli);
 const argv = cli.argv;
 if (argv.h || argv.help) {
     cli.showHelp();
