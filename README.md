@@ -25,6 +25,7 @@ and visuals aids.
 - DOM snapshots (forum, etc..)
 - preset xml
 - markdown
+- stdin
 
 ## Output
 
@@ -43,4 +44,4 @@ platform specific
 - one-army
 - email
 - HTML (full)
-
+- stdout 
