@@ -24,24 +24,26 @@ const defaultOptions = (yargs) => {
     });
 };
 let options = (yargs) => defaultOptions(yargs);
-const convertFiles = (files) => {
-    return bluebird.mapSeries(files, (file) => {
-        const inParts = path.parse(file);
-        // magick convert leg.pdf -quality 100 -density 250 -trim -flatten -resize 200% -sharpen 0x1.0 leg.jpg
-        const promise = index_1.Helper.run(inParts.dir, 'convert', [
-            inParts.base,
-            '-quality 100',
-            '-density 250',
-            '-trim',
-            '-flatten',
-            '-resize 200%',
-            '-sharpen 0x1.0',
-            inParts.name + '.jpg'
-        ]);
-        return promise;
+function convertFiles(files) {
+    return __awaiter(this, void 0, void 0, function* () {
+        return bluebird.mapSeries(files, (file) => {
+            const inParts = path.parse(file);
+            // magick convert leg.pdf -quality 100 -density 250 -trim -flatten -resize 200% -sharpen 0x1.0 leg.jpg
+            const promise = index_1.Helper.run(inParts.dir, 'convert', [
+                inParts.base,
+                '-quality 100',
+                '-density 250',
+                '-trim',
+                '-flatten',
+                '-resize 200%',
+                '-sharpen 0x1.0',
+                inParts.name + '.jpg'
+            ]);
+            return promise;
+        });
     });
-};
-// npm run build ; node ./build/main.js pdf2jpg --input=../drawings --output=../drawings
+}
+// npm run build ; node ./build/main.js pdf2jpg --input=../drawings
 exports.register = (cli) => {
     return cli.command('pdf2jpg', '', options, (argv) => __awaiter(void 0, void 0, void 0, function* () {
         if (argv.help) {
@@ -49,7 +51,7 @@ exports.register = (cli) => {
         }
         const src = path.resolve('' + argv.input);
         const files = fg.sync('*.pdf', { dot: true, cwd: src, absolute: true });
-        convertFiles(files);
+        yield convertFiles(files);
         if (argv.debug) {
             __1.debug(`Converted ${files.length} files`);
         }

@@ -18,7 +18,7 @@ const defaultOptions = (yargs: CLI.Argv) => {
 
 let options = (yargs: CLI.Argv) => defaultOptions(yargs);
 
-const convertFiles = (files) => {
+async function convertFiles(files){
     return bluebird.mapSeries(files, (file: string) => {
         const inParts = path.parse(file);
         // magick convert leg.pdf -quality 100 -density 250 -trim -flatten -resize 200% -sharpen 0x1.0 leg.jpg
@@ -35,7 +35,6 @@ const convertFiles = (files) => {
         ]);
         return promise;
     });
-
 }
 // npm run build ; node ./build/main.js pdf2jpg --input=../drawings
 export const register = (cli: CLI.Argv) => {
@@ -43,7 +42,7 @@ export const register = (cli: CLI.Argv) => {
         if (argv.help) { return; }
         const src = path.resolve('' + argv.input);
         const files = fg.sync('*.pdf', { dot: true, cwd: src, absolute: true });
-        convertFiles(files);
+        await convertFiles(files);
         if (argv.debug) {
             debug(`Converted ${files.length} files`);
         }
