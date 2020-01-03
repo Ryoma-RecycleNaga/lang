@@ -11,6 +11,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 const debug = require("../../log");
 const child_process_1 = require("child_process");
+const platform_1 = require("../common/platform");
 var STATUS;
 (function (STATUS) {
     STATUS[STATUS["OK"] = 0] = "OK";
@@ -24,7 +25,6 @@ const fatalHandler = (message, fn) => {
     }
     return false;
 };
-const anyHandler = (message, fn) => fn('\t' + message);
 // tslint:disable-next-line:no-empty
 const subscribe = (signal, collector = () => { }) => {
     const buffer = [];
@@ -34,9 +34,6 @@ const subscribe = (signal, collector = () => { }) => {
         const message = data.toString();
         buffer.push(message); // .replace(/[\x00-\x1F\x7F-\x9F]/g, "")
         collector(buffer);
-        // if (!fatalHandler(message, debug.warn)) {
-        //  anyHandler(message, debug.inspect);
-        // }
     });
 };
 const merge = (buffer, data) => buffer.concat(data);
@@ -142,7 +139,8 @@ class Helper {
     static run(cwd, command, gitArgs) {
         return __awaiter(this, void 0, void 0, function* () {
             const gitProcess = new Process({
-                cwd: cwd
+                cwd: cwd,
+                binary: platform_1.os() == 'windows' ? 'magick' : ''
             });
             const p = gitProcess.exec(command, {}, gitArgs);
             const spinner = debug.spinner('Run ' + command + ' with ' + gitArgs.join(' ')).start();

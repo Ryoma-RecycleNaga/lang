@@ -3,12 +3,14 @@ import * as stream from 'stream';
 import { ChildProcess, exec, spawn, spawnSync } from 'child_process';
 import { sync as which } from 'which';
 import * as path from 'path';
+import { os } from '../common/platform';
 
 export enum STATUS {
     OK,
     ERROR,
     PENDING
 }
+
 const fatalHandler = (message: string, fn: (msg: string) => void): boolean => {
     if (message.startsWith('fatal:')) {
         fn('\t\ ' + message);
@@ -16,7 +18,6 @@ const fatalHandler = (message: string, fn: (msg: string) => void): boolean => {
     }
     return false;
 };
-const anyHandler = (message: string, fn: (msg: string) => void): void => fn('\t' + message);
 
 // tslint:disable-next-line:no-empty
 const subscribe = (signal: stream.Readable, collector: (data: any) => void = () => { }) => {
@@ -27,9 +28,6 @@ const subscribe = (signal: stream.Readable, collector: (data: any) => void = () 
         const message = data.toString();
         buffer.push(message); // .replace(/[\x00-\x1F\x7F-\x9F]/g, "")
         collector(buffer);
-        // if (!fatalHandler(message, debug.warn)) {
-        //  anyHandler(message, debug.inspect);
-        // }
     });
 };
 const merge = (buffer: string[], data: any): string[] => buffer.concat(data);
@@ -126,7 +124,8 @@ export class Process {
 export class Helper {
     public static async run(cwd, command: string, gitArgs: string[]): Promise<any> {
         const gitProcess = new Process({
-            cwd: cwd
+            cwd: cwd,
+            binary: os() == 'windows' ? 'magick' : ''
         });
         const p = gitProcess.exec(command, {}, gitArgs);
         const spinner = debug.spinner('Run ' + command + ' with ' + gitArgs.join(' ')).start();
