@@ -10,6 +10,19 @@ import { Converter } from 'showdown';
 
 const fg = require('fast-glob');
 
+/***
+ * todos - pipe :  
+ * 1. collect & remove docusaurus meta
+ * 2. remove|replace icons, styles, non - printables
+ * 3. replace html with md
+ * 4. replace tables with g-sheets
+ * 5. replace headings
+ * 6. insert override breakers for addon content
+ * 7. wrap text for translation
+ * 8. lint & format
+ * 9. store back as raw md
+ */
+
 const defaultOptions = (yargs: CLI.Argv) => {
     return yargs.option('input', {
         default: './',
