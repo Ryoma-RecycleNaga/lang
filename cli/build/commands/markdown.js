@@ -19,7 +19,7 @@ const write_1 = require("@xblox/fs/write");
 const showdown_1 = require("showdown");
 const fg = require('fast-glob');
 const defaultData = (override) => {
-    return Object.assign({ PART_PARENT: 'my parent 2', PART_INVENTORY: '', PART_NAME: 'Front Shield', PART_VERSION: 1, PART_VERSIONS: '1 2', PART_ID: 'Z_4_FRONT_SHIELD', PART_DRAWING: 'https://a360.co/37pDdVD', PART_PREVIEW: '', PART_COMPAT: '', PART_CAPS: '', PART_ASSEMBLY: '', PART_TOOLS: '', PART_TEMPLATES: '', PART_STOCK: '', PART_MACHINES: '', PART_STEPS: '', PART_EDIT: '' }, override);
+    return Object.assign({ PART_PARENT: 'my parent 2', PART_INVENTORY: '', PART_NAME: 'Front Shield', PART_VERSION: 1, PART_VERSIONS: '1 2', PART_ID: 'Z_4_FRONT_SHIELD', PART_DRAWING: 'https://a360.co/37pDdVD', PART_PREVIEW: '', PART_COMPAT: '', PART_CAPS: '', PART_ASSEMBLY: '', PART_TOOLS: '<div>tools - data </div>', PART_TEMPLATES: '', PART_STOCK: '', PART_MACHINES: '', PART_STEPS: '', PART_EDIT: '' }, override);
 };
 const defaultOptions = (yargs) => {
     return yargs.option('input', {

@@ -24,9 +24,10 @@ export class Page {
 <p><strong>Assembly</strong> : <a href="">Fusion360 public link</a></p>
 <p><strong>Tools</strong></p>
 <p>
-  <pp-tools />
+  <pp-tools>
+    <div>tools - data </div>
+  </pp-tools>
 </p>
-<p />
 <p><strong>Templates / Gauges</strong></p>
 <p>
   <pp-templates />

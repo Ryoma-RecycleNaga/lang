@@ -18,6 +18,7 @@ export namespace Components {
   }
   interface AppRoot {}
   interface ContentPage {}
+  interface PpTools {}
 }
 
 declare global {
@@ -46,11 +47,18 @@ declare global {
     prototype: HTMLContentPageElement;
     new (): HTMLContentPageElement;
   };
+
+  interface HTMLPpToolsElement extends Components.PpTools, HTMLStencilElement {}
+  var HTMLPpToolsElement: {
+    prototype: HTMLPpToolsElement;
+    new (): HTMLPpToolsElement;
+  };
   interface HTMLElementTagNameMap {
     'app-home': HTMLAppHomeElement;
     'app-profile': HTMLAppProfileElement;
     'app-root': HTMLAppRootElement;
     'content-page': HTMLContentPageElement;
+    'pp-tools': HTMLPpToolsElement;
   }
 }
 
@@ -61,12 +69,14 @@ declare namespace LocalJSX {
   }
   interface AppRoot {}
   interface ContentPage {}
+  interface PpTools {}
 
   interface IntrinsicElements {
     'app-home': AppHome;
     'app-profile': AppProfile;
     'app-root': AppRoot;
     'content-page': ContentPage;
+    'pp-tools': PpTools;
   }
 }
 
@@ -80,6 +90,7 @@ declare module "@stencil/core" {
       'app-profile': LocalJSX.AppProfile & JSXBase.HTMLAttributes<HTMLAppProfileElement>;
       'app-root': LocalJSX.AppRoot & JSXBase.HTMLAttributes<HTMLAppRootElement>;
       'content-page': LocalJSX.ContentPage & JSXBase.HTMLAttributes<HTMLContentPageElement>;
+      'pp-tools': LocalJSX.PpTools & JSXBase.HTMLAttributes<HTMLPpToolsElement>;
     }
   }
 }

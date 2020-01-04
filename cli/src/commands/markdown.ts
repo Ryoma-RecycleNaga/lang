@@ -23,7 +23,7 @@ const defaultData = (override: any) => {
         PART_COMPAT: '',
         PART_CAPS: '',
         PART_ASSEMBLY: '',
-        PART_TOOLS: '',
+        PART_TOOLS: '<div>tools - data </div>',
         PART_TEMPLATES: '',
         PART_STOCK: '',
         PART_MACHINES: '',
