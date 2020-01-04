@@ -5,6 +5,7 @@ import * as cli from 'yargs';
 import { register as registerMarkdown } from './commands/markdown'; registerMarkdown(cli);
 import { register as registerPDF2JPG } from './commands/pdf2jpg'; registerPDF2JPG(cli);
 import { register as registerWatch } from './commands/watch'; registerWatch(cli);
+import { register as registerAcademy } from './commands/academy'; registerAcademy(cli);
 
 const argv = cli.argv;
 

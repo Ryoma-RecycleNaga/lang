@@ -8,7 +8,7 @@
 
 **Version** : <%PART_VERSION%> | <%PART_VERSIONS%>
 
-**ID** : <%PART_ID%> | <a href="<%PART_INVENTORY%">Inventory</a>
+**ID** : <%PART_ID%> | <a href="<%PART_INVENTORY%>">Inventory</a>
 
 **Drawing** : <a href="<%PART_DRAWING%>">Fusion360 public link</a>
 

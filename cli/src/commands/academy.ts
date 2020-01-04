@@ -10,30 +10,6 @@ import { Converter } from 'showdown';
 
 const fg = require('fast-glob');
 
-const defaultData = (override: any) => {
-    return {
-        PART_PARENT: 'my parent 2',
-        PART_INVENTORY: 'inventory',
-        PART_NAME: 'Front Shield',
-        PART_VERSION: 1,
-        PART_VERSIONS: '1 2',
-        PART_ID: 'Z_4_FRONT_SHIELD',
-        PART_DRAWING: 'https://a360.co/37pDdVD',
-        PART_PREVIEW: '',
-        PART_COMPAT: '',
-        PART_CAPS: '',
-        PART_ASSEMBLY: '',
-        PART_TOOLS: '<div>tools - data </div>',
-        PART_TEMPLATES: '',
-        PART_STOCK: '',
-        PART_MACHINES: '',
-        PART_STEPS: '',
-        PART_EDIT: '',
-        PART_EDIT_ARGS: '',
-        ...override
-    }
-};
-
 const defaultOptions = (yargs: CLI.Argv) => {
     return yargs.option('input', {
         default: './',
@@ -50,7 +26,7 @@ const defaultOptions = (yargs: CLI.Argv) => {
 let options = (yargs: CLI.Argv) => defaultOptions(yargs);
 
 export const convert = (input: string, data: any) => {
-    input = utils.replace(input, null, defaultData(data), {
+    input = utils.replace(input, null, (data), {
         begin: '<%',
         end: '%>'
     });
@@ -72,9 +48,10 @@ export const convertFiles = (files: string[], dst?:string) => {
         write(target, html);
     })
 }
-// npm run build ; node ./build/main.js markdown --input=../pages --output=../out
+
+// npm run build ; node ./build/main.js academy --input=../../academy/docs --output=../../academy-raw
 export const register = (cli: CLI.Argv) => {
-    return cli.command('markdown', 'Converts md files to html using showdown', options, async (argv: CLI.Arguments) => {
+    return cli.command('academy', '1st pass of converting academy md files into stencil fragments', options, async (argv: CLI.Arguments) => {
         if (argv.help) { return; }
         const src = path.resolve('' + argv.input);
         const dst = path.resolve('' + argv.output);

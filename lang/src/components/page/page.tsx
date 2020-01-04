@@ -13,7 +13,7 @@ export class Page {
 <p><strong>Parent</strong> : my parent 2</p>
 <p><strong>Name</strong> : Front Shield | <a href="/?,">Edit</a></p>
 <p><strong>Version</strong> : 1 | 1 2</p>
-<p><strong>ID</strong> : Z_4_FRONT_SHIELD | <a href="&lt;%PART_INVENTORY%">Inventory</a></p>
+<p><strong>ID</strong> : Z_4_FRONT_SHIELD | <a href="">Inventory</a></p>
 <p><strong>Drawing</strong> : <a href="https://a360.co/37pDdVD">Fusion360 public link</a></p>
 <p><strong>Preview</strong></p>
 <p><img width="20%" src="" /></p>
