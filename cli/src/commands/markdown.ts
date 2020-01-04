@@ -12,14 +12,14 @@ const fg = require('fast-glob');
 
 const defaultData = (override: any) => {
     return {
-        PART_PARENT: 'my parent',
+        PART_PARENT: 'my parent 2',
         PART_INVENTORY: '',
         PART_NAME: 'Front Shield',
         PART_VERSION: 1,
         PART_VERSIONS: '1 2',
         PART_ID: 'Z_4_FRONT_SHIELD',
         PART_DRAWING: 'https://a360.co/37pDdVD',
-        PART_PREVIEW_IMAGE: '',
+        PART_PREVIEW: '',
         PART_COMPAT: '',
         PART_CAPS: '',
         PART_ASSEMBLY: '',
@@ -48,7 +48,7 @@ const defaultOptions = (yargs: CLI.Argv) => {
 
 let options = (yargs: CLI.Argv) => defaultOptions(yargs);
 
-const convert = (input: string, data: any) => {
+export const convert = (input: string, data: any) => {
     input = utils.replace(input, null, defaultData(data), {
         begin: '<%',
         end: '%>'
@@ -59,11 +59,15 @@ const convert = (input: string, data: any) => {
     return converter.makeHtml(input);
 }
 
-const convertFiles = (files,dst) =>{
+export const convertFiles = (files: string[], dst?:string) => {
     files.forEach((f) => {
         const content = read(f, 'string');
         const html = convert(content as string, {});
-        const target = dst + '/' + path.parse(f).name + '.html';
+        if(!dst){
+            dst = path.parse(f).dir;
+        }
+        const target = dst + path.sep + path.parse(f).name + '.html';
+        debug(`\t Convert ${f} to ${target}`);
         write(target, html);
     })
 }

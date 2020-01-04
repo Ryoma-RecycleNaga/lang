@@ -19,7 +19,7 @@ const write_1 = require("@xblox/fs/write");
 const showdown_1 = require("showdown");
 const fg = require('fast-glob');
 const defaultData = (override) => {
-    return Object.assign({ PART_PARENT: 'my parent', PART_INVENTORY: '', PART_NAME: 'Front Shield', PART_VERSION: 1, PART_VERSIONS: '1 2', PART_ID: 'Z_4_FRONT_SHIELD', PART_DRAWING: 'https://a360.co/37pDdVD', PART_PREVIEW_IMAGE: '', PART_COMPAT: '', PART_CAPS: '', PART_ASSEMBLY: '', PART_TOOLS: '', PART_TEMPLATES: '', PART_STOCK: '', PART_MACHINES: '', PART_STEPS: '', PART_EDIT: '' }, override);
+    return Object.assign({ PART_PARENT: 'my parent 2', PART_INVENTORY: '', PART_NAME: 'Front Shield', PART_VERSION: 1, PART_VERSIONS: '1 2', PART_ID: 'Z_4_FRONT_SHIELD', PART_DRAWING: 'https://a360.co/37pDdVD', PART_PREVIEW: '', PART_COMPAT: '', PART_CAPS: '', PART_ASSEMBLY: '', PART_TOOLS: '', PART_TEMPLATES: '', PART_STOCK: '', PART_MACHINES: '', PART_STEPS: '', PART_EDIT: '' }, override);
 };
 const defaultOptions = (yargs) => {
     return yargs.option('input', {
@@ -34,7 +34,7 @@ const defaultOptions = (yargs) => {
     });
 };
 let options = (yargs) => defaultOptions(yargs);
-const convert = (input, data) => {
+exports.convert = (input, data) => {
     input = utils.replace(input, null, defaultData(data), {
         begin: '<%',
         end: '%>'
@@ -43,11 +43,15 @@ const convert = (input, data) => {
     converter.setOption('literalMidWordUnderscores', 'true');
     return converter.makeHtml(input);
 };
-const convertFiles = (files, dst) => {
+exports.convertFiles = (files, dst) => {
     files.forEach((f) => {
         const content = read_1.sync(f, 'string');
-        const html = convert(content, {});
-        const target = dst + '/' + path.parse(f).name + '.html';
+        const html = exports.convert(content, {});
+        if (!dst) {
+            dst = path.parse(f).dir;
+        }
+        const target = dst + path.sep + path.parse(f).name + '.html';
+        __1.debug(`\t Convert ${f} to ${target}`);
         write_1.sync(target, html);
     });
 };
@@ -63,7 +67,7 @@ exports.register = (cli) => {
             dir_1.sync(dst);
         }
         const files = fg.sync('*.md', { dot: true, cwd: src, absolute: true });
-        convertFiles(files, dst);
+        exports.convertFiles(files, dst);
         if (argv.debug) {
             __1.debug(`Converted ${files.length} files`);
         }

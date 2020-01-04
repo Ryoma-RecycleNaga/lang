@@ -1,5 +1,3 @@
-import * as path from 'path';
-import { URL } from 'url';
 import * as CLI from 'yargs';
 import {
     warn, error,
