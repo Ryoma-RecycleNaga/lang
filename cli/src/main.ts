@@ -6,6 +6,7 @@ import { register as registerMarkdown } from './commands/markdown'; registerMark
 import { register as registerPDF2JPG } from './commands/pdf2jpg'; registerPDF2JPG(cli);
 import { register as registerWatch } from './commands/watch'; registerWatch(cli);
 import { register as registerAcademy } from './commands/academy'; registerAcademy(cli);
+import { register as registerOneArmy } from './commands/onearmy'; registerOneArmy(cli);
 
 const argv = cli.argv;
 

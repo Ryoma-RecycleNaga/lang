@@ -18,9 +18,18 @@ const dir_1 = require("@xblox/fs/dir");
 const write_1 = require("@xblox/fs/write");
 const showdown_1 = require("showdown");
 const fg = require('fast-glob');
-const defaultData = (override) => {
-    return Object.assign({ PART_PARENT: 'my parent 2', PART_INVENTORY: 'inventory', PART_NAME: 'Front Shield', PART_VERSION: 1, PART_VERSIONS: '1 2', PART_ID: 'Z_4_FRONT_SHIELD', PART_DRAWING: 'https://a360.co/37pDdVD', PART_PREVIEW: '', PART_COMPAT: '', PART_CAPS: '', PART_ASSEMBLY: '', PART_TOOLS: '<div>tools - data </div>', PART_TEMPLATES: '', PART_STOCK: '', PART_MACHINES: '', PART_STEPS: '', PART_EDIT: '', PART_EDIT_ARGS: '' }, override);
-};
+/***
+ * todos - pipe :
+ * 1. collect & remove docusaurus meta
+ * 2. remove|replace icons, styles, non - printables
+ * 3. replace html with md
+ * 4. replace tables with g-sheets
+ * 5. replace headings
+ * 6. insert override breakers for addon content
+ * 7. wrap text for translation
+ * 8. lint & format
+ * 9. store back as raw md
+ */
 const defaultOptions = (yargs) => {
     return yargs.option('input', {
         default: './',
@@ -35,7 +44,7 @@ const defaultOptions = (yargs) => {
 };
 let options = (yargs) => defaultOptions(yargs);
 exports.convert = (input, data) => {
-    input = utils.replace(input, null, defaultData(data), {
+    input = utils.replace(input, null, (data), {
         begin: '<%',
         end: '%>'
     });
@@ -55,9 +64,9 @@ exports.convertFiles = (files, dst) => {
         write_1.sync(target, html);
     });
 };
-// npm run build ; node ./build/main.js markdown --input=../pages --output=../out
+// npm run build ; node ./build/main.js academy --input=../../academy/docs --output=../../academy-raw
 exports.register = (cli) => {
-    return cli.command('markdown', 'Converts md files to html using showdown', options, (argv) => __awaiter(void 0, void 0, void 0, function* () {
+    return cli.command('academy', '1st pass of converting academy md files into stencil fragments', options, (argv) => __awaiter(void 0, void 0, void 0, function* () {
         if (argv.help) {
             return;
         }
@@ -73,4 +82,4 @@ exports.register = (cli) => {
         }
     }));
 };
-//# sourceMappingURL=markdown.js.map
+//# sourceMappingURL=academy.js.map

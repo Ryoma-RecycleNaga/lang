@@ -10,6 +10,10 @@ const pdf2jpg_1 = require("./commands/pdf2jpg");
 pdf2jpg_1.register(cli);
 const watch_1 = require("./commands/watch");
 watch_1.register(cli);
+const academy_1 = require("./commands/academy");
+academy_1.register(cli);
+const onearmy_1 = require("./commands/onearmy");
+onearmy_1.register(cli);
 const argv = cli.argv;
 if (argv.h || argv.help) {
     cli.showHelp();
