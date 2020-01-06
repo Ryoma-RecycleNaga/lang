@@ -11,5 +11,6 @@
 -> issues
 - community portlet (composite feed: wiki, social,...)
 - references
+- media & version & variant filter (print edition,...)
 
 all others are already outlined in pp-lang, pp-factory & stencil-gui libs
