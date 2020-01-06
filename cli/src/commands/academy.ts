@@ -17,8 +17,10 @@ const fg = require('fast-glob');
  * 3. replace html with md
  * 4. replace tables with g-sheets
  * 5. replace headings
- * 6. insert override breakers for addon content
- * 7. wrap text for translation
+ * 6. Stencil template
+ * 6.1 insert override breakers for addon content
+ * 6.2 wrap sections into tabs
+ * 6.3. wrap text for translation
  * 8. lint & format
  * 9. store back as raw md
  */
