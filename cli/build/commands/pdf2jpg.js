@@ -30,14 +30,14 @@ function convertFiles(files) {
             const inParts = path.parse(file);
             // magick convert leg.pdf -quality 100 -density 250 -trim -flatten -resize 200% -sharpen 0x1.0 leg.jpg
             const promise = index_1.Helper.run(inParts.dir, 'convert', [
-                inParts.base,
+                `"${inParts.base}"`,
                 '-quality 100',
                 '-density 250',
                 '-trim',
                 '-flatten',
                 '-resize 200%',
                 '-sharpen 0x1.0',
-                inParts.name + '.jpg'
+                `"${inParts.name}.jpg"`
             ]);
             return promise;
         });
