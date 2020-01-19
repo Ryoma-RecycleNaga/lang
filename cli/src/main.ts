@@ -7,6 +7,7 @@ import { register as registerPDF2JPG } from './commands/pdf2jpg'; registerPDF2JP
 import { register as registerWatch } from './commands/watch'; registerWatch(cli);
 import { register as registerAcademy } from './commands/academy'; registerAcademy(cli);
 import { register as registerOneArmy } from './commands/onearmy'; registerOneArmy(cli);
+import { register as registerTest } from './commands/tests'; registerTest(cli);
 
 const argv = cli.argv;
 

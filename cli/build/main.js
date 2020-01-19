@@ -14,6 +14,8 @@ const academy_1 = require("./commands/academy");
 academy_1.register(cli);
 const onearmy_1 = require("./commands/onearmy");
 onearmy_1.register(cli);
+const tests_1 = require("./commands/tests");
+tests_1.register(cli);
 const argv = cli.argv;
 if (argv.h || argv.help) {
     cli.showHelp();

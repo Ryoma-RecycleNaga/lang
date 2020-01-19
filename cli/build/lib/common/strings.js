@@ -158,6 +158,10 @@ function replace(str, needle, what, delimiters) {
 }
 exports.replace = replace;
 ;
+exports.substitute = (template, map, transform) => {
+    transform = (k) => k;
+    return template.replace(/\$\{([^\s\:\}]+)(?:\:([^\s\:\}]+))?\}/g, (match, key, format) => transform(map[key], key).toString());
+};
 function decodeUtf8EncodedCodePoint(codePoint, validationRange = [0, Infinity], checkSurrogate) {
     if (codePoint < validationRange[0] || codePoint > validationRange[1]) {
         throw Error('Invalid continuation byte');
