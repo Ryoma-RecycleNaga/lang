@@ -1,0 +1,12 @@
+{
+  "type": "service_account",
+  "project_id": "precious-plastic-org",
+  "private_key_id": "dfd5b94b842c50f5a3be34187da07fcbb217a0af",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvAIBADANBgkqhkiG9w0BAQEFAASCBKYwggSiAgEAAoIBAQC9Cnxxpua+g0CR\n9OEpf3g4l5SUXBvol2ll5rg5TCwIbJf8En7qFCAN4tfMkZowPG3mGFCdiANa/lqc\nhTZzh/qn+VPRFaLxXrNLmr0fLVdKCohifkkNos/BOU7dk0PNxXg7kbpEhOp8IBDq\nEGzuHFh72icZQQc73nUklkRpyJMjb/XJtnsdHcGTfyDrXLwMNmnhdzIeGoJ6qfno\n3nDduVOLngQaf/tGcMekENYSCMVNiEmT2dz/1Svo1nL9G0UpCQyH70ZsM2OEPsVq\nkn2OJSMa6l2gYww1NGSpF9HTpFJe1ax04vsfM3UhAm9tMrL5H8QOl1K1qeKS7Fvl\nNv7uxTR/AgMBAAECggEAT3vOuiyeXWErb5MibwPZJRZa0wxtcZzkJIPfVrwX0Yzz\nVHnkYgCHP79u0+UuivSFktcLYkkTfBlxONlr/SSh+CmFm+Z4hfs28OWFekvipU+L\na7pEdhbMOqahadmnCyhptsY9ptyqCPmkkv3IB0/kxmKByQUGCR6ua21BI6dBcobB\nm42OXn57XtTfxU49dP9drvciML1K5qgKzhElhkUKgOv8ANvqsl6uvWOMApZuWlNU\n23aRhaYCli+TsZRHhu+SW+hzKvmFupEWO2inp5rK9Vu3ZVAxwRXHtpYjZjlTTzfU\nqw9NKBXS4hWvuiEIHQVlKSU636qTgt3/WUI9nZjpGQKBgQDul6xCUkGUkDHDRpgo\ndRGlkrH1ey9DIqIhp/GHOduukOqwLEcvQaXnbrmyt4B4uvQGsqHa7w/lWwuKlcU/\nG4rMufVKRdE++Y7ppZ9V3gl1Mwyy76M+AmJ12qBpzYLKQ1nAlfo2eU5EXZ3GiOVd\nS+MLnANRRXJEk7b3i1BuuQMLNwKBgQDK1U+/MNBLdFXktHa8Jlsats4umGETVgPh\n/SchNge2lbggg73JpHK3/8UFQs9hTARtLjtUWkoXwICeZTVzYlO17nUSbcq0Ieck\nfCDnnCq5dPToqU+9dsmxtba0ypPrLw2I2vTctzjRWjBQp2M3QBbryk7PnE4Wv6c7\n3Ipj7wkU+QKBgBNLiM7EQDF3h863As8iyI6PUnz7vVK8lkgKgOnir/VqGtCshAU6\nVeRle/cMCAO7esif4Z8G/k4aEtDeU9lKrOrpjwC2rLlfDUOv9TbIghNMUZaW8qit\nILFPQPHNgOpCkBuXBWkqXj4BJCVOJN5qqK3jrBECgL8zAvT5+0M5Cxn5AoGAIJI4\niB8yk6tOz7cbCgOuxY9tdJYLoKtDXFrmmbKvcmaAdtgw9dxuf5WW8c1Ut+8ZFt9B\nr73//+htvwHJn4m+n4x3SEpRLrPzBizYq9isE7PwUBxALdCRevQPLuEI989KgRuI\nDpltilDNSWZXzFuCUsLd/QDAmW6VUEuN/ZY5AyECgYBoSS4gcY6nZPpeXgcF/Eek\nWfpImfQjyBl/9G78XWBRKy55Cs/Gi9WaGJJxE3xxayT6pt0a0utMnZXBlqj/Q6GJ\nl7YnajPPmva8mtRVCOeY04gEbK1v5YjNOz9XFiLAO5hNaFDJWybfzvICE9ee3mjx\nfFtBArI+BgEEOWooEw3jXQ==\n-----END PRIVATE KEY-----\n",
+  "client_email": "factory@precious-plastic-org.iam.gserviceaccount.com",
+  "client_id": "107375078721585124468",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/factory%40precious-plastic-org.iam.gserviceaccount.com"
+}
