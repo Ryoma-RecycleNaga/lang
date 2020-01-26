@@ -6,13 +6,13 @@ This command will compose HTML to be used in the Precious-Plastic Bazar.
 ## Usage
 ```sh
 
-ph-cli -config=products/config.json --product=elena
+ph-cli bazar-product-html -config=products/config.json --product=elena
 
 ```
 or if you are already in your products folder, just use
 
 ```sh
-ph-cli --product=elena
+ph-cli bazar-product-html --product=elena
 ```
 
 
