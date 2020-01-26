@@ -44,7 +44,7 @@ export const register = (cli: CLI.Argv) => {
             return;
         }
 
-        let fragments: any = {};
+        let fragments: any = { ...config };
 
         // read all vendor specific fragments
         let bazar_fragment_files = fg.sync('*.html', { dot: true, cwd: bazar_fragments_path, absolute: true }) as [];
@@ -62,15 +62,18 @@ export const register = (cli: CLI.Argv) => {
 
         // read all product specific fragments
         const product_fragments_path = path.resolve(`${product_path}/bazar/fragments`);
-        if(!existsSync(product_fragments_path)){
+        if (!existsSync(product_fragments_path)) {
             debug.error(`Product has no bazar fragment files`);
             return;
+        } else {
+            debug.info(`read product fragments at ${product_fragments_path}`);
         }
-        let products_fragment_files = fg.sync('*.html', { dot: true, product_fragments_path, absolute: true }) as [];
+
+        let products_fragment_files = fg.sync('*.html', { dot: true, cwd: product_fragments_path, absolute: true }) as [];
         products_fragment_files.map((f) => {
             fragments[path.parse(f).name] = read(f, 'string') as string;
         });
-        
+
         products_fragment_files = fg.sync('*.md', { dot: true, cwd: product_fragments_path, absolute: true }) as [];
         products_fragment_files.map((f) => {
             let converter = new Converter();
@@ -83,22 +86,24 @@ export const register = (cli: CLI.Argv) => {
         if (!existsSync(path.resolve(`${product_path}/config.json`))) {
             debug.warn('product has no config');
         } else {
-            const product_config = read(path.resolve(`${product_path}/config.json`), 'json') as any;
-            for (const key in product_config) {
-                fragments[key] = product_config[key];
-            }
+            fragments = { ...fragments, ...read(path.resolve(`${product_path}/config.json`), 'json') as any }
         }
 
-
+        debug.debug("bazar fragments", fragments);
+        for (const key in fragments) {
+            if(key ==='product'){
+                continue;
+            }
+            const resolved = utils.substitute(fragments[key],fragments);
+            fragments[key]= resolved;
+            debug.info(`resolve ${key} to ${resolved}`);
+        }
 
         // compile and write out
-        const products_description = utils.replace(fragments.product, null, fragments, {
-            begin: '<%',
-            end: '%>'
-        });
+        const products_description = utils.substitute(fragments.product,fragments);
 
         const out_path = path.resolve(`${product_path}/bazar/out/product.html`);
-        debug.info(`Write product description ${out_path} `);
+        debug.info(`Write product description ${out_path} ${fragments.product}`);
         write(out_path, products_description);
 
         debug.debug("bazar fragments", fragments);
