@@ -2,6 +2,11 @@
 
 This command will compose HTML out of HTML & Markdown files to be used in the Precious-Plastic Bazar.
 
+In this example, 
+![](./example.png)
+
+we're using a template for 'Other products', the footer which contains links and social icons.
+
 
 ## Install
 
