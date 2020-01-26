@@ -1,20 +1,37 @@
 # Command 'bazar-product-html'
 
-This command will compose HTML to be used in the Precious-Plastic Bazar. 
+This command will compose HTML to be used in the Precious-Plastic Bazar.
 
-### How does this work ? 
+
+## Usage
+```sh
+
+ph-cli -config=products/config.json --product=elena
+
+```
+or if you are already in your products folder, just use
+
+```sh
+ph-cli --product=elena
+```
+
+
+
+This will create an HTML file in ```products/elena/bazar/out/product.html```
+
+### How does this work?
 
 It loads templates or 'fragments' from various locations.
 The templates can be HTML or Markdown. In particular it loads
 templates from 2 different locations:
 
-- products/bazar/fragments (global templates & content)
-- products/myproduct/bazar/fragments (product related templates & content)
+- ```products/bazar/fragments``` (global templates & content)
+- ```products/myproduct/bazar/fragments``` (product related templates & content)
 
 It will also load variables from 2 different locations which then can be used inside the templates :
 
-- products/myproduct/config.json (product specific variables like name)
-- products/bazar/config.json (vendor specific variables like email, website,...)
+- ```products/myproduct/config.json``` (product specific variables like name)
+- ```products/bazar/config.json``` (vendor specific variables like email, website,...)
 
 
 Once this templates are loaded, it replaces variable place holders with the content found by the same name. The variable can be a file or a variable value in the config.json files.
@@ -43,8 +60,6 @@ reference a variable ***breadcrumb***, written as follows :
  ${breadcrumb}
 ```
 
-This tool now looks for a file *breadcrumb.html|md* in the global and product template folders and replaces ${breadcrumb} with the content of this file whereby Markdown will be converted to HTML.
+This tool now looks for a file ```breadcrumb.html|md``` in the global and product template folders and replaces ${breadcrumb} with the content of this file whereby Markdown will be converted to HTML.
 
 When this file doesn't exists, it tries the global or product config.json files.
-
-
