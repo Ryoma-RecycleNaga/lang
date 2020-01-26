@@ -10,6 +10,7 @@ import { register as registerOneArmy } from './commands/onearmy'; registerOneArm
 import { register as registerTest } from './commands/tests'; registerTest(cli);
 import { register as registerV4Bom } from './commands/v4/bom'; registerV4Bom(cli);
 import { register as registerBazarProduct } from './commands/bazar/product'; registerBazarProduct(cli);
+import { register as registerBazarVendor } from './commands/bazar/vendor'; registerBazarVendor(cli);
 
 const argv = cli.argv;
 
