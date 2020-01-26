@@ -16,7 +16,9 @@
 
 ## Commands
 
-### [bazar-product-html](./docs/commands/bazar)
+- [bazar-product-html](./docs/commands/bazar)
+- [markdown](./docs/commands/markdown)
+- [pdf2jpg](./docs/commands/pdf2jpg)
 
 
 ### NPM Commands 
