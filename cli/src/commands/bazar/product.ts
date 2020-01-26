@@ -105,13 +105,14 @@ export const register = (cli: CLI.Argv) => {
         for (const key in fragments) {
             const resolved = utils.substitute(fragments[key], fragments);
             fragments[key] = resolved;
-            debug.info(`resolve ${key} to ${resolved}`);
+            isDebug && debug.info(`resolve ${key} to ${resolved}`);
         }
 
         const products_description = utils.substitute(fragments.product, fragments);
 
         if(!existsSync(path.resolve(`${product_path}/bazar/out/`))){
             dir(path.resolve(`${product_path}/bazar/out/`));
+            isDebug && debug.info('created bazar/out folder in product!');
         }
         const out_path = path.resolve(`${product_path}/bazar/out/product.html`);
         
