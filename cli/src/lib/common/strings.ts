@@ -160,10 +160,10 @@ export function replace(str: string, needle: any | null, what: string | any, del
     return replaceAll(needle, what as string, str);
 };
 
-export const substitute = (template, map, transform, ) => {
-    transform = (k) => k || '';
+export const substitute = (template, map ) => {
+    const transform = (k) => k || '';
     return template.replace(/\$\{([^\s\:\}]+)(?:\:([^\s\:\}]+))?\}/g,
-        (match, key, format) => transform(map[key], key).toString());
+        (match, key, format) => transform(map[key]).toString());
 };
 
 function decodeUtf8EncodedCodePoint(codePoint: number, validationRange: number[] = [0, Infinity], checkSurrogate?: boolean): string {
