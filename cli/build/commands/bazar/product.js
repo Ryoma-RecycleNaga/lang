@@ -45,16 +45,27 @@ exports.register = (cli) => {
         }
         let fragments = {};
         // read all vendor specific fragments
-        const bazar_fragment_files = fg.sync('*.html', { dot: true, cwd: bazar_fragments_path, absolute: true });
+        let bazar_fragment_files = fg.sync('*.html', { dot: true, cwd: bazar_fragments_path, absolute: true });
         bazar_fragment_files.map((f) => {
             fragments[path.parse(f).name] = read_1.sync(f, 'string');
         });
+        bazar_fragment_files = fg.sync('*.md', { dot: true, cwd: bazar_fragments_path, absolute: true });
+        bazar_fragment_files.map((f) => {
+            let converter = new showdown_1.Converter();
+            converter.setOption('literalMidWordUnderscores', 'true');
+            fragments[path.parse(f).name] = converter.makeHtml(read_1.sync(f, 'string'));
+        });
         // read all product specific fragments
-        let products_fragment_files = fg.sync('*.html', { dot: true, cwd: path.resolve(`${product_path}/bazar/fragments`), absolute: true });
+        const product_fragments_path = path.resolve(`${product_path}/bazar/fragments`);
+        if (!fs_1.existsSync(product_fragments_path)) {
+            debug.error(`Product has no bazar fragment files`);
+            return;
+        }
+        let products_fragment_files = fg.sync('*.html', { dot: true, product_fragments_path, absolute: true });
         products_fragment_files.map((f) => {
             fragments[path.parse(f).name] = read_1.sync(f, 'string');
         });
-        products_fragment_files = fg.sync('*.md', { dot: true, cwd: path.resolve(`${product_path}/bazar/fragments`), absolute: true });
+        products_fragment_files = fg.sync('*.md', { dot: true, cwd: product_fragments_path, absolute: true });
         products_fragment_files.map((f) => {
             let converter = new showdown_1.Converter();
             converter.setOption('literalMidWordUnderscores', 'true');
@@ -79,7 +90,7 @@ exports.register = (cli) => {
         debug.info(`Write product description ${out_path} `);
         write_1.sync(out_path, products_description);
         debug.debug("bazar fragments", fragments);
-        debug.debug("bazar fragments", products_description);
+        // debug.debug("bazar fragments", products_description);
     }));
 };
 //# sourceMappingURL=product.js.map

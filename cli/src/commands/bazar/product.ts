@@ -47,22 +47,35 @@ export const register = (cli: CLI.Argv) => {
         let fragments: any = {};
 
         // read all vendor specific fragments
-        const bazar_fragment_files = fg.sync('*.html', { dot: true, cwd: bazar_fragments_path, absolute: true }) as [];
+        let bazar_fragment_files = fg.sync('*.html', { dot: true, cwd: bazar_fragments_path, absolute: true }) as [];
         bazar_fragment_files.map((f) => {
             fragments[path.parse(f).name] = read(f, 'string') as string;
         })
 
+        bazar_fragment_files = fg.sync('*.md', { dot: true, cwd: bazar_fragments_path, absolute: true }) as [];
+        bazar_fragment_files.map((f) => {
+            let converter = new Converter();
+            converter.setOption('literalMidWordUnderscores', 'true');
+            fragments[path.parse(f).name] = converter.makeHtml(read(f, 'string') as string);
+        })
+
+
         // read all product specific fragments
-        let products_fragment_files = fg.sync('*.html', { dot: true, cwd: path.resolve(`${product_path}/bazar/fragments`), absolute: true }) as [];
+        const product_fragments_path = path.resolve(`${product_path}/bazar/fragments`);
+        if(!existsSync(product_fragments_path)){
+            debug.error(`Product has no bazar fragment files`);
+            return;
+        }
+        let products_fragment_files = fg.sync('*.html', { dot: true, product_fragments_path, absolute: true }) as [];
         products_fragment_files.map((f) => {
             fragments[path.parse(f).name] = read(f, 'string') as string;
         });
         
-        products_fragment_files = fg.sync('*.md', { dot: true, cwd: path.resolve(`${product_path}/bazar/fragments`), absolute: true }) as [];
+        products_fragment_files = fg.sync('*.md', { dot: true, cwd: product_fragments_path, absolute: true }) as [];
         products_fragment_files.map((f) => {
             let converter = new Converter();
             converter.setOption('literalMidWordUnderscores', 'true');
-            fragments[path.parse(f).name] =converter.makeHtml(read(f, 'string') as string);
+            fragments[path.parse(f).name] = converter.makeHtml(read(f, 'string') as string);
         })
 
 
@@ -76,6 +89,8 @@ export const register = (cli: CLI.Argv) => {
             }
         }
 
+
+
         // compile and write out
         const products_description = utils.replace(fragments.product, null, fragments, {
             begin: '<%',
@@ -87,7 +102,7 @@ export const register = (cli: CLI.Argv) => {
         write(out_path, products_description);
 
         debug.debug("bazar fragments", fragments);
-        debug.debug("bazar fragments", products_description);
+        // debug.debug("bazar fragments", products_description);
 
     });
 };
