@@ -161,7 +161,7 @@ export function replace(str: string, needle: any | null, what: string | any, del
 };
 
 export const substitute = (template, map, transform, ) => {
-    transform = (k) => k;
+    transform = (k) => k || '';
     return template.replace(/\$\{([^\s\:\}]+)(?:\:([^\s\:\}]+))?\}/g,
         (match, key, format) => transform(map[key], key).toString());
 };
