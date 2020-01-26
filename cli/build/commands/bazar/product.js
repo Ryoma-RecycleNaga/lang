@@ -13,6 +13,7 @@ const debug = require("../..");
 const utils = require("../../lib/common/strings");
 const path = require("path");
 const read_1 = require("@xblox/fs/read");
+const dir_1 = require("@xblox/fs/dir");
 const write_1 = require("@xblox/fs/write");
 const showdown_1 = require("showdown");
 const fg = require('fast-glob');
@@ -55,8 +56,8 @@ exports.register = (cli) => {
         const format = argv.format || 'html';
         const markdown = format === 'md';
         const isDebug = argv.debug === 'true';
-        const config = read_1.sync(path.resolve('./config.json'), 'json');
-        const product_path = path.resolve(`${config.products_path}/${argv.product}`);
+        const config = read_1.sync(argv.products ? path.resolve(`${argv.products}/bazar/config.json`) : path.resolve('./config.json'), 'json');
+        const product_path = path.resolve(`${argv.products || config.products_path}/${argv.product}`);
         const bazar_fragments_path = path.resolve(`${config.fragments_path}`);
         isDebug && debug.info(`\n Generate product description for ${argv.product}, reading from ${product_path},
             using bazar fragments at ${bazar_fragments_path}`);
@@ -67,47 +68,41 @@ exports.register = (cli) => {
         let fragments = Object.assign({}, config);
         // read all vendor specific fragments
         let bazar_fragment_files = files(bazar_fragments_path, '*.html');
-        bazar_fragment_files.map((f) => {
-            fragments[path.parse(f).name] = read_1.sync(f, 'string');
-        });
+        bazar_fragment_files.map((f) => fragments[path.parse(f).name] = readContent(f, markdown));
         bazar_fragment_files = files(bazar_fragments_path, '*.md');
-        bazar_fragment_files.map((f) => { fragments[path.parse(f).name] = readContent(f, markdown); });
+        bazar_fragment_files.map((f) => fragments[path.parse(f).name] = readContent(f, markdown));
         // read all product specific fragments
         const product_fragments_path = path.resolve(`${product_path}/bazar/fragments`);
         if (!fs_1.existsSync(product_fragments_path)) {
-            debug.error(`Product has no bazar fragment files`);
-            return;
+            debug.error(`Product has no bazar fragment files! Creating folder structure ..`);
+            dir_1.sync(product_fragments_path);
         }
         else {
             isDebug && debug.info(`read product fragments at ${product_fragments_path}`);
         }
         let products_fragment_files = files(product_fragments_path, '*.html');
-        products_fragment_files.map((f) => { fragments[path.parse(f).name] = readContent(f, markdown); });
+        products_fragment_files.map((f) => fragments[path.parse(f).name] = readContent(f, markdown));
         products_fragment_files = files(product_fragments_path, '*.md');
-        products_fragment_files.map((f) => { fragments[path.parse(f).name] = readContent(f, markdown); });
+        products_fragment_files.map((f) => fragments[path.parse(f).name] = readContent(f, markdown));
         // read product variables
         if (!fs_1.existsSync(path.resolve(`${product_path}/config.json`))) {
-            debug.warn('product has no config');
+            isDebug && debug.warn(`product has no config.json, please ensure there is a config.json in ${product_path}`);
+            write_1.sync(path.resolve(`${product_path}/config.json`), '{}');
         }
         else {
             fragments = Object.assign(Object.assign({}, fragments), read_1.sync(path.resolve(`${product_path}/config.json`), 'json'));
         }
-        debug.debug("bazar fragments", fragments);
+        // compile and write out
         for (const key in fragments) {
-            if (key === 'product') {
-                continue;
-            }
             const resolved = utils.substitute(fragments[key], fragments);
             fragments[key] = resolved;
             debug.info(`resolve ${key} to ${resolved}`);
         }
-        // compile and write out
         const products_description = utils.substitute(fragments.product, fragments);
         const out_path = path.resolve(`${product_path}/bazar/out/product.html`);
-        debug.info(`Write product description ${out_path} ${fragments.product}`);
+        isDebug && debug.info(`Write product description ${out_path} ${fragments.product}`);
         write_1.sync(out_path, products_description);
-        debug.debug("bazar fragments", fragments);
-        // debug.debug("bazar fragments", products_description);
+        isDebug && debug.debug("bazar fragments", fragments);
     }));
 };
 //# sourceMappingURL=product.js.map

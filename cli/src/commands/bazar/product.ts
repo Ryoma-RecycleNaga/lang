@@ -49,14 +49,13 @@ export const register = (cli: CLI.Argv) => {
     return cli.command('bazar-product-html', 'Creates Bazar HTML description', options, async (argv: CLI.Arguments) => {
         if (argv.help) { return; }
 
-
         const format = argv.format || 'html'; const markdown = format === 'md';
 
         const isDebug = argv.debug === 'true';
 
-        const config = read(path.resolve('./config.json'), 'json') as any;
+        const config = read(argv.products ? path.resolve(`${argv.products}/bazar/config.json`) : path.resolve('./config.json'), 'json') as any;
 
-        const product_path = path.resolve(`${config.products_path}/${argv.product}`);
+        const product_path = path.resolve(`${argv.products || config.products_path}/${argv.product}`);
 
         const bazar_fragments_path = path.resolve(`${config.fragments_path}`);
 
@@ -72,55 +71,49 @@ export const register = (cli: CLI.Argv) => {
 
         // read all vendor specific fragments
         let bazar_fragment_files = files(bazar_fragments_path, '*.html');
-        bazar_fragment_files.map((f) => {
-            fragments[path.parse(f).name] = read(f, 'string') as string;
-        })
+        bazar_fragment_files.map((f) => fragments[path.parse(f).name] = readContent(f, markdown));
 
         bazar_fragment_files = files(bazar_fragments_path, '*.md');
-        bazar_fragment_files.map((f) => { fragments[path.parse(f).name] = readContent(f, markdown) })
+        bazar_fragment_files.map((f) => fragments[path.parse(f).name] = readContent(f, markdown));
 
         // read all product specific fragments
         const product_fragments_path = path.resolve(`${product_path}/bazar/fragments`);
         if (!existsSync(product_fragments_path)) {
-            debug.error(`Product has no bazar fragment files`);
-            return;
+            debug.error(`Product has no bazar fragment files! Creating folder structure ..`);
+            dir(product_fragments_path);
         } else {
             isDebug && debug.info(`read product fragments at ${product_fragments_path}`);
         }
 
         let products_fragment_files = files(product_fragments_path, '*.html');
-        products_fragment_files.map((f) => { fragments[path.parse(f).name] = readContent(f, markdown) });
+        products_fragment_files.map((f) => fragments[path.parse(f).name] = readContent(f, markdown));
 
         products_fragment_files = files(product_fragments_path, '*.md');
-        products_fragment_files.map((f) => { fragments[path.parse(f).name] = readContent(f, markdown) })
+        products_fragment_files.map((f) => fragments[path.parse(f).name] = readContent(f, markdown));
 
 
         // read product variables
         if (!existsSync(path.resolve(`${product_path}/config.json`))) {
-            debug.warn('product has no config');
+            isDebug && debug.warn(`product has no config.json, please ensure there is a config.json in ${product_path}`);
+            write(path.resolve(`${product_path}/config.json`), '{}');
         } else {
             fragments = { ...fragments, ...read(path.resolve(`${product_path}/config.json`), 'json') as any }
         }
 
-        debug.debug("bazar fragments", fragments);
+        // compile and write out
+
         for (const key in fragments) {
-            if (key === 'product') {
-                continue;
-            }
             const resolved = utils.substitute(fragments[key], fragments);
             fragments[key] = resolved;
             debug.info(`resolve ${key} to ${resolved}`);
         }
 
-        // compile and write out
         const products_description = utils.substitute(fragments.product, fragments);
 
         const out_path = path.resolve(`${product_path}/bazar/out/product.html`);
-        debug.info(`Write product description ${out_path} ${fragments.product}`);
+        isDebug && debug.info(`Write product description ${out_path} ${fragments.product}`);
         write(out_path, products_description);
 
-        debug.debug("bazar fragments", fragments);
-        // debug.debug("bazar fragments", products_description);
-
+        isDebug && debug.debug("bazar fragments", fragments);
     });
 };
