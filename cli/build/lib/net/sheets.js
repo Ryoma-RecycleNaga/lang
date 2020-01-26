@@ -27,7 +27,7 @@ const TOKEN_PATH = 'token.json';
  * @param {google.auth.OAuth2} oAuth2Client The OAuth2 client to get token for.
  * @param {getEventsCallback} callback The callback for the authorized client.
  */
-const getNewToken = (oAuth2Client, callback) => __awaiter(void 0, void 0, void 0, function* () {
+const getNewToken = (oAuth2Client) => __awaiter(void 0, void 0, void 0, function* () {
     const authUrl = oAuth2Client.generateAuthUrl({
         access_type: 'offline',
         scope: SCOPES,
@@ -56,24 +56,6 @@ const readSheet = (auth, sheet, range) => __awaiter(void 0, void 0, void 0, func
         range: range,
     });
     return res.data.values;
-    /*
-    sheets.spreadsheets.values.get({
-        spreadsheetId: sheet,
-        range: range,
-    }, (err, res) => {
-        if (err) return console.log('The API returned an error: ' + err);
-        const rows = res.data.values;
-        if (rows.length) {
-            // Print columns A and E, which correspond to indices 0 and 4.
-            rows.map((row) => {
-                console.log(`${row[0]}, ${row[4]}`);
-            });
-            return rows;
-        } else {
-            console.log('No data found.');
-        }
-    });
-    */
 });
 /**
  * Create an OAuth2 client with the given credentials, and then execute the
@@ -81,29 +63,19 @@ const readSheet = (auth, sheet, range) => __awaiter(void 0, void 0, void 0, func
  * @param {Object} credentials The authorization client credentials.
  * @param {function} callback The callback to call with the authorized client.
  */
-const authorize = (credentials, callback) => __awaiter(void 0, void 0, void 0, function* () {
+const authorize = (credentials) => __awaiter(void 0, void 0, void 0, function* () {
     const { client_secret, client_id, redirect_uris } = credentials.installed;
     const oAuth2Client = new googleapis_1.google.auth.OAuth2(client_id, client_secret, redirect_uris[0]);
     const token = read_1.sync(TOKEN_PATH, 'string');
     if (!token) {
-        return getNewToken(oAuth2Client, callback);
+        return getNewToken(oAuth2Client);
     }
     oAuth2Client.setCredentials(JSON.parse(token));
     return oAuth2Client;
-    /*
-    // Check if we have previously stored a token.
-    fs.readFile(TOKEN_PATH, (err, token) => {
-        if (err) return getNewToken(oAuth2Client, callback);
-        oAuth2Client.setCredentials(JSON.parse(token.toString()));
-        callback(oAuth2Client);
-    });
-    */
 });
 exports.read = (sheet, range) => __awaiter(void 0, void 0, void 0, function* () {
-    // Load client secrets from a local file.
     const creds = read_1.sync(path.resolve('credentials.json'), 'json');
     const client = yield authorize(creds);
-    const cells = yield readSheet(client, sheet, range);
-    console.log('cells', cells);
+    return yield readSheet(client, sheet, range);
 });
 //# sourceMappingURL=sheets.js.map

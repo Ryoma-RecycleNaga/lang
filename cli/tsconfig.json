@@ -12,7 +12,8 @@
 		"emitDecoratorMetadata": true,
 		"pretty": true,
 		"baseUrl": "./src",
-		"rootDir": "./src"
+		"rootDir": "./src",
+		"watch": true
 	},
 	"compileOnSave": false,
 	"filesGlob": [
