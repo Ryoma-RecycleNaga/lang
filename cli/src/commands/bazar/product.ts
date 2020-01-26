@@ -110,7 +110,11 @@ export const register = (cli: CLI.Argv) => {
 
         const products_description = utils.substitute(fragments.product, fragments);
 
+        if(!existsSync(path.resolve(`${product_path}/bazar/out/`))){
+            dir(path.resolve(`${product_path}/bazar/out/`));
+        }
         const out_path = path.resolve(`${product_path}/bazar/out/product.html`);
+        
         isDebug && debug.info(`Write product description ${out_path} ${fragments.product}`);
         write(out_path, products_description);
 
