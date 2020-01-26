@@ -25,7 +25,9 @@ This will create an HTML file in ```products/elena/bazar/out/product.html```
 
 ### Example folder structure
 
-There is a ready to folder in [example](./example/products) :
+There is a ready to folder in [./example](./example/products) but please also check [our version](https://github.com/plastic-hub/products) which we currently use for our products ([see new bazar example here](https://newbazar.preciousplastic.com/index.php?dispatch=products.view&product_id=99) ).
+
+__example__ :
 - __bazar__ (global templates and configuration)
   - [config.json](example/products/bazar/config.json) (global vendor variables being using in templates)
   - __fragments__ (templates)
