@@ -1,4 +1,24 @@
-# playground
+# Precious Plastic Command Line Tools
+
+## Requirments
+
+- Please install [NodeJS](https://nodejs.org/en/download/)
+
+## Optional requirements
+
+- [GhostScript]() (needed for converting PDF to JPG)
+- [Imagick](https://imagemagick.org/script/download.php) (needed for resizing images)
+- [PP Open Factory ](https://github.com/plastic-hub/factory) (needed for templates)
+- [Your product folder](https://github.com/plastic-hub/products) (needed to generate documentation and creating Bazar descriptions)
+
+
+<hr/>
+
+
+## Commands
+
+
+
 
 ### NPM Commands 
 
