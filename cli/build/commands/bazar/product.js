@@ -22,22 +22,43 @@ const defaultOptions = (yargs) => {
     return yargs.option('product', {
         default: 'elena',
         describe: 'name of the product which matches the folder name inside the products folder'
+    }).option('products', {
+        default: './',
+        describe: 'location of the products folder which contains the \'bazar\' and \'products\' folders'
+    }).option('format', {
+        default: 'html',
+        describe: 'selects the output format, can be \'html\' or \'md\''
     }).option('debug', {
         default: 'false',
         describe: 'Enable internal debug message'
     });
 };
 let options = (yargs) => defaultOptions(yargs);
+const files = (dir, glob) => fg.sync(glob, { dot: true, cwd: dir, absolute: true });
+const readContent = (path, markdown) => {
+    const content = read_1.sync(path, 'string');
+    if (markdown) {
+        let converter = new showdown_1.Converter();
+        converter.setOption('literalMidWordUnderscores', 'true');
+        return converter.makeHtml(content);
+    }
+    else {
+        return content;
+    }
+};
 // npm run build ; node ./build/main.js bazar-product-html --product=elena
 exports.register = (cli) => {
     return cli.command('bazar-product-html', 'Creates Bazar HTML description', options, (argv) => __awaiter(void 0, void 0, void 0, function* () {
         if (argv.help) {
             return;
         }
+        const format = argv.format || 'html';
+        const markdown = format === 'md';
+        const isDebug = argv.debug === 'true';
         const config = read_1.sync(path.resolve('./config.json'), 'json');
         const product_path = path.resolve(`${config.products_path}/${argv.product}`);
         const bazar_fragments_path = path.resolve(`${config.fragments_path}`);
-        debug.info(`\n Generate product description for ${argv.product}, reading from ${product_path},
+        isDebug && debug.info(`\n Generate product description for ${argv.product}, reading from ${product_path},
             using bazar fragments at ${bazar_fragments_path}`);
         if (!fs_1.existsSync(product_path)) {
             debug.error(`\t Cant find product at ${product_path}, path doesn't exists`);
@@ -45,16 +66,12 @@ exports.register = (cli) => {
         }
         let fragments = Object.assign({}, config);
         // read all vendor specific fragments
-        let bazar_fragment_files = fg.sync('*.html', { dot: true, cwd: bazar_fragments_path, absolute: true });
+        let bazar_fragment_files = files(bazar_fragments_path, '*.html');
         bazar_fragment_files.map((f) => {
             fragments[path.parse(f).name] = read_1.sync(f, 'string');
         });
-        bazar_fragment_files = fg.sync('*.md', { dot: true, cwd: bazar_fragments_path, absolute: true });
-        bazar_fragment_files.map((f) => {
-            let converter = new showdown_1.Converter();
-            converter.setOption('literalMidWordUnderscores', 'true');
-            fragments[path.parse(f).name] = converter.makeHtml(read_1.sync(f, 'string'));
-        });
+        bazar_fragment_files = files(bazar_fragments_path, '*.md');
+        bazar_fragment_files.map((f) => { fragments[path.parse(f).name] = readContent(f, markdown); });
         // read all product specific fragments
         const product_fragments_path = path.resolve(`${product_path}/bazar/fragments`);
         if (!fs_1.existsSync(product_fragments_path)) {
@@ -62,18 +79,12 @@ exports.register = (cli) => {
             return;
         }
         else {
-            debug.info(`read product fragments at ${product_fragments_path}`);
+            isDebug && debug.info(`read product fragments at ${product_fragments_path}`);
         }
-        let products_fragment_files = fg.sync('*.html', { dot: true, cwd: product_fragments_path, absolute: true });
-        products_fragment_files.map((f) => {
-            fragments[path.parse(f).name] = read_1.sync(f, 'string');
-        });
-        products_fragment_files = fg.sync('*.md', { dot: true, cwd: product_fragments_path, absolute: true });
-        products_fragment_files.map((f) => {
-            let converter = new showdown_1.Converter();
-            converter.setOption('literalMidWordUnderscores', 'true');
-            fragments[path.parse(f).name] = converter.makeHtml(read_1.sync(f, 'string'));
-        });
+        let products_fragment_files = files(product_fragments_path, '*.html');
+        products_fragment_files.map((f) => { fragments[path.parse(f).name] = readContent(f, markdown); });
+        products_fragment_files = files(product_fragments_path, '*.md');
+        products_fragment_files.map((f) => { fragments[path.parse(f).name] = readContent(f, markdown); });
         // read product variables
         if (!fs_1.existsSync(path.resolve(`${product_path}/config.json`))) {
             debug.warn('product has no config');
