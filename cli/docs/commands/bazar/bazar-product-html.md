@@ -1,21 +1,24 @@
 # Command 'bazar-product-html'
 
-This command will compose HTML to be used in the Precious-Plastic Bazar.
+This command will compose HTML out of HTML & Markdown files to be used in the Precious-Plastic Bazar.
 
+
+## Install
+
+1. Install [NodeJS](https://nodejs.org/en/download/)
+2. run ```npm i -g @plastichub/cli```
 
 ## Usage
 ```sh
 
 ph-cli bazar-product-html -config=products/config.json --product=elena
-
 ```
+
 or if you are already in your products folder, just use
 
 ```sh
 ph-cli bazar-product-html --product=elena
 ```
-
-
 
 This will create an HTML file in ```products/elena/bazar/out/product.html```
 
