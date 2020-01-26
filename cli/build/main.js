@@ -20,6 +20,8 @@ const bom_1 = require("./commands/v4/bom");
 bom_1.register(cli);
 const product_1 = require("./commands/bazar/product");
 product_1.register(cli);
+const vendor_1 = require("./commands/bazar/vendor");
+vendor_1.register(cli);
 const argv = cli.argv;
 if (argv.h || argv.help) {
     cli.showHelp();
