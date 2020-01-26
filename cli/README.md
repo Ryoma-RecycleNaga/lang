@@ -14,10 +14,9 @@
 
 <hr/>
 
-
 ## Commands
 
-
+### [bazar-product-html](./docs/commands/bazar)
 
 
 ### NPM Commands 
