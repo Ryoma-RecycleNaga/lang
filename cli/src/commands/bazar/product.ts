@@ -53,9 +53,16 @@ export const register = (cli: CLI.Argv) => {
         })
 
         // read all product specific fragments
-        const products_fragment_files = fg.sync('*.html', { dot: true, cwd: path.resolve(`${product_path}/bazar/fragments`), absolute: true }) as [];
+        let products_fragment_files = fg.sync('*.html', { dot: true, cwd: path.resolve(`${product_path}/bazar/fragments`), absolute: true }) as [];
         products_fragment_files.map((f) => {
             fragments[path.parse(f).name] = read(f, 'string') as string;
+        });
+        
+        products_fragment_files = fg.sync('*.md', { dot: true, cwd: path.resolve(`${product_path}/bazar/fragments`), absolute: true }) as [];
+        products_fragment_files.map((f) => {
+            let converter = new Converter();
+            converter.setOption('literalMidWordUnderscores', 'true');
+            fragments[path.parse(f).name] =converter.makeHtml(read(f, 'string') as string);
         })
 
 
@@ -79,7 +86,7 @@ export const register = (cli: CLI.Argv) => {
         debug.info(`Write product description ${out_path} `);
         write(out_path, products_description);
 
-        // debug.debug("bazar fragments", fragments);
+        debug.debug("bazar fragments", fragments);
         debug.debug("bazar fragments", products_description);
 
     });

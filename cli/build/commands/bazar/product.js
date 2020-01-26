@@ -14,6 +14,7 @@ const utils = require("../../lib/common/strings");
 const path = require("path");
 const read_1 = require("@xblox/fs/read");
 const write_1 = require("@xblox/fs/write");
+const showdown_1 = require("showdown");
 const fg = require('fast-glob');
 const fs_1 = require("fs");
 // reads google sheet to convert BOMs to production parts
@@ -49,9 +50,15 @@ exports.register = (cli) => {
             fragments[path.parse(f).name] = read_1.sync(f, 'string');
         });
         // read all product specific fragments
-        const products_fragment_files = fg.sync('*.html', { dot: true, cwd: path.resolve(`${product_path}/bazar/fragments`), absolute: true });
+        let products_fragment_files = fg.sync('*.html', { dot: true, cwd: path.resolve(`${product_path}/bazar/fragments`), absolute: true });
         products_fragment_files.map((f) => {
             fragments[path.parse(f).name] = read_1.sync(f, 'string');
+        });
+        products_fragment_files = fg.sync('*.md', { dot: true, cwd: path.resolve(`${product_path}/bazar/fragments`), absolute: true });
+        products_fragment_files.map((f) => {
+            let converter = new showdown_1.Converter();
+            converter.setOption('literalMidWordUnderscores', 'true');
+            fragments[path.parse(f).name] = converter.makeHtml(read_1.sync(f, 'string'));
         });
         // read product variables
         if (!fs_1.existsSync(path.resolve(`${product_path}/config.json`))) {
@@ -71,7 +78,7 @@ exports.register = (cli) => {
         const out_path = path.resolve(`${product_path}/bazar/out/product.html`);
         debug.info(`Write product description ${out_path} `);
         write_1.sync(out_path, products_description);
-        // debug.debug("bazar fragments", fragments);
+        debug.debug("bazar fragments", fragments);
         debug.debug("bazar fragments", products_description);
     }));
 };
