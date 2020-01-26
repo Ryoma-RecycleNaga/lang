@@ -22,6 +22,29 @@ ph-cli bazar-product-html --product=elena
 
 This will create an HTML file in ```products/elena/bazar/out/product.html```
 
+
+### Example folder structure
+
+There is a ready to folder in [example](./example/products) :
+- __bazar__ (global templates and configuration)
+  - [config.json](example/products/bazar/config.json) (global vendor variables being using in templates)
+  - __fragments__ (templates)
+    - [breadcrumb.md](example/products/bazar/fragments/breadcrumb.md) (a breadcrumb for the header of a product)
+    - [product.html](example/products/bazar/fragments/product.html) (root template for a *product*)
+    - [vendor\_links.html](example/products/bazar/fragments/vendor_links.html) (fragment containing links to vendor, eg: instagram)
+- __products__
+  - __elena__ (the product)
+    - __bazar__ (bazar related files, this must be there )
+      - __fragments__ (bazar templates)
+        - [body.html](example/products/products/elena/bazar/fragments/body.html) (the actual description)
+        - [footer.md](example/products/products/elena/bazar/fragments/footer.md) (the footer for the product)
+      - __out__
+        - [product.html](example/products/products/elena/bazar/out/product.html) (th final file)
+    - [config.json](example/products/products/elena/config.json) (product related variables being used in the template)
+    - __media__
+      - [mold\_jack.jpg](example/products/products/elena/media/mold_jack.jpg)
+
+
 ### How does this work?
 
 It loads templates or 'fragments' from various locations.
