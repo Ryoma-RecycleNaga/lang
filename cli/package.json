@@ -1,6 +1,6 @@
 {
   "name": "@plastichub/cli",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "",
   "main": "./build/main.js",
   "scripts": {
@@ -13,7 +13,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/tx4x/playground.git"
+    "url": "git+https://github.com/plastic-hub/lang.git"
   },
   "author": "",
   "bin": {
@@ -21,9 +21,9 @@
   },
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/tx4x/playground/issues"
+    "url": "https://github.com/plastic-hub/lang/issues"
   },
-  "homepage": "https://github.com/tx4x/playground#readme",
+  "homepage": "https://github.com/plastic-hub/lang#readme",
   "dependencies": {
     "@types/bluebird": "^3.5.29",
     "@types/chalk": "^2.2.0",
