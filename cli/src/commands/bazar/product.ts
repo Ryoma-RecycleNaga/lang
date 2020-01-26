@@ -17,6 +17,12 @@ const defaultOptions = (yargs: CLI.Argv) => {
     return yargs.option('product', {
         default: 'elena',
         describe: 'name of the product which matches the folder name inside the products folder'
+    }).option('products', {
+        default: './',
+        describe: 'location of the products folder which contains the \'bazar\' and \'products\' folders'
+    }).option('format', {
+        default: 'html',
+        describe: 'selects the output format, can be \'html\' or \'md\''
     }).option('debug', {
         default: 'false',
         describe: 'Enable internal debug message'
@@ -25,10 +31,28 @@ const defaultOptions = (yargs: CLI.Argv) => {
 
 let options = (yargs: CLI.Argv) => defaultOptions(yargs);
 
+const files = (dir, glob) => fg.sync(glob, { dot: true, cwd: dir, absolute: true }) as [];
+
+const readContent = (path, markdown) => {
+    const content = read(path, 'string') as string;
+    if (markdown) {
+        let converter = new Converter();
+        converter.setOption('literalMidWordUnderscores', 'true');
+        return converter.makeHtml(content);
+    } else {
+        return content;
+    }
+}
+
 // npm run build ; node ./build/main.js bazar-product-html --product=elena
 export const register = (cli: CLI.Argv) => {
     return cli.command('bazar-product-html', 'Creates Bazar HTML description', options, async (argv: CLI.Arguments) => {
         if (argv.help) { return; }
+
+
+        const format = argv.format || 'html'; const markdown = format === 'md';
+
+        const isDebug = argv.debug === 'true';
 
         const config = read(path.resolve('./config.json'), 'json') as any;
 
@@ -36,7 +60,7 @@ export const register = (cli: CLI.Argv) => {
 
         const bazar_fragments_path = path.resolve(`${config.fragments_path}`);
 
-        debug.info(`\n Generate product description for ${argv.product}, reading from ${product_path},
+        isDebug && debug.info(`\n Generate product description for ${argv.product}, reading from ${product_path},
             using bazar fragments at ${bazar_fragments_path}`);
 
         if (!existsSync(product_path)) {
@@ -47,18 +71,13 @@ export const register = (cli: CLI.Argv) => {
         let fragments: any = { ...config };
 
         // read all vendor specific fragments
-        let bazar_fragment_files = fg.sync('*.html', { dot: true, cwd: bazar_fragments_path, absolute: true }) as [];
+        let bazar_fragment_files = files(bazar_fragments_path, '*.html');
         bazar_fragment_files.map((f) => {
             fragments[path.parse(f).name] = read(f, 'string') as string;
         })
 
-        bazar_fragment_files = fg.sync('*.md', { dot: true, cwd: bazar_fragments_path, absolute: true }) as [];
-        bazar_fragment_files.map((f) => {
-            let converter = new Converter();
-            converter.setOption('literalMidWordUnderscores', 'true');
-            fragments[path.parse(f).name] = converter.makeHtml(read(f, 'string') as string);
-        })
-
+        bazar_fragment_files = files(bazar_fragments_path, '*.md');
+        bazar_fragment_files.map((f) => { fragments[path.parse(f).name] = readContent(f, markdown) })
 
         // read all product specific fragments
         const product_fragments_path = path.resolve(`${product_path}/bazar/fragments`);
@@ -66,20 +85,14 @@ export const register = (cli: CLI.Argv) => {
             debug.error(`Product has no bazar fragment files`);
             return;
         } else {
-            debug.info(`read product fragments at ${product_fragments_path}`);
+            isDebug && debug.info(`read product fragments at ${product_fragments_path}`);
         }
 
-        let products_fragment_files = fg.sync('*.html', { dot: true, cwd: product_fragments_path, absolute: true }) as [];
-        products_fragment_files.map((f) => {
-            fragments[path.parse(f).name] = read(f, 'string') as string;
-        });
+        let products_fragment_files = files(product_fragments_path, '*.html');
+        products_fragment_files.map((f) => { fragments[path.parse(f).name] = readContent(f, markdown) });
 
-        products_fragment_files = fg.sync('*.md', { dot: true, cwd: product_fragments_path, absolute: true }) as [];
-        products_fragment_files.map((f) => {
-            let converter = new Converter();
-            converter.setOption('literalMidWordUnderscores', 'true');
-            fragments[path.parse(f).name] = converter.makeHtml(read(f, 'string') as string);
-        })
+        products_fragment_files = files(product_fragments_path, '*.md');
+        products_fragment_files.map((f) => { fragments[path.parse(f).name] = readContent(f, markdown) })
 
 
         // read product variables
@@ -91,16 +104,16 @@ export const register = (cli: CLI.Argv) => {
 
         debug.debug("bazar fragments", fragments);
         for (const key in fragments) {
-            if(key ==='product'){
+            if (key === 'product') {
                 continue;
             }
-            const resolved = utils.substitute(fragments[key],fragments);
-            fragments[key]= resolved;
+            const resolved = utils.substitute(fragments[key], fragments);
+            fragments[key] = resolved;
             debug.info(`resolve ${key} to ${resolved}`);
         }
 
         // compile and write out
-        const products_description = utils.substitute(fragments.product,fragments);
+        const products_description = utils.substitute(fragments.product, fragments);
 
         const out_path = path.resolve(`${product_path}/bazar/out/product.html`);
         debug.info(`Write product description ${out_path} ${fragments.product}`);
