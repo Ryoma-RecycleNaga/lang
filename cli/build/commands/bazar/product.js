@@ -21,9 +21,6 @@ const defaultOptions = (yargs) => {
     return yargs.option('product', {
         default: 'elena',
         describe: 'name of the product which matches the folder name inside the products folder'
-    }).option('output', {
-        default: './products/',
-        describe: 'The output'
     }).option('debug', {
         default: 'false',
         describe: 'Enable internal debug message'
