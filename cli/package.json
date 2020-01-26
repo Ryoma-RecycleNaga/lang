@@ -1,11 +1,8 @@
 {
-  "name": "analyze-site",
-  "version": "1.0.0",
+  "name": "@plastichub/cli",
+  "version": "1.0.1",
   "description": "",
   "main": "./build/main.js",
-  "bin": {
-    "analyze-site": "./build/main.js"
-  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "ts-node-dev --debug src/main.ts",
@@ -19,6 +16,9 @@
     "url": "git+https://github.com/tx4x/playground.git"
   },
   "author": "",
+  "bin": {
+    "ph-cli": "build/main.js"
+  },
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/tx4x/playground/issues"
