@@ -103,7 +103,7 @@ exports.register = (cli) => {
             dir_1.sync(path.resolve(`${product_path}/bazar/out/`));
             isDebug && debug.info('created bazar/out folder in product!');
         }
-        const out_path = path.resolve(`${product_path}/bazar/out/product.html`);
+        let out_path = path.resolve(`${product_path}/bazar/out/product.html`);
         isDebug && debug.info(`Write product description ${out_path}`);
         write_1.sync(out_path, products_description);
         // isDebug && debug.debug("bazar fragments", fragments);
