@@ -24,7 +24,7 @@ const defaultOptions = (yargs: CLI.Argv) => {
         default: 'html',
         describe: 'selects the output format, can be \'html\' or \'md\''
     }).option('debug', {
-        default: 'false',
+        default: 'true',
         describe: 'Enable internal debug message'
     })
 };
@@ -35,7 +35,7 @@ const files = (dir, glob) => fg.sync(glob, { dot: true, cwd: dir, absolute: true
 
 const readContent = (path, markdown) => {
     const content = read(path, 'string') as string;
-    if (markdown) {
+    if (!markdown) {
         let converter = new Converter();
         converter.setOption('literalMidWordUnderscores', 'true');
         return converter.makeHtml(content);
@@ -44,7 +44,7 @@ const readContent = (path, markdown) => {
     }
 }
 
-// npm run build ; node ./build/main.js bazar-product-html --product=elena
+// npm run build ; node ./build/main.js --debug=true --products=../../products --product=elena
 export const register = (cli: CLI.Argv) => {
     return cli.command('bazar-product-html', 'Creates Bazar HTML description', options, async (argv: CLI.Arguments) => {
         if (argv.help) { return; }
@@ -55,8 +55,8 @@ export const register = (cli: CLI.Argv) => {
 
         const config = read(argv.products ? path.resolve(`${argv.products}/bazar/config.json`) : path.resolve('./config.json'), 'json') as any;
 
-        const product_path = path.resolve(`${argv.products || config.products_path}/${argv.product}`);
-
+        const product_path = path.resolve(`${argv.products || config.products_path}/products/${argv.product}`);
+        
         const bazar_fragments_path = path.resolve(`${config.fragments_path}`);
 
         isDebug && debug.info(`\n Generate product description for ${argv.product}, reading from ${product_path},
@@ -116,9 +116,9 @@ export const register = (cli: CLI.Argv) => {
         }
         const out_path = path.resolve(`${product_path}/bazar/out/product.html`);
         
-        isDebug && debug.info(`Write product description ${out_path} ${fragments.product}`);
+        isDebug && debug.info(`Write product description ${out_path}`);
         write(out_path, products_description);
 
-        isDebug && debug.debug("bazar fragments", fragments);
+        // isDebug && debug.debug("bazar fragments", fragments);
     });
 };

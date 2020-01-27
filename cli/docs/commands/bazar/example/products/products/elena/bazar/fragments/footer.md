@@ -1,1 +1,1 @@
-[diagrams](www.google.de)
+${social}

@@ -30,7 +30,7 @@ const defaultOptions = (yargs) => {
         default: 'html',
         describe: 'selects the output format, can be \'html\' or \'md\''
     }).option('debug', {
-        default: 'false',
+        default: 'true',
         describe: 'Enable internal debug message'
     });
 };
@@ -38,7 +38,7 @@ let options = (yargs) => defaultOptions(yargs);
 const files = (dir, glob) => fg.sync(glob, { dot: true, cwd: dir, absolute: true });
 const readContent = (path, markdown) => {
     const content = read_1.sync(path, 'string');
-    if (markdown) {
+    if (!markdown) {
         let converter = new showdown_1.Converter();
         converter.setOption('literalMidWordUnderscores', 'true');
         return converter.makeHtml(content);
@@ -47,7 +47,7 @@ const readContent = (path, markdown) => {
         return content;
     }
 };
-// npm run build ; node ./build/main.js bazar-product-html --product=elena
+// npm run build ; node ./build/main.js --debug=true --products=../../products --product=elena
 exports.register = (cli) => {
     return cli.command('bazar-product-html', 'Creates Bazar HTML description', options, (argv) => __awaiter(void 0, void 0, void 0, function* () {
         if (argv.help) {
@@ -57,7 +57,7 @@ exports.register = (cli) => {
         const markdown = format === 'md';
         const isDebug = argv.debug === 'true';
         const config = read_1.sync(argv.products ? path.resolve(`${argv.products}/bazar/config.json`) : path.resolve('./config.json'), 'json');
-        const product_path = path.resolve(`${argv.products || config.products_path}/${argv.product}`);
+        const product_path = path.resolve(`${argv.products || config.products_path}/products/${argv.product}`);
         const bazar_fragments_path = path.resolve(`${config.fragments_path}`);
         isDebug && debug.info(`\n Generate product description for ${argv.product}, reading from ${product_path},
             using bazar fragments at ${bazar_fragments_path}`);
@@ -104,9 +104,9 @@ exports.register = (cli) => {
             isDebug && debug.info('created bazar/out folder in product!');
         }
         const out_path = path.resolve(`${product_path}/bazar/out/product.html`);
-        isDebug && debug.info(`Write product description ${out_path} ${fragments.product}`);
+        isDebug && debug.info(`Write product description ${out_path}`);
         write_1.sync(out_path, products_description);
-        isDebug && debug.debug("bazar fragments", fragments);
+        // isDebug && debug.debug("bazar fragments", fragments);
     }));
 };
 //# sourceMappingURL=product.js.map
