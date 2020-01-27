@@ -6,9 +6,9 @@
 
 ## Optional requirements
 
-- [GhostScript]() (needed for converting PDF to JPG)
+- [GhostScript](https://www.ghostscript.com/download/gsdnld.html) (needed for converting PDF to JPG)
 - [Imagick](https://imagemagick.org/script/download.php) (needed for resizing images)
-- [PP Open Factory ](https://github.com/plastic-hub/factory) (needed for templates)
+- [PP Open Factory](https://github.com/plastic-hub/factory) (needed for templates)
 - [Your product folder](https://github.com/plastic-hub/products) (needed to generate documentation and creating Bazar descriptions)
 
 <hr/>
@@ -34,6 +34,10 @@
 - collect machine issues (pros / cons)
 - link common academy/how-to material
 - resize pictures in {my_product/media} (bazar wont) -> see common naming (@2x,...)
+- add related machines
+- add related projects
+- add reviews
+
 
 ### NPM Commands
 
