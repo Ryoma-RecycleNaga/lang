@@ -38,6 +38,13 @@
 - add related projects
 - add reviews
 
+### Infrastructure
+
+- cs-cart docker image for previews via API
+- github issue collector
+- onarmy crawler (->manuals,..)
+- academy converter
+
 
 ### NPM Commands
 
