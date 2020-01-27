@@ -44,6 +44,7 @@
 - github issue collector
 - onarmy crawler (->manuals,..)
 - academy converter
+- video converter & publisher for assembly animations (mark snapshots for manuals)
 
 
 ### NPM Commands
