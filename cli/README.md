@@ -33,8 +33,9 @@
 - wrap links in colored containers (bazar bug)
 - collect machine issues (pros / cons)
 - link common academy/how-to material
+- resize pictures in {my_product/media} (bazar wont) -> see common naming (@2x,...)
 
-### NPM Commands 
+### NPM Commands
 
 *watch*     : ```yarn dev```
 
@@ -49,20 +50,3 @@
 
 ### See specific command parameters
     ./build/main.js summary --help
-
-### Run summary with defaults
-    ./build/main.js summary
-
-
-## TODOS:
-
-- encapsulate trace items into artefacts, ie: network request, paint, cpu,...
-- distribute report items via injectable iterators
-- calculate timings
-- introduce pretty format
-- add HTML reporter
-- ... a couple of other thousand things
-- new commands: repl
-- new option: session time, auto-reload (diff-reports based on reload interval)
-- new interfaces: as service, blessed (to see diffs)
-
