@@ -29,7 +29,11 @@ const defaultOptions = (yargs) => {
     }).option('format', {
         default: 'html',
         describe: 'selects the output format, can be \'html\' or \'md\''
-    }).option('debug', {
+    }).option('old', {
+        default: 'false',
+        describe: 'output markdown for the old bazar'
+    })
+        .option('debug', {
         default: 'true',
         describe: 'Enable internal debug message'
     });
