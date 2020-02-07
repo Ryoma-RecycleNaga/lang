@@ -12,6 +12,7 @@ import { register as registerV4Bom } from './commands/v4/bom'; registerV4Bom(cli
 import { register as registerBazarProduct } from './commands/bazar/product'; registerBazarProduct(cli);
 import { register as registerBazarVendor } from './commands/bazar/vendor'; registerBazarVendor(cli);
 import { register as registerLibrary } from './commands/library'; registerLibrary(cli);
+import { register as registerSanitize } from './commands/common/sanitize-filename'; registerSanitize(cli);
 
 const argv = cli.argv;
 

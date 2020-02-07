@@ -22,6 +22,10 @@ const product_1 = require("./commands/bazar/product");
 product_1.register(cli);
 const vendor_1 = require("./commands/bazar/vendor");
 vendor_1.register(cli);
+const library_1 = require("./commands/library");
+library_1.register(cli);
+const sanitize_filename_1 = require("./commands/common/sanitize-filename");
+sanitize_filename_1.register(cli);
 const argv = cli.argv;
 if (argv.h || argv.help) {
     cli.showHelp();
