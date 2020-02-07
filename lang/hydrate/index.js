@@ -1900,7 +1900,7 @@ class AppProfile {
     }
     render() {
         if (this.match && this.match.params.name) {
-            return (h("div", { class: "app-profile" }, h("p", null, "Hello! My name is ", this.normalize(this.match.params.name), ". My name was passed in through a route param!", h("content-page", null, "inside content", h("br", null)))));
+            return (h("div", { class: "app-profile" }, h("p", null, h("content-page", null, "inside content", h("br", null)))));
         }
     }
     static get cmpMeta() { return {
@@ -2008,7 +2008,8 @@ class Page {
         registerInstance(this, hostRef);
     }
     render() {
-        return (h(Host, null, h("p", null), h("p", null, h("strong", null, "Parent"), " : my parent 2"), h("p", null, h("strong", null, "Name"), " : Front Shield | ", h("a", { href: "/?," }, "Edit")), h("p", null, h("strong", null, "Version"), " : 1 | 1 2"), h("p", null, h("strong", null, "ID"), " : Z_4_FRONT_SHIELD | ", h("a", { href: "" }, "Inventory")), h("p", null, h("strong", null, "Drawing"), " : ", h("a", { href: "https://a360.co/37pDdVD" }, "Fusion360 public link")), h("p", null, h("strong", null, "Preview")), h("p", null, h("img", { width: "20%", src: "" })), h("hr", null), h("p", null, h("strong", null, "Comaptible with"), " : "), h("p", null, h("strong", null, "Capabilities"), " : "), h("hr", null), h("p", null, h("strong", null, "Assembly"), " : ", h("a", { href: "" }, "Fusion360 public link")), h("p", null, h("strong", null, "Tools")), h("p", null, h("pp-tools", null, h("div", null, "tools - data "))), h("p", null, h("strong", null, "Templates / Gauges")), h("p", null, h("pp-templates", null)), h("p", null, h("pp-templates", null)), h("p", null, h("strong", null, "Stock")), h("p", null, h("pp-stock", null)), h("p", null), h("p", null, h("strong", null, "Machines")), h("p", null, h("pp-machines", null)), h("p", null), h("hr", null), h("p", null, h("strong", null, "Steps"), " :"), h("p", null, h("pp-steps", null)), h("p", null), h("p", null)));
+        // const form = 2 * 2;
+        return (h(Host, null, "inside:", h("pp-tools", { val: "ppvalval" }, "pp-toolsss")));
     }
     static get cmpMeta() { return {
         "$flags$": 9,
@@ -3756,14 +3757,16 @@ class Tools {
         registerInstance(this, hostRef);
     }
     render() {
-        return (h(Host, null, h("ul", { class: "pp-tools-container" }, Array.from(this.host.children)
+        return (h(Host, null, "pp-tools : ", this.val, h("ul", { class: "pp-tools-container" }, Array.from(this.host.children)
             .map(child => h("li", { innerHTML: child.outerHTML })))));
     }
     get host() { return getElement(this); }
     static get cmpMeta() { return {
         "$flags$": 9,
         "$tagName$": "pp-tools",
-        "$members$": undefined,
+        "$members$": {
+            "val": [1]
+        },
         "$listeners$": undefined,
         "$lazyBundleIds$": "-",
         "$attrsToReflect$": []

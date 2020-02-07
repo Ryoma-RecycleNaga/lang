@@ -18,7 +18,9 @@ export namespace Components {
   }
   interface AppRoot {}
   interface ContentPage {}
-  interface PpTools {}
+  interface PpTools {
+    'val': string;
+  }
 }
 
 declare global {
@@ -69,7 +71,9 @@ declare namespace LocalJSX {
   }
   interface AppRoot {}
   interface ContentPage {}
-  interface PpTools {}
+  interface PpTools {
+    'val'?: string;
+  }
 
   interface IntrinsicElements {
     'app-home': AppHome;

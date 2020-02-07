@@ -21,9 +21,9 @@ export class AppProfile {
       return (
         <div class="app-profile">
           <p>
-            Hello! My name is {this.normalize(this.match.params.name)}. My name was passed in
-            through a route param!
+           
             <content-page>inside content<br/></content-page>
+            
           </p>
         </div>
       );

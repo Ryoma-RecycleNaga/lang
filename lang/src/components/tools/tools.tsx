@@ -1,4 +1,4 @@
-import { Component, Element, Host, h } from '@stencil/core';
+import { Component, Element, Prop, Host, h } from '@stencil/core';
 
 @Component({
   tag: 'pp-tools',
@@ -7,9 +7,12 @@ import { Component, Element, Host, h } from '@stencil/core';
 })
 export class Tools {
   @Element() host: HTMLDivElement;
+  @Prop() val:string;
   render() {
+    
     return (
       <Host>
+        pp-tools : {this.val}
         <ul class="pp-tools-container">
           {Array.from(this.host.children)
             .map(child =>
