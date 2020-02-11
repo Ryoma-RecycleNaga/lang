@@ -23,7 +23,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const Apify = require('apify');
 // https://davehakkens.nl/community/forums/topic/arbor-press-v14/
 // post with pics & videos : https://davehakkens.nl/community/forums/topic/launching-kickstarter-campaign-rwristwatches/
-function crawler(url = 'https://davehakkens.nl/community/forums/topic/launching-kickstarter-campaign-rwristwatches/') {
+function crawler(url = 'https://davehakkens.nl/community/forums/topic/the-big-electronics-topic/') {
     return __awaiter(this, void 0, void 0, function* () {
         // Apify.openRequestQueue() is a factory to get a preconfigured RequestQueue instance.
         // We add our first request to it - the initial page the crawler will visit.
@@ -80,12 +80,42 @@ function crawler(url = 'https://davehakkens.nl/community/forums/topic/launching-
                         postBody = $('#bbpress-forums > div.topic-lead > div.content').html();
                         const likes = parseInt(jQuery('#bbpress-forums > div.topic-lead > div.actions > div > div.dav_topic_like')[0].innerText.split(' ')[0]);
                         const saved = parseInt(jQuery('#bbpress-forums > div.topic-lead > div.actions > div > div.dav_topic_favorit > span')[0].innerText.split(' ')[0]);
-                        const replies = parseInt(jQuery('#bbpress-forums > div.topic-lead > div.actions > div > div.dav_reply_topic > span')[0].innerText.split(' ')[0]);
+                        const nbReplies = parseInt(jQuery('#bbpress-forums > div.topic-lead > div.actions > div > div.dav_reply_topic > span')[0].innerText.split(' ')[0]);
                         const pics = [];
                         jQuery('.d4p-bbp-attachment > a').each((i, a) => {
                             pics.push(jQuery(a).attr('href').replace('?ssl=1', ''));
                         });
                         console.log('page function');
+                        const replies = [];
+                        jQuery('#bbpress-forums > div.list-replies-container > div.list-replies > div.topic-reply').each((i, e) => {
+                            try {
+                                const authorLogo = jQuery('.author > a > img').attr('srcset').replace(' 2x');
+                                const authorName = jQuery('.content .replyheader .smallusername', e)[0].innerText || 'anonymous';
+                                const replyDate = jQuery('.content .replyheader .reply-date', e)[0].innerText;
+                                const nbLikes = parseInt(jQuery('.content > div.wpulike.wpulike-heart > div > span', e)[0].innerText) || 0;
+                                jQuery('.content > div.wpulike.wpulike-heart', e).remove();
+                                jQuery('.content .replyheader', e).remove();
+                                let replyBody = jQuery('.content', e).html();
+                                const replyPics = [];
+                                jQuery('.d4p-bbp-attachment > a', e).each((i, a) => {
+                                    replyPics.push(jQuery(a).attr('href').replace('?ssl=1', ''));
+                                });
+                                jQuery('.content .bbp-attachments', e).remove();
+                                replyBody = jQuery('.content', e).html();
+                                replies.push({
+                                    authorLogo,
+                                    authorName,
+                                    replyDate,
+                                    nbLikes,
+                                    replyBody,
+                                    replyPics
+                                });
+                            }
+                            catch (e) {
+                                console.error('mah', e);
+                                debugger;
+                            }
+                        });
                         debugger;
                         /*
         
