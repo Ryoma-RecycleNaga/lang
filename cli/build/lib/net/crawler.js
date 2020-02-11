@@ -76,18 +76,8 @@ function crawler(url = 'https://davehakkens.nl/community/forums/topic/launching-
                             authorName = "fucking G";
                             authorLink = "ban G";
                         }
-                        try {
-                            postDate = $('#bbpress-forums > div.topic-lead > div.author > div.date')[0].innerText.split(' at')[0];
-                        }
-                        catch (e) {
-                            debugger;
-                        }
-                        try {
-                            postBody = $('#bbpress-forums > div.topic-lead > div.content').html();
-                        }
-                        catch (e) {
-                            debugger;
-                        }
+                        postDate = $('#bbpress-forums > div.topic-lead > div.author > div.date')[0].innerText.split(' at')[0];
+                        postBody = $('#bbpress-forums > div.topic-lead > div.content').html();
                         const likes = parseInt(jQuery('#bbpress-forums > div.topic-lead > div.actions > div > div.dav_topic_like')[0].innerText.split(' ')[0]);
                         const saved = parseInt(jQuery('#bbpress-forums > div.topic-lead > div.actions > div > div.dav_topic_favorit > span')[0].innerText.split(' ')[0]);
                         const replies = parseInt(jQuery('#bbpress-forums > div.topic-lead > div.actions > div > div.dav_reply_topic > span')[0].innerText.split(' ')[0]);
