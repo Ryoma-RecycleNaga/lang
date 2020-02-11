@@ -1,4 +1,14 @@
 "use strict";
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+Object.defineProperty(exports, "__esModule", { value: true });
 /**
  * This example demonstrates how to use [`PuppeteerCrawler`](../api/puppeteercrawler)
  * in combination with [`RequestQueue`](../api/requestqueue) to recursively scrape the
@@ -10,18 +20,10 @@
  * To run this example on the Apify Platform, select the `Node.js 10 + Chrome on Debian (apify/actor-node-chrome)` base image
  * on the source tab of your actor configuration.
  */
-var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
-    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
-    return new (P || (P = Promise))(function (resolve, reject) {
-        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
-        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
-        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
-        step((generator = generator.apply(thisArg, _arguments || [])).next());
-    });
-};
-Object.defineProperty(exports, "__esModule", { value: true });
 const Apify = require('apify');
-function crawler(url = 'https://community.preciousplastic.com/how-to') {
+// https://davehakkens.nl/community/forums/topic/arbor-press-v14/
+// post with pics & videos : https://davehakkens.nl/community/forums/topic/launching-kickstarter-campaign-rwristwatches/
+function crawler(url = 'https://davehakkens.nl/community/forums/topic/launching-kickstarter-campaign-rwristwatches/') {
     return __awaiter(this, void 0, void 0, function* () {
         // Apify.openRequestQueue() is a factory to get a preconfigured RequestQueue instance.
         // We add our first request to it - the initial page the crawler will visit.
@@ -35,10 +37,11 @@ function crawler(url = 'https://community.preciousplastic.com/how-to') {
             launchPuppeteerOptions: {
                 // For example, by adding "slowMo" you'll slow down Puppeteer operations to simplify debugging
                 slowMo: 500,
-                headless: false
+                headless: false,
+                devtools: true
             },
             // Stop crawling after several pages
-            maxRequestsPerCrawl: 10,
+            maxRequestsPerCrawl: 2,
             // This function will be called for each URL to crawl.
             // Here you can write the Puppeteer scripts you are familiar with,
             // with the exception that browsers and pages are automatically managed by the Apify SDK.
@@ -47,28 +50,73 @@ function crawler(url = 'https://community.preciousplastic.com/how-to') {
             // - page: Puppeteer's Page object (see https://pptr.dev/#show=api-class-page)
             handlePageFunction: ({ request, page }) => __awaiter(this, void 0, void 0, function* () {
                 console.log(`Processing ${request.url}...`);
-                /*
                 // A function to be evaluated by Puppeteer within the browser context.
-                const pageFunction = ($posts) => {
-                    const data = [];
-    
-                    // We're getting the title, rank and URL of each post on Hacker News.
-                    $posts.forEach(($post) => {
-                        data.push({
-                            title: $post.querySelector('.title a').innerText,
-                            rank: $post.querySelector('.rank').innerText,
-                            href: $post.querySelector('.title a').href,
+                const t = new Promise((resolve) => {
+                    const pageFunction = ($posts) => {
+                        const data = [];
+                        const $ = window['jQuery'];
+                        const jQuery = $;
+                        const otherReplies = $('.bbp-reply-topic-title');
+                        let title;
+                        let authorLink;
+                        let postDate;
+                        let postBody;
+                        let authorName;
+                        try {
+                            title = $('#bbpress-forums > div.topic-lead > div.author > h1')[0].innerText;
+                        }
+                        catch (e) {
+                            debugger;
+                        }
+                        try {
+                            authorLink = $('#bbpress-forums > div.topic-lead > div.author > a:nth-child(5)')[0];
+                            authorName = authorLink.innerText;
+                        }
+                        catch (e) {
+                            authorName = "fucking G";
+                            authorLink = "ban G";
+                        }
+                        try {
+                            postDate = $('#bbpress-forums > div.topic-lead > div.author > div.date')[0].innerText.split(' at')[0];
+                        }
+                        catch (e) {
+                            debugger;
+                        }
+                        try {
+                            postBody = $('#bbpress-forums > div.topic-lead > div.content').html();
+                        }
+                        catch (e) {
+                            debugger;
+                        }
+                        const likes = parseInt(jQuery('#bbpress-forums > div.topic-lead > div.actions > div > div.dav_topic_like')[0].innerText.split(' ')[0]);
+                        const saved = parseInt(jQuery('#bbpress-forums > div.topic-lead > div.actions > div > div.dav_topic_favorit > span')[0].innerText.split(' ')[0]);
+                        const replies = parseInt(jQuery('#bbpress-forums > div.topic-lead > div.actions > div > div.dav_reply_topic > span')[0].innerText.split(' ')[0]);
+                        const pics = [];
+                        jQuery('.d4p-bbp-attachment > a').each((i, a) => {
+                            pics.push(jQuery(a).attr('href').replace('?ssl=1', ''));
                         });
-                    });
-    
-                    return data;
-                };
-                const data = await page.$$eval('.athing', pageFunction);
-    
+                        console.log('page function');
+                        debugger;
+                        /*
+        
+                        // We're getting the title, rank and URL of each post on Hacker News.
+                        $posts.forEach(($post) => {
+                            data.push({
+                                title: $post.querySelector('.title a').innerText,
+                                rank: $post.querySelector('.rank').innerText,
+                                href: $post.querySelector('.title a').href,
+                            });
+                        });
+                        */
+                        return data;
+                    };
+                    page.$$eval('return window', pageFunction);
+                });
+                return t;
                 // Store the results to the default dataset.
-                await Apify.pushData(data);
-    
+                // await Apify.pushData(data);
                 // Find a link to the next page and enqueue it if it exists.
+                /*
                 const infos = await Apify.utils.enqueueLinks({
                     page,
                     requestQueue,
@@ -77,8 +125,7 @@ function crawler(url = 'https://community.preciousplastic.com/how-to') {
     
                 if (infos.length === 0) {
                     console.log(`${request.url} is the last page!`);
-                }
-                */
+                }*/
             }),
             // This function is called if the page processing failed more than maxRequestRetries+1 times.
             handleFailedRequestFunction: ({ request }) => __awaiter(this, void 0, void 0, function* () {
@@ -96,7 +143,6 @@ function crawler(url = 'https://community.preciousplastic.com/how-to') {
         });
         // Run the crawler and wait for it to finish.
         yield crawler.run();
-        console.log('Crawler finished.');
     });
 }
 exports.crawler = crawler;
