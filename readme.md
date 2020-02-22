@@ -18,5 +18,6 @@ This package contains
 | Google Sheets | | plaintext | CLI
 | Instagram & friends | | plaintext | CLI
 | Zoho Books, CRM,... || plaintext | CLI
+| Index | directory index thumb / link  | Markdown | CLI
 
 Ideally, each content provides fragments for each target.

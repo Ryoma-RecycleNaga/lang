@@ -300,6 +300,7 @@ In a template
 
 Implicit & inherited base attributes:
 
+- *view* : shorthand filter to make the node only visible for a certain compiler target
 - *widget* : widget class
 - *widgetOptions* : named widget options
 - *filter* : named filter
