@@ -6,3 +6,17 @@ This package contains
 - a set of command line tools. Please chek the documentation [./cli](./cli)
 
 **Status** : alpha
+
+## Tools & Places
+
+| Name | Description           | Formats  | Tool
+| ------------- |:-------------| -----| ---|
+| Github         | project source files     | Markdown | CLI
+| New Bazar      | the new bazar            | HTML | CLI
+| Forum | the new Discourse forum           | Markdown | CLI
+| Email | | safe HTML | CLI
+| Google Sheets | | plaintext | CLI
+| Instagram & friends | | plaintext | CLI
+| Zoho Books, CRM,... || plaintext | CLI
+
+Ideally, each content provides fragments for each target.
