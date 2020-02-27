@@ -56,7 +56,6 @@ export const register = (cli: CLI.Argv) => {
 
         const bazar_fragments_path = path.resolve(`${config.fragments_path}`);
 
-        
         let fragments: any = { ...config };
 
         // read all vendor specific fragments
