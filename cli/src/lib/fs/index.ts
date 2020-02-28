@@ -12,7 +12,7 @@ export { sync as write } from '@xblox/fs/write';
 export const toHTML = (path, markdown) => {
     const content = read(path, 'string') as string;
     if (!markdown) {
-        let converter = new Converter();
+        let converter = new Converter({tables: true});
         converter.setOption('literalMidWordUnderscores', 'true');
         return converter.makeHtml(content);
     } else {

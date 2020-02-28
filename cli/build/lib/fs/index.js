@@ -15,7 +15,7 @@ exports.write = write_1.sync;
 exports.toHTML = (path, markdown) => {
     const content = read_1.sync(path, 'string');
     if (!markdown) {
-        let converter = new showdown_1.Converter();
+        let converter = new showdown_1.Converter({ tables: true });
         converter.setOption('literalMidWordUnderscores', 'true');
         return converter.makeHtml(content);
     }
