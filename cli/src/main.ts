@@ -14,7 +14,7 @@ import { register as registerBazarVendor } from './commands/bazar/vendor'; regis
 import { register as registerLibrary } from './commands/library'; registerLibrary(cli);
 import { register as registerSanitize } from './commands/common/sanitize-filename'; registerSanitize(cli);
 
-import { register as registerGHPIndex } from './commands/github/product'; registerGHPIndex(cli);
+import { register as registerGHPIndex } from './commands/github/product_index'; registerGHPIndex(cli);
 
 const argv = cli.argv;
 
