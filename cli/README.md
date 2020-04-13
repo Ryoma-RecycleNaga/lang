@@ -26,7 +26,6 @@
 
 - academy 2 local MD
 - local MD to github.io
-- local MD to forum
 - v3 forum to local MD
 - local MD to v4 forum
 - onearmy to local MD
