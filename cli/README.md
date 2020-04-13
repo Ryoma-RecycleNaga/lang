@@ -22,30 +22,34 @@
 
 ## Todos
 
+## conversions
+
+- academy 2 local MD
+- local MD to github.io
+- local MD to forum
+- v3 forum to local MD
+- local MD to v4 forum
+- onearmy to local MD
+
 ### bazar commands
 
 - factory needs to provide component pages (sub assemblies)
-- sub assemblies should show certification | warrenty notes
-- sub assemblies should output drawings & renderings (for dimensions)
 - electric stuff needs a standard protocol in place, show certification and sourcing
 - custom pp-search links for tutorials, how-tos
-- translate all create language pages
-- wrap links in colored containers (bazar bug)
 - collect machine issues (pros / cons)
 - link common academy/how-to material
-- resize pictures in {my_product/media} (bazar wont) -> see common naming (@2x,...)
-- add related machines
-- add related projects
-- add reviews
 
 ### Infrastructure
 
 - cs-cart docker image for previews via API
 - github issue collector
 - onarmy crawler (->manuals,..)
-- academy converter
 - video converter & publisher for assembly animations (mark snapshots for manuals)
 
+### Discord
+
+- scraper  
+- chat to local MD
 
 ### NPM Commands
 
