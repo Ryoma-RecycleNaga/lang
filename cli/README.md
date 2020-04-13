@@ -30,6 +30,7 @@
 - v3 forum to local MD
 - local MD to v4 forum
 - onearmy to local MD
+- BOM to pretty local MD
 
 ### bazar commands
 
