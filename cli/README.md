@@ -46,6 +46,10 @@
 - onarmy crawler (->manuals,..)
 - video converter & publisher for assembly animations (mark snapshots for manuals)
 
+### OEM
+
+- implement service or at least non PH factory
+
 ### Discord
 
 - scraper  
