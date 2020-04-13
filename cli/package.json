@@ -15,7 +15,8 @@
         "elena": "node ./build/main.js bazar-product-html --debug=true --products=../../products --product=elena",
         "lydia": "node ./build/main.js bazar-product-html --debug=true --products=../../products --product=lydia",
         "lydia-v4": "node ./build/main.js bazar-product-html --debug=true --products=../../products --product=lydia-v4",
-        "all": "npm run vendor && npm run elena && npm run zoe && npm run lydia && npm run lydia-v4"
+        "sheetpress": "node ./build/main.js bazar-product-html --debug=true --products=../../products --product=sheetpress-cell",
+        "all": "npm run vendor && npm run elena && npm run zoe && npm run lydia && npm run lydia-v4 &&& npm run sheetpress"
     },
     "repository": {
         "type": "git",
