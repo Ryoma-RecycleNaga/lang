@@ -30,6 +30,8 @@
 - local MD to v4 forum
 - onearmy to local MD
 - BOM to pretty local MD
+- local MD to reddit
+- local MD to plain
 
 ### bazar commands
 
