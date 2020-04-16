@@ -22,6 +22,19 @@
 
 ## Todos
 
+## explorer
+
+### templates
+
+1. dir listing
+2. project
+3. product
+4. people
+5. team
+6. component
+7. howto - mini
+8. howto - fancy
+
 ## conversions
 
 - academy 2 local MD
