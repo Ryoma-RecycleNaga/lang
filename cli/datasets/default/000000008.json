@@ -1,0 +1,15 @@
+{
+  "#debug": {
+    "requestId": "FPNsvdyE8EQtcIP",
+    "url": "https://davehakkens.nl/community/forums/topic/launching-kickstarter-campaign-rwristwatches/",
+    "loadedUrl": "https://davehakkens.nl/community/forums/topic/launching-kickstarter-campaign-rwristwatches/",
+    "method": "GET",
+    "retryCount": 3,
+    "errorMessages": [
+      "Error: PuppeteerCrawler: handlePageFunction timed out after 60 seconds.\n    at Timeout._onTimeout (C:\\Users\\mc007\\Desktop\\ph\\lang\\cli\\node_modules\\apify\\build\\utils.js:408:45)\n    at listOnTimeout (internal/timers.js:531:17)\n    at processTimers (internal/timers.js:475:7)",
+      "Error: PuppeteerCrawler: handlePageFunction timed out after 60 seconds.\n    at Timeout._onTimeout (C:\\Users\\mc007\\Desktop\\ph\\lang\\cli\\node_modules\\apify\\build\\utils.js:408:45)\n    at listOnTimeout (internal/timers.js:531:17)\n    at processTimers (internal/timers.js:475:7)",
+      "Error: PuppeteerCrawler: handlePageFunction timed out after 60 seconds.\n    at Timeout._onTimeout (C:\\Users\\mc007\\Desktop\\ph\\lang\\cli\\node_modules\\apify\\build\\utils.js:408:45)\n    at listOnTimeout (internal/timers.js:531:17)\n    at processTimers (internal/timers.js:475:7)",
+      "Error: PuppeteerCrawler: handlePageFunction timed out after 60 seconds.\n    at Timeout._onTimeout (C:\\Users\\mc007\\Desktop\\ph\\lang\\cli\\node_modules\\apify\\build\\utils.js:408:45)\n    at listOnTimeout (internal/timers.js:531:17)\n    at processTimers (internal/timers.js:475:7)"
+    ]
+  }
+}

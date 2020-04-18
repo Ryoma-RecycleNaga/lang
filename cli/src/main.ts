@@ -16,6 +16,8 @@ import { register as registerSanitize } from './commands/common/sanitize-filenam
 
 import { register as registerGHPIndex } from './commands/github/product_index'; registerGHPIndex(cli);
 
+import { register as registerMD_Thumbs } from './commands/github/md_thumbs'; registerMD_Thumbs(cli);
+
 const argv = cli.argv;
 
 if (argv.h || argv.help) {
