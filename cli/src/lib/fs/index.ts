@@ -1,21 +1,68 @@
 const fg = require('fast-glob');
+
+import * as path from 'path';
+import * as bluebird from 'bluebird';
 import { Converter } from 'showdown';
 import { sync as read } from '@xblox/fs/read';
+import { sync as exists } from '@xblox/fs/exists';
+import { html_beautify } from 'js-beautify';
 
-export const files = (dir, glob) => fg.sync(glob, { dot: true, cwd: dir, absolute: true }) as [];
+import { head, tail } from 'ramda';
 
 export { sync as read } from '@xblox/fs/read';
 export { sync as exists } from '@xblox/fs/exists';
 export { sync as dir } from '@xblox/fs/dir';
 export { sync as write } from '@xblox/fs/write';
 
+import { Helper } from '../process/index';
+import { img } from '../content/html';
+
+const IMAGES_GLOB = '*.+(JPG|jpg|png|PNG|gif)';
+
+export const files = (dir, glob) => fg.sync(glob, { dot: true, cwd: dir, absolute: true }) as [];
+export const images = (source) => files(source, IMAGES_GLOB) as any[];
+export const head_image = (source) => head(images(source));
+export const tail_image = (source) => tail(images(source));
+
+export async function resize_images (files) {
+    return bluebird.mapSeries(files, (file: string) => {
+        const inParts = path.parse(file);
+        const promise = Helper.run(inParts.dir, 'convert',
+        [
+            `"${inParts.base}"`,
+            '-quality 70',
+            '-resize 1980',
+            '-sharpen 0x1.0',
+            `"${inParts.name}${inParts.ext}"`
+        ]);
+        return promise;
+    });
+}
+
 export const toHTML = (path, markdown) => {
     const content = read(path, 'string') as string;
     if (!markdown) {
-        let converter = new Converter({tables: true});
+        let converter = new Converter({ tables: true });
         converter.setOption('literalMidWordUnderscores', 'true');
         return converter.makeHtml(content);
     } else {
         return content;
     }
+}
+
+export const thumbs = (source: string, meta: boolean = true, sep: string = "<hr/>") => {
+    let pictures = images(source);
+    let content = "";
+    pictures.forEach((f) => {
+        if (meta) {
+            let picMD = path.resolve(path.join(path.parse(f).dir, path.sep, path.parse(f).name + '.md'));
+            if (exists(picMD)) {
+                content += toHTML(picMD, true);
+                content += "\n";
+            }
+        }
+        content += img(`./${path.parse(f).base}`);
+        content += sep;
+    });
+    return html_beautify(content);
 }

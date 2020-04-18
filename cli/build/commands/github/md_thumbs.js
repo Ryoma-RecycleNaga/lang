@@ -19,64 +19,22 @@ const defaultOptions = (yargs) => {
     });
 };
 let options = (yargs) => defaultOptions(yargs);
-const img = (file) => {
-    return `<div class="thumb">
-        <img src="${file}" width="100%" />
-        </div>
-    `;
-};
-// node ./build/main.js md:thumbs --debug=true --source=../../howto/controlbox/media
+// node ./build/main.js md:thumbs --debug=true --source=../../products/howto/controlbox/media
 exports.register = (cli) => {
     return cli.command('md:thumbs', 'Create a thumbnail grid from the current directory ', options, (argv) => __awaiter(void 0, void 0, void 0, function* () {
         if (argv.help) {
             return;
         }
         const isDebug = argv.debug === 'true';
-        // const config = read(argv.products ? path.resolve(`${argv.products}/bazar/config.json`) : path.resolve('./config.json'), 'json') as any;
         const source_path = path.resolve(argv.source);
         const target_path = `${source_path}/thumbs.md`;
-        // const bazar_fragments_path = path.resolve(`${config.fragments_path}`);
-        isDebug && debug.info(`\n Generate thumbs ${source_path}`);
+        isDebug && debug.info(`\n Generate thumbs from ${source_path} to ${target_path}`);
         if (!lib_1.exists(source_path)) {
             debug.error(`\t Cant find at ${source_path}, path doesn't exists`);
             return;
         }
-        // read all vendor specific fragments
-        let pictures = lib_1.files(source_path, '*.+(JPG|jpg|png|PNG)');
-        //pictures = pictures.map((f) => toHTML(`./${path.parse(f).base}`));
-        isDebug && debug.debug("bazar fragments", pictures);
-        let content = "";
-        pictures.forEach((f) => {
-            let picMD = path.resolve(`${path.parse(f).dir}${path.sep}${path.parse(f).name}.md`);
-            if (lib_1.exists(picMD)) {
-                content += lib_1.toHTML(picMD, true);
-                content += "\n";
-            }
-            content += img(`./${path.parse(f).base}`);
-            content += "<hr/>";
-        });
-        lib_1.write(target_path, content);
-        /*
-        // compile and write out
-        for (const key in fragments) {
-            const resolved = utils.substitute(fragments[key], fragments);
-            fragments[key] = resolved;
-            isDebug && debug.info(`resolve ${key} to ${resolved}`);
-        }
-
-        
-        const products_description = utils.substitute(fragments.product, fragments);
-
-        if(!exists(path.resolve(`${tar}/bazar/out/`))){
-            dir(path.resolve(`${product_path}/bazar/out/`));
-            isDebug && debug.info('created bazar/out folder in product!');
-        }
-        
-        let out_path = path.resolve(`${}/bazar/out/product.html`);
-        isDebug && debug.info(`Write product description ${out_path}`);
-        write(out_path, products_description);
-        */
-        // isDebug && debug.debug("bazar fragments", fragments);
+        yield lib_1.resize_images(lib_1.images(source_path));
+        lib_1.write(target_path, lib_1.thumbs(source_path, true));
     }));
 };
 //# sourceMappingURL=md_thumbs.js.map
