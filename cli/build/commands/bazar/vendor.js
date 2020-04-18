@@ -61,13 +61,14 @@ exports.register = (cli) => {
         let bazar_fragment_files = files(bazar_fragments_path, '*.html');
         bazar_fragment_files.map((f) => fragments[path.parse(f).name] = readContent(f, markdown));
         bazar_fragment_files = files(bazar_fragments_path, '*.md');
-        bazar_fragment_files.map((f) => fragments[path.parse(f).name] = readContent(f, markdown));
+        bazar_fragment_files.map((f) => fragments[path.parse(f).name] = readContent(f, true));
         // read all product specific fragments
         // compile and write out
         for (const key in fragments) {
             const resolved = utils.substitute(fragments[key], fragments);
             fragments[key] = resolved;
-            isDebug && debug.info(`resolve ${key} to ${resolved}`);
+            // isDebug && debug.info(`resolve ${key} to ${resolved}`);
+            isDebug && debug.info(`resolve ${key}`);
         }
         const products_description = utils.substitute(fragments.vendor, fragments);
         if (!fs_1.existsSync(path.resolve(`${bazarPath}/out/`))) {
@@ -75,9 +76,9 @@ exports.register = (cli) => {
             isDebug && debug.info('created bazar/out folder!');
         }
         const out_path = path.resolve(`${bazarPath}/out/vendor.html`);
-        isDebug && debug.info(`Write vendor description ${out_path} ${fragments.product}`);
+        // isDebug && debug.info(`Write vendor description ${out_path} ${fragments.product}`);
         write_1.sync(out_path, products_description);
-        isDebug && debug.debug("bazar fragments", fragments);
+        // isDebug && debug.debug("bazar fragments", fragments);
     }));
 };
 //# sourceMappingURL=vendor.js.map

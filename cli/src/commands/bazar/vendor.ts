@@ -63,7 +63,7 @@ export const register = (cli: CLI.Argv) => {
         bazar_fragment_files.map((f) => fragments[path.parse(f).name] = readContent(f, markdown));
 
         bazar_fragment_files = files(bazar_fragments_path, '*.md');
-        bazar_fragment_files.map((f) => fragments[path.parse(f).name] = readContent(f, markdown));
+        bazar_fragment_files.map((f) => fragments[path.parse(f).name] = readContent(f, true));
 
         // read all product specific fragments
        
@@ -72,7 +72,8 @@ export const register = (cli: CLI.Argv) => {
         for (const key in fragments) {
             const resolved = utils.substitute(fragments[key], fragments);
             fragments[key] = resolved;
-            isDebug && debug.info(`resolve ${key} to ${resolved}`);
+            // isDebug && debug.info(`resolve ${key} to ${resolved}`);
+            isDebug && debug.info(`resolve ${key}`);
         }
 
         const products_description = utils.substitute(fragments.vendor, fragments);
@@ -83,9 +84,10 @@ export const register = (cli: CLI.Argv) => {
         }
         const out_path = path.resolve(`${bazarPath}/out/vendor.html`);
         
-        isDebug && debug.info(`Write vendor description ${out_path} ${fragments.product}`);
+        // isDebug && debug.info(`Write vendor description ${out_path} ${fragments.product}`);
         write(out_path, products_description);
 
-        isDebug && debug.debug("bazar fragments", fragments);
+       // isDebug && debug.debug("bazar fragments", fragments);
+
     });
 };

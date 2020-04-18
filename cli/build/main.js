@@ -26,6 +26,8 @@ const library_1 = require("./commands/library");
 library_1.register(cli);
 const sanitize_filename_1 = require("./commands/common/sanitize-filename");
 sanitize_filename_1.register(cli);
+const product_index_1 = require("./commands/github/product_index");
+product_index_1.register(cli);
 const argv = cli.argv;
 if (argv.h || argv.help) {
     cli.showHelp();
