@@ -19,10 +19,10 @@ const defaultOptions = (yargs) => {
     });
 };
 let options = (yargs) => defaultOptions(yargs);
-const toHTML = (file) => {
+const img = (file) => {
     return `<div class="thumb">
-        <img src="${file}" width="33%" style="float:left" />
-        </div
+        <img src="${file}" width="100%" />
+        </div>
     `;
 };
 // node ./build/main.js md:thumbs --debug=true --source=../../howto/controlbox/media
@@ -33,7 +33,7 @@ exports.register = (cli) => {
         }
         const isDebug = argv.debug === 'true';
         // const config = read(argv.products ? path.resolve(`${argv.products}/bazar/config.json`) : path.resolve('./config.json'), 'json') as any;
-        const source_path = path.resolve(`${argv.source}`);
+        const source_path = path.resolve(argv.source);
         const target_path = `${source_path}/thumbs.md`;
         // const bazar_fragments_path = path.resolve(`${config.fragments_path}`);
         isDebug && debug.info(`\n Generate thumbs ${source_path}`);
@@ -42,10 +42,20 @@ exports.register = (cli) => {
             return;
         }
         // read all vendor specific fragments
-        let pictures = lib_1.files(source_path, '*.+(JPG|jpg)');
-        pictures = pictures.map((f) => toHTML(`./${path.parse(f).base}`));
+        let pictures = lib_1.files(source_path, '*.+(JPG|jpg|png|PNG)');
+        //pictures = pictures.map((f) => toHTML(`./${path.parse(f).base}`));
         isDebug && debug.debug("bazar fragments", pictures);
-        lib_1.write(target_path, pictures.join("\n"));
+        let content = "";
+        pictures.forEach((f) => {
+            let picMD = path.resolve(`${path.parse(f).dir}${path.sep}${path.parse(f).name}.md`);
+            if (lib_1.exists(picMD)) {
+                content += lib_1.toHTML(picMD, true);
+                content += "\n";
+            }
+            content += img(`./${path.parse(f).base}`);
+            content += "<hr/>";
+        });
+        lib_1.write(target_path, content);
         /*
         // compile and write out
         for (const key in fragments) {
