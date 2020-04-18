@@ -10,6 +10,9 @@ const defaultOptions = (yargs: CLI.Argv) => {
     }).option('resize', {
         default: 'false',
         describe: 'resize images'
+    }).option('outfile', {
+        default: 'thumb.md',
+        describe: 'the name of the output file'
     })
 };
 
@@ -27,7 +30,7 @@ export const register = (cli: CLI.Argv) => {
         const resize = argv.resize === 'true';
 
         const source_path = path.resolve(argv.source as any);
-        const target_path = `${source_path}/thumbs.md`;
+        const target_path = `${source_path}/${argv.outfile}`;
 
         isDebug && debug.info(`\n Generate thumbs from ${source_path} to ${target_path}`);
 
@@ -39,3 +42,4 @@ export const register = (cli: CLI.Argv) => {
         write(target_path, thumbs(source_path,true) );
     });
 };
+
