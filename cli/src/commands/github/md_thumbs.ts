@@ -7,6 +7,9 @@ const defaultOptions = (yargs: CLI.Argv) => {
     return yargs.option('source', {
         default: '.',
         describe: ''
+    }).option('resize', {
+        default: 'false',
+        describe: 'resize images'
     })
 };
 
@@ -21,6 +24,7 @@ export const register = (cli: CLI.Argv) => {
         if (argv.help) { return; }
 
         const isDebug = argv.debug === 'true';
+        const resize = argv.resize === 'true';
 
         const source_path = path.resolve(argv.source as any);
         const target_path = `${source_path}/thumbs.md`;
@@ -31,7 +35,7 @@ export const register = (cli: CLI.Argv) => {
             debug.error(`\t Cant find at ${source_path}, path doesn't exists`);
             return;
         }
-        await resize_images(images(source_path));
+        resize && await resize_images(images(source_path));
         write(target_path, thumbs(source_path,true) );
     });
 };
