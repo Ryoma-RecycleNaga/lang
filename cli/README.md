@@ -22,11 +22,21 @@
 
 ## Todos
 
+## howtos
+
+1. drawing overlay
+2. config json
+3. pages: code, generic media container: video, code, pictures, picture flow, tables (sheets)
+4. step definitions
+5. media filter : print, target format
+
 ## explorer
+
 
 ### templates
 
 1. dir listing
+1.1 thumbs : done
 2. project
 3. product
 4. people
