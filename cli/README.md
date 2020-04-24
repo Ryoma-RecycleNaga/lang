@@ -29,6 +29,7 @@
 3. pages: code, generic media container: video, code, pictures, picture flow, tables (sheets)
 4. step definitions
 5. media filter : print, target format
+6. CLI : propagate sub howto index
 
 ## explorer
 

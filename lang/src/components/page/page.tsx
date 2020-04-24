@@ -7,7 +7,6 @@ import { Component, Host, h } from '@stencil/core';
 })
 export class Page {
   render() {
-    // const form = 2 * 2;
     return (
       <Host>
         inside:
