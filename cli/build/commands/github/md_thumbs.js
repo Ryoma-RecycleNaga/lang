@@ -10,7 +10,6 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const debug = require("../..");
-const strings_1 = require("../../lib/common/strings");
 const path = require("path");
 const slash = require('slash');
 const lib_1 = require("../../lib/");
@@ -48,8 +47,14 @@ exports.register = (cli) => {
             return;
         }
         resize && (yield lib_1.resize_images(_images));
-        let content = lib_1.thumbs(source_path, true);
-        let title = strings_1.capitalize(path.parse(source_path).base.toLowerCase().replace('-', ' ').replace('_', ' '));
+        let content;
+        if (lib_1.exists(path.resolve(`${source_path}/Readme.md`))) {
+            content = lib_1.toHTML(path.resolve(`${source_path}/Readme.md`), true);
+        }
+        else {
+            content = lib_1.thumbs(source_path, true);
+        }
+        let title = path.parse(source_path).base.toLowerCase().replace('-', ' ').replace('_', ' ').replace(/\b\w/g, l => l.toUpperCase());
         let rel = path.relative(root_path, source_path);
         const image = '/' + slash(rel) + '/' + path.parse(lib_1.tail_image(_images)).base;
         const config = lib_1.read(path.resolve(`${source_path}/config.json`), 'json') || {};

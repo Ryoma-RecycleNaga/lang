@@ -4,7 +4,7 @@ import { capitalize } from '../../lib/common/strings';
 import * as path from 'path';
 const slash = require('slash');
 
-import { write, exists, read, thumbs, images, resize_images, tail_image, howto_header } from '../../lib/';
+import { write, exists, read, thumbs, images, resize_images, tail_image, howto_header, toHTML } from '../../lib/';
 
 const defaultOptions = (yargs: CLI.Argv) => {
     return yargs.option('source', {
@@ -46,8 +46,12 @@ export const register = (cli: CLI.Argv) => {
             return;
         }
         resize && await resize_images(_images);
-
-        let content = thumbs(source_path, true);
+        let content;
+        if(exists(path.resolve(`${source_path}/Readme.md`))){
+            content = toHTML(path.resolve(`${source_path}/Readme.md`), true);
+        }else{
+            content = thumbs(source_path, true);
+        }
         
         let title = path.parse(source_path).base.toLowerCase().replace('-', ' ').replace('_', ' ').replace(/\b\w/g, l => l.toUpperCase());
         let rel = path.relative(root_path, source_path);
