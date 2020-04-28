@@ -48,9 +48,11 @@ export const LOW_SURROGATE_MIN = 0xDC00;
 export const LOW_SURROGATE_MAX = 0xDFFF;
 
 const BASE64_KEYSTR = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=';
+
 export const capitalize = (word) => {
     return word.substring(0, 1).toUpperCase() + word.substring(1);
 };
+
 export const getJson = (inData, validOnly, ommit) => {
     try {
         return isString(inData) ? JSON.parse(inData) : validOnly === true ? null : inData;

@@ -7,22 +7,21 @@ import { sync as read } from '@xblox/fs/read';
 import { sync as exists } from '@xblox/fs/exists';
 import { html_beautify } from 'js-beautify';
 
-import { head, tail } from 'ramda';
-
 export { sync as read } from '@xblox/fs/read';
 export { sync as exists } from '@xblox/fs/exists';
 export { sync as dir } from '@xblox/fs/dir';
 export { sync as write } from '@xblox/fs/write';
 
 import { Helper } from '../process/index';
+import { firstOf, lastOf } from '../common/array';
 import { img } from '../content/html';
 
 const IMAGES_GLOB = '*.+(JPG|jpg|png|PNG|gif)';
 
 export const files = (dir, glob) => fg.sync(glob, { dot: true, cwd: dir, absolute: true }) as [];
 export const images = (source) => files(source, IMAGES_GLOB) as any[];
-export const head_image = (source) => head(images(source));
-export const tail_image = (source) => tail(images(source));
+export const head_image = (_images) => firstOf(_images);
+export const tail_image = (_images) => lastOf(_images);
 
 export async function resize_images (files) {
     return bluebird.mapSeries(files, (file: string) => {
@@ -62,6 +61,7 @@ export const thumbs = (source: string, meta: boolean = true, sep: string = "<hr/
             }
         }
         content += img(`./${path.parse(f).base}`);
+        content += "\n";
         content += sep;
     });
     return html_beautify(content);

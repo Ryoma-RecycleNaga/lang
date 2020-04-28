@@ -16,7 +16,6 @@ const showdown_1 = require("showdown");
 const read_1 = require("@xblox/fs/read");
 const exists_1 = require("@xblox/fs/exists");
 const js_beautify_1 = require("js-beautify");
-const ramda_1 = require("ramda");
 var read_2 = require("@xblox/fs/read");
 exports.read = read_2.sync;
 var exists_2 = require("@xblox/fs/exists");
@@ -26,12 +25,13 @@ exports.dir = dir_1.sync;
 var write_1 = require("@xblox/fs/write");
 exports.write = write_1.sync;
 const index_1 = require("../process/index");
+const array_1 = require("../common/array");
 const html_1 = require("../content/html");
 const IMAGES_GLOB = '*.+(JPG|jpg|png|PNG|gif)';
 exports.files = (dir, glob) => fg.sync(glob, { dot: true, cwd: dir, absolute: true });
 exports.images = (source) => exports.files(source, IMAGES_GLOB);
-exports.head_image = (source) => ramda_1.head(exports.images(source));
-exports.tail_image = (source) => ramda_1.tail(exports.images(source));
+exports.head_image = (_images) => array_1.firstOf(_images);
+exports.tail_image = (_images) => array_1.lastOf(_images);
 function resize_images(files) {
     return __awaiter(this, void 0, void 0, function* () {
         return bluebird.mapSeries(files, (file) => {
@@ -71,6 +71,7 @@ exports.thumbs = (source, meta = true, sep = "<hr/>") => {
             }
         }
         content += html_1.img(`./${path.parse(f).base}`);
+        content += "\n";
         content += sep;
     });
     return js_beautify_1.html_beautify(content);

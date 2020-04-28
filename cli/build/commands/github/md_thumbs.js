@@ -10,7 +10,9 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const debug = require("../..");
+const strings_1 = require("../../lib/common/strings");
 const path = require("path");
+const slash = require('slash');
 const lib_1 = require("../../lib/");
 const defaultOptions = (yargs) => {
     return yargs.option('source', {
@@ -22,6 +24,9 @@ const defaultOptions = (yargs) => {
     }).option('outfile', {
         default: 'thumb.md',
         describe: 'the name of the output file'
+    }).option('root', {
+        default: '.',
+        describe: ''
     });
 };
 let options = (yargs) => defaultOptions(yargs);
@@ -34,14 +39,25 @@ exports.register = (cli) => {
         const isDebug = argv.debug === 'true';
         const resize = argv.resize === 'true';
         const source_path = path.resolve(argv.source);
+        const root_path = path.resolve(argv.root);
         const target_path = `${source_path}/${argv.outfile}`;
+        const _images = lib_1.images(source_path);
         isDebug && debug.info(`\n Generate thumbs from ${source_path} to ${target_path}`);
         if (!lib_1.exists(source_path)) {
             debug.error(`\t Cant find at ${source_path}, path doesn't exists`);
             return;
         }
-        resize && (yield lib_1.resize_images(lib_1.images(source_path)));
-        lib_1.write(target_path, lib_1.thumbs(source_path, true));
+        resize && (yield lib_1.resize_images(_images));
+        let content = lib_1.thumbs(source_path, true);
+        let title = strings_1.capitalize(path.parse(source_path).base.toLowerCase().replace('-', ' ').replace('_', ' '));
+        let rel = path.relative(root_path, source_path);
+        const image = '/' + slash(rel) + '/' + path.parse(lib_1.tail_image(_images)).base;
+        const config = lib_1.read(path.resolve(`${source_path}/config.json`), 'json') || {};
+        const fmHead = lib_1.howto_header(config.title || title, config.category || "", config.image || image);
+        content = fmHead + '\n\n' + content;
+        debug.info('test', path.resolve(`${root_path}/_howto/how-to-${path.parse(source_path).name}.md`));
+        lib_1.write(target_path, content);
+        // write(path.resolve(`${root_path}/_howto/how-to-${path.parse(source_path).name}.md`), content);
     }));
 };
 //# sourceMappingURL=md_thumbs.js.map
