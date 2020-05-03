@@ -18,10 +18,10 @@ const defaultOptions = (yargs: CLI.Argv) => {
         default: 'false',
         describe: 'output markdown for the old bazar'
     })
-    .option('debug', {
-        default: 'true',
-        describe: 'Enable internal debug message'
-    })
+        .option('debug', {
+            default: 'true',
+            describe: 'Enable internal debug message'
+        })
 };
 
 let options = (yargs: CLI.Argv) => defaultOptions(yargs);
@@ -40,11 +40,11 @@ export const register = (cli: CLI.Argv) => {
         const machines_directory = path.resolve(`${argv.products}/_machines/`);
 
         const product_path = path.resolve(`${argv.products || config.products_path}/products/${argv.product}`);
-        
+
         const bazar_fragments_path = path.resolve(`${config.fragments_path}`);
-        
+
         debug.info(bazar_fragments_path);
-        
+
         isDebug && debug.info(`\n Generate machine description for ${argv.product}, reading from ${product_path},
             using bazar fragments at ${bazar_fragments_path}`);
 
@@ -94,11 +94,15 @@ export const register = (cli: CLI.Argv) => {
             isDebug && debug.info(`resolve ${key} to ${resolved}`);
         }
 
-        const products_description = utils.substitute(fragments.product, fragments);
+        const products_description = utils.substitute(fragments.machine, fragments);
 
-        let content = machine_header(fragments['product_name'],fragments['category'],"no image", fragments['slug']);
-        content+=products_description;
-        
+        let content = machine_header(fragments['product_name'],
+            fragments['category'],
+            "/pp/products/products/media/preview.jpg",
+            fragments['slug']);
+
+        content += products_description;
+
         let out_path = path.resolve(`${machines_directory}/${fragments['slug']}.md`);
         isDebug && debug.info(`Write jekyll machine page ${out_path}`);
         write(out_path, content);

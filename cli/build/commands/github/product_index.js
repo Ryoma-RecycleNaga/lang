@@ -85,8 +85,8 @@ exports.register = (cli) => {
             fragments[key] = resolved;
             isDebug && debug.info(`resolve ${key} to ${resolved}`);
         }
-        const products_description = utils.substitute(fragments.product, fragments);
-        let content = lib_1.machine_header(fragments['product_name'], fragments['category'], "no image", fragments['slug']);
+        const products_description = utils.substitute(fragments.machine, fragments);
+        let content = lib_1.machine_header(fragments['product_name'], fragments['category'], "/pp/products/products/media/preview.jpg", fragments['slug']);
         content += products_description;
         let out_path = path.resolve(`${machines_directory}/${fragments['slug']}.md`);
         isDebug && debug.info(`Write jekyll machine page ${out_path}`);
