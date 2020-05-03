@@ -13,6 +13,7 @@
         "vendor": "node ./build/main.js bazar-vendor-html --products=../../products --debug=true",
         "zoe": "node ./build/main.js bazar-product-html --debug=true --products=../../products --product=zoe",
         "elena": "node ./build/main.js bazar-product-html --debug=true --products=../../products --product=elena",
+        "elena-jekyll": "node ./build/main.js machine-jekyll --debug=true --products=../../products --product=elena",
         "lydia": "node ./build/main.js bazar-product-html --debug=true --products=../../products --product=lydia",
         "lydia-v4": "node ./build/main.js bazar-product-html --debug=true --products=../../products --product=lydia-v4",
         "sheetpress": "node ./build/main.js bazar-product-html --debug=true --products=../../products --product=sheetpress-cell",
