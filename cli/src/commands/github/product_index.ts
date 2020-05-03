@@ -28,7 +28,7 @@ let options = (yargs: CLI.Argv) => defaultOptions(yargs);
 
 // npm run build ; node ./build/main.js bazar-product-html --debug=true --products=../../products --product=elena
 export const register = (cli: CLI.Argv) => {
-    return cli.command('bazar-product-html', 'Creates Bazar HTML description', options, async (argv: CLI.Arguments) => {
+    return cli.command('product-index-html', 'Creates Bazar HTML description', options, async (argv: CLI.Arguments) => {
         if (argv.help) { return; }
 
         const format = argv.format || 'html'; const markdown = format === 'md';

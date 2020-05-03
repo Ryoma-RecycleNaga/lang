@@ -53,7 +53,7 @@ exports.register = (cli) => {
         const format = argv.format || 'html';
         const markdown = format === 'md';
         const isDebug = argv.debug === 'true';
-        const bazarPath = path.resolve(`${argv.products}/bazar/`);
+        const bazarPath = path.resolve(`${argv.products}/templates/bazar/`);
         const config = read_1.sync(argv.products ? path.resolve(`${bazarPath}/config.json`) : path.resolve('./config.json'), 'json');
         const bazar_fragments_path = path.resolve(`${config.fragments_path}`);
         let fragments = Object.assign({}, config);

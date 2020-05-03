@@ -50,7 +50,7 @@ export const register = (cli: CLI.Argv) => {
 
         const isDebug = argv.debug === 'true';
 
-        const bazarPath = path.resolve(`${argv.products}/bazar/`);
+        const bazarPath = path.resolve(`${argv.products}/templates/bazar/`);
 
         const config = read(argv.products ? path.resolve(`${bazarPath}/config.json`) : path.resolve('./config.json'), 'json') as any;
 

@@ -35,7 +35,12 @@ export const register = (cli: CLI.Argv) => {
 
         const isDebug = argv.debug === 'true';
 
-        const config = read(argv.products ? path.resolve(`${argv.products}/bazar/config.json`) : path.resolve('./config.json'), 'json') as any;
+        const config = read(argv.products ? path.resolve(`${argv.products}/templates/bazar/config.json`) : path.resolve('./config.json'), 'json') as any;
+        debug.info('read config at ' + path.resolve(`${argv.products}/templates/bazar/config.json`));
+        if(!config){
+            debug.error("can find config at " + path.resolve(`${argv.products}/templates/bazar/config.json`));
+            return;
+        }
 
         const product_path = path.resolve(`${argv.products || config.products_path}/products/${argv.product}`);
         
@@ -59,7 +64,7 @@ export const register = (cli: CLI.Argv) => {
         bazar_fragment_files.map((f) => fragments[path.parse(f).name] = toHTML(f, markdown));
 
         // read all product specific fragments
-        const product_fragments_path = path.resolve(`${product_path}/bazar/fragments`);
+        const product_fragments_path = path.resolve(`${product_path}/templates/bazar/fragments`);
         if (!exists(product_fragments_path)) {
             debug.error(`Product has no bazar fragment files! Creating folder structure ..`);
             dir(product_fragments_path);

@@ -42,7 +42,12 @@ exports.register = (cli) => {
         const format = argv.format || 'html';
         const markdown = format === 'md';
         const isDebug = argv.debug === 'true';
-        const config = lib_1.read(argv.products ? path.resolve(`${argv.products}/bazar/config.json`) : path.resolve('./config.json'), 'json');
+        const config = lib_1.read(argv.products ? path.resolve(`${argv.products}/templates/bazar/config.json`) : path.resolve('./config.json'), 'json');
+        debug.info('read config at ' + path.resolve(`${argv.products}/templates/bazar/config.json`));
+        if (!config) {
+            debug.error("can find config at " + path.resolve(`${argv.products}/templates/bazar/config.json`));
+            return;
+        }
         const product_path = path.resolve(`${argv.products || config.products_path}/products/${argv.product}`);
         const bazar_fragments_path = path.resolve(`${config.fragments_path}`);
         isDebug && debug.info(`\n Generate product description for ${argv.product}, reading from ${product_path},
@@ -58,7 +63,7 @@ exports.register = (cli) => {
         bazar_fragment_files = lib_1.files(bazar_fragments_path, '*.md');
         bazar_fragment_files.map((f) => fragments[path.parse(f).name] = lib_1.toHTML(f, markdown));
         // read all product specific fragments
-        const product_fragments_path = path.resolve(`${product_path}/bazar/fragments`);
+        const product_fragments_path = path.resolve(`${product_path}/templates/bazar/fragments`);
         if (!lib_1.exists(product_fragments_path)) {
             debug.error(`Product has no bazar fragment files! Creating folder structure ..`);
             lib_1.dir(product_fragments_path);

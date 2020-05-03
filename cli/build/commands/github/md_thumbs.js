@@ -56,7 +56,7 @@ exports.register = (cli) => {
         }
         let title = path.parse(source_path).base.toLowerCase().replace('-', ' ').replace('_', ' ').replace(/\b\w/g, l => l.toUpperCase());
         let rel = path.relative(root_path, source_path);
-        const image = '/' + slash(rel) + '/' + path.parse(lib_1.tail_image(_images)).base;
+        const image = '/pp/' + slash(rel) + '/' + path.parse(lib_1.tail_image(_images)).base;
         const config = lib_1.read(path.resolve(`${source_path}/config.json`), 'json') || {};
         const fmHead = lib_1.howto_header(config.title || title, config.category || "", config.image || image);
         content = fmHead + '\n\n' + content;

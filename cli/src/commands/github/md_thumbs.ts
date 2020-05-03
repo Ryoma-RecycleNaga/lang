@@ -55,7 +55,7 @@ export const register = (cli: CLI.Argv) => {
         
         let title = path.parse(source_path).base.toLowerCase().replace('-', ' ').replace('_', ' ').replace(/\b\w/g, l => l.toUpperCase());
         let rel = path.relative(root_path, source_path);
-        const image = '/' + slash(rel) + '/' + path.parse(tail_image(_images) as any).base;
+        const image = '/pp/' + slash(rel) + '/' + path.parse(tail_image(_images) as any).base;
         const config = read(path.resolve(`${source_path}/config.json`), 'json') as any || {};
         const fmHead = howto_header(config.title || title, config.category || "", config.image || image);
         content = fmHead + '\n\n' + content;

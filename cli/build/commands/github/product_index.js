@@ -35,7 +35,7 @@ const defaultOptions = (yargs) => {
 let options = (yargs) => defaultOptions(yargs);
 // npm run build ; node ./build/main.js bazar-product-html --debug=true --products=../../products --product=elena
 exports.register = (cli) => {
-    return cli.command('bazar-product-html', 'Creates Bazar HTML description', options, (argv) => __awaiter(void 0, void 0, void 0, function* () {
+    return cli.command('product-index-html', 'Creates Bazar HTML description', options, (argv) => __awaiter(void 0, void 0, void 0, function* () {
         if (argv.help) {
             return;
         }
