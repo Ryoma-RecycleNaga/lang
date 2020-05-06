@@ -30,6 +30,7 @@
 4. step definitions
 5. media filter : print, target format
 6. CLI : propagate sub howto index
+7. related & nesting
 
 ## explorer
 
