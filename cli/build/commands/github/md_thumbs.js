@@ -10,6 +10,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const debug = require("../..");
+const strings_1 = require("../../lib/common/strings");
 const path = require("path");
 const slash = require('slash');
 const lib_1 = require("../../lib/");
@@ -58,9 +59,13 @@ exports.register = (cli) => {
         let rel = path.relative(root_path, source_path);
         const image = '/pp/' + slash(rel) + '/' + path.parse(lib_1.tail_image(_images)).base;
         const config = lib_1.read(path.resolve(`${source_path}/config.json`), 'json') || {};
+        let header = lib_1.read(path.resolve(`${root_path}/templates/jekyll/howto.header.md`), 'string') || "";
+        let footer = lib_1.read(path.resolve(`${root_path}/templates/jekyll/howto.footer.md`), 'string') || "";
+        header = strings_1.substitute(header, config);
+        footer = strings_1.substitute(footer, config);
         const fmHead = lib_1.howto_header(config.title || title, config.category || "", config.image || image);
-        content = fmHead + '\n\n' + content;
-        debug.info('test', path.resolve(`${root_path}/_howto/how-to-${path.parse(source_path).name}.md`));
+        content = fmHead + '\n\n' + header + content + footer;
+        // debug.info('test' , path.resolve(`${root_path}/_howto/how-to-${path.parse(source_path).name}.md`));
         lib_1.write(target_path, content);
         // write(path.resolve(`${root_path}/_howto/how-to-${path.parse(source_path).name}.md`), content);
     }));

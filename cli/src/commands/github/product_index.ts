@@ -98,7 +98,7 @@ export const register = (cli: CLI.Argv) => {
 
         let content = machine_header(fragments['product_name'],
             fragments['category'],
-            "/pp/products/products/media/preview.jpg",
+            `/pp/products/${fragments['slug']}media/preview.jpg`,
             fragments['slug']);
 
         content += products_description;

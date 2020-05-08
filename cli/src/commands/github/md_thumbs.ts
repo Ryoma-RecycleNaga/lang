@@ -1,6 +1,6 @@
 import * as CLI from 'yargs';
 import * as debug from '../..';
-import { capitalize } from '../../lib/common/strings';
+import { capitalize, substitute } from '../../lib/common/strings';
 import * as path from 'path';
 const slash = require('slash');
 
@@ -56,11 +56,21 @@ export const register = (cli: CLI.Argv) => {
         let title = path.parse(source_path).base.toLowerCase().replace('-', ' ').replace('_', ' ').replace(/\b\w/g, l => l.toUpperCase());
         let rel = path.relative(root_path, source_path);
         const image = '/pp/' + slash(rel) + '/' + path.parse(tail_image(_images) as any).base;
-        const config = read(path.resolve(`${source_path}/config.json`), 'json') as any || {};
-        const fmHead = howto_header(config.title || title, config.category || "", config.image || image);
-        content = fmHead + '\n\n' + content;
         
-        debug.info('test' , path.resolve(`${root_path}/_howto/how-to-${path.parse(source_path).name}.md`));
+        const config = read(path.resolve(`${source_path}/config.json`), 'json') as any || {};
+
+
+        let header = read(path.resolve(`${root_path}/templates/jekyll/howto.header.md`), 'string') as any || "";
+        let footer = read(path.resolve(`${root_path}/templates/jekyll/howto.footer.md`), 'string') as any || "";
+
+        header = substitute(header, config);
+        footer = substitute(footer, config);
+
+        const fmHead = howto_header(config.title || title, config.category || "", config.image || image);
+        content = fmHead + '\n\n' + header + content + footer;
+
+        
+        // debug.info('test' , path.resolve(`${root_path}/_howto/how-to-${path.parse(source_path).name}.md`));
         write(target_path, content);
 
         // write(path.resolve(`${root_path}/_howto/how-to-${path.parse(source_path).name}.md`), content);
