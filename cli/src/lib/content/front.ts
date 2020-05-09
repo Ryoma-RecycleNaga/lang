@@ -7,11 +7,12 @@ ${config}
 ---\n`;
 }
 
-export const machine_header = (title, category, image,slug) => {
+export const machine_header = (title, category, image, slug, config: string = "") => {
 return `---
 image: ${image}
 category: "${category}"
 title: "${title}"
 permalink: /machines/${slug}
+${config}
 ---\n`;
 }

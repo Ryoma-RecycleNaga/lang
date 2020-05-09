@@ -8,12 +8,13 @@ title: "${title}"
 ${config}
 ---\n`;
 };
-exports.machine_header = (title, category, image, slug) => {
+exports.machine_header = (title, category, image, slug, config = "") => {
     return `---
 image: ${image}
 category: "${category}"
 title: "${title}"
 permalink: /machines/${slug}
+${config}
 ---\n`;
 };
 //# sourceMappingURL=front.js.map

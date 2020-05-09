@@ -94,12 +94,16 @@ export const register = (cli: CLI.Argv) => {
             isDebug && debug.info(`resolve ${key} to ${resolved}`);
         }
 
+        let config_yaml = read(path.resolve(`${product_path}/config.yaml`), 'string') as any || "";
+
         const products_description = utils.substitute(fragments.machine, fragments);
+
 
         let content = machine_header(fragments['product_name'],
             fragments['category'],
             `/pp/products/${fragments['slug']}/media/preview.jpg`,
-            fragments['slug']);
+            fragments['slug'],
+            config_yaml);
 
         content += products_description;
 
