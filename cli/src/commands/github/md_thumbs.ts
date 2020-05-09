@@ -59,6 +59,7 @@ export const register = (cli: CLI.Argv) => {
         
         const config = read(path.resolve(`${source_path}/config.json`), 'json') as any || {};
 
+        let config_yaml = read(path.resolve(`${source_path}/config.yaml`), 'string') as any || "";
 
         let header = read(path.resolve(`${root_path}/templates/jekyll/howto.header.md`), 'string') as any || "";
         let footer = read(path.resolve(`${root_path}/templates/jekyll/howto.footer.md`), 'string') as any || "";
@@ -66,10 +67,8 @@ export const register = (cli: CLI.Argv) => {
         header = substitute(header, config);
         footer = substitute(footer, config);
 
-        const fmHead = howto_header(config.title || title, config.category || "", config.image || image);
+        const fmHead = howto_header(config.title || title, config.category || "", config.image || image, config_yaml);
         content = fmHead + '\n\n' + header + content + footer;
-
-        
         // debug.info('test' , path.resolve(`${root_path}/_howto/how-to-${path.parse(source_path).name}.md`));
         write(target_path, content);
 

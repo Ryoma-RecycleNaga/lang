@@ -1,8 +1,9 @@
-export const howto_header = (title, category, image) => {
+export const howto_header = (title, category, image, config: string = "") => {
 return `---
 image: ${image}
 category: "${category}"
 title: "${title}"
+${config}
 ---\n`;
 }
 
