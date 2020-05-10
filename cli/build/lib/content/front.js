@@ -15,6 +15,8 @@ category: "${category}"
 title: "${title}"
 permalink: /machines/${slug}
 ${config}
+sidebar: 
+   nav: "machines"
 ---\n`;
 };
 //# sourceMappingURL=front.js.map
