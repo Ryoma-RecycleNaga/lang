@@ -18,7 +18,7 @@ category: "${category}"
 title: "${title}"
 permalink: /machines/${slug}
 tagline: ${tagline || '""'}
-description: ${description || `"Precious Plastic - Howto : ${strings_1.capitalize(category)} :: ${title}"`}
+description: ${description || `"Precious Plastic - Machine : ${strings_1.capitalize(category)} :: ${title}"`}
 ${config}
 sidebar: 
    nav: "machines"
