@@ -112,6 +112,8 @@ export const register = (cli: CLI.Argv) => {
             fragments['category'],
             `/pp/products/${fragments['slug']}/media/preview.jpg`,
             fragments['slug'],
+            config.description || "", 
+            config.tagline || "",
             config_yaml);
 
         content += products_description;

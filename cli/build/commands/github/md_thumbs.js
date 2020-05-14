@@ -64,7 +64,7 @@ exports.register = (cli) => {
         let footer = lib_1.read(path.resolve(`${root_path}/templates/jekyll/howto.footer.md`), 'string') || "";
         header = strings_1.substitute(header, config);
         footer = strings_1.substitute(footer, config);
-        const fmHead = lib_1.howto_header(config.title || title, config.category || "", config.image || image, config_yaml);
+        const fmHead = lib_1.howto_header(config.title || title, config.category || "", config.image || image, config.description || "", config.tagline || "", config_yaml);
         content = fmHead + '\n\n' + header + content + footer;
         // debug.info('test' , path.resolve(`${root_path}/_howto/how-to-${path.parse(source_path).name}.md`));
         lib_1.write(target_path, content);
