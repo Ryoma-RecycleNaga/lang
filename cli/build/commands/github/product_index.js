@@ -97,7 +97,7 @@ exports.register = (cli) => {
         }
         let config_yaml = lib_1.read(path.resolve(`${machine_path}/config.yaml`), 'string') || "";
         const products_description = utils.substitute(fragments.machine, fragments);
-        let content = lib_1.machine_header(fragments['product_name'], fragments['category'], `/pp/products/${fragments['slug']}/media/preview.jpg`, fragments['slug'], config.description || "", config.tagline || "", config_yaml);
+        let content = lib_1.machine_header(fragments['product_name'], fragments['category'], `/pp/products/${fragments['slug']}/renderings/perspective.JPG`, fragments['slug'], config.description || "", config.tagline || "", config_yaml);
         content += products_description;
         let out_path = path.resolve(`${machines_directory}/${fragments['slug']}.md`);
         isDebug && debug.info(`Write jekyll machine page ${out_path}`);
