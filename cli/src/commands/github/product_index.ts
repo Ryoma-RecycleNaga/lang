@@ -2,7 +2,7 @@ import * as CLI from 'yargs';
 import * as debug from '../..';
 import * as utils from '../../lib/common/strings';
 import * as path from 'path';
-import { files, dir, read, write, toHTML, exists, machine_header } from '../../lib/';
+import { files, dir, read, write, toHTML, exists, machine_header, images, gallery_image } from '../../lib/';
 
 const defaultOptions = (yargs: CLI.Argv) => {
     return yargs.option('gh-product-index', {
@@ -119,13 +119,37 @@ export const register = (cli: CLI.Argv) => {
 
         const products_description = utils.substitute(fragments.machine, fragments);
 
+        let gallery = "";
+        if (fragments['gallery'] !== false && exists(path.resolve(`${machine_path}/media`))) {
+            gallery = "gallery:"
+            let _images = images(path.resolve(`${machine_path}/media`));
+            _images = _images.map((f)=>{
+                let _path = `/products/${fragments['slug']}/media/${path.parse(f).base}`;
+                return `${gallery_image(_path)}`;
+            }).join("") as any;
+            gallery += _images;
+        }
+
+        let gallery_social = "";
+        if (fragments['gallery_social'] !== false && exists(path.resolve(`${machine_path}/media/social`))) {
+            gallery_social = "\ngallery_social:"
+            let _images = images(path.resolve(`${machine_path}/media/social`));
+            _images = _images.map((f)=>{
+                let _path = `/products/${fragments['slug']}/media/social/${path.parse(f).base}`;
+                return `${gallery_image(_path)}`;
+            }).join("") as any;
+            gallery_social += _images;
+        }
+
         let content = machine_header(fragments['product_name'],
             fragments['category'],
             fragments['product_perspective'] ? fragments['product_perspective'] : `/pp/products/${fragments['slug']}/renderings/perspective.JPG`,
             fragments['slug'],
             config.description || "",
             config.tagline || "",
-            config_yaml);
+            config_yaml+
+            gallery+
+            gallery_social);
 
         content += products_description;
 

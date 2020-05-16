@@ -11,6 +11,13 @@ description: ${description || `"Precious Plastic - Howto : ${category} :: ${titl
 ${config}
 ---\n`;
 };
+exports.gallery_image = (path, title = "", alt = "") => {
+    return `
+ - url: ${path}
+   image_path: ${path}
+   alt: "${alt}"
+   title: "${title}"`;
+};
 exports.machine_header = (title, category, image, slug, description = "", tagline = "", config = "") => {
     return `---
 image: ${image}

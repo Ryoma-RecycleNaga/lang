@@ -11,6 +11,15 @@ ${config}
 ---\n`;
 }
 
+export const gallery_image = (path, title= "", alt ="") =>{
+   return `
+ - url: ${path}
+   image_path: ${path}
+   alt: "${alt}"
+   title: "${title}"`;
+}
+
+
 export const machine_header = (title, category, image, slug, description: string = "", tagline: string = "", config: string = "") => {
    return `---
 image: ${image}

@@ -107,7 +107,29 @@ exports.register = (cli) => {
         let config_yaml = lib_1.read(path.resolve(`${machine_path}/config.yaml`), 'string') || "";
         config_yaml = utils.substitute(config_yaml, fragments);
         const products_description = utils.substitute(fragments.machine, fragments);
-        let content = lib_1.machine_header(fragments['product_name'], fragments['category'], fragments['product_perspective'] ? fragments['product_perspective'] : `/pp/products/${fragments['slug']}/renderings/perspective.JPG`, fragments['slug'], config.description || "", config.tagline || "", config_yaml);
+        let gallery = "";
+        if (fragments['gallery'] !== false && lib_1.exists(path.resolve(`${machine_path}/media`))) {
+            gallery = "gallery:";
+            let _images = lib_1.images(path.resolve(`${machine_path}/media`));
+            _images = _images.map((f) => {
+                let _path = `/products/${fragments['slug']}/media/${path.parse(f).base}`;
+                return `${lib_1.gallery_image(_path)}`;
+            }).join("");
+            gallery += _images;
+        }
+        let gallery_social = "";
+        if (fragments['gallery_social'] !== false && lib_1.exists(path.resolve(`${machine_path}/media/social`))) {
+            gallery_social = "\ngallery_social:";
+            let _images = lib_1.images(path.resolve(`${machine_path}/media/social`));
+            _images = _images.map((f) => {
+                let _path = `/products/${fragments['slug']}/media/social/${path.parse(f).base}`;
+                return `${lib_1.gallery_image(_path)}`;
+            }).join("");
+            gallery_social += _images;
+        }
+        let content = lib_1.machine_header(fragments['product_name'], fragments['category'], fragments['product_perspective'] ? fragments['product_perspective'] : `/pp/products/${fragments['slug']}/renderings/perspective.JPG`, fragments['slug'], config.description || "", config.tagline || "", config_yaml +
+            gallery +
+            gallery_social);
         content += products_description;
         let out_path = path.resolve(`${machines_directory}/${fragments['slug']}.md`);
         isDebug && debug.info(`Write jekyll machine page ${out_path}`);
