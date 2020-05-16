@@ -121,7 +121,7 @@ export const register = (cli: CLI.Argv) => {
 
         let content = machine_header(fragments['product_name'],
             fragments['category'],
-            `/pp/products/${fragments['slug']}/renderings/perspective.JPG`,
+            fragments['product_perspective'] ? fragments['product_perspective'] : `/pp/products/${fragments['slug']}/renderings/perspective.JPG`,
             fragments['slug'],
             config.description || "",
             config.tagline || "",
