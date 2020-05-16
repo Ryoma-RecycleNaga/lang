@@ -45,7 +45,7 @@ export const register = (cli: CLI.Argv) => {
 
         // machine directory
         const machine_path = path.resolve(`${argv.products || config.products_path}/products/${argv.product}`);
-        
+
         const fragments_path = path.resolve(`${config.fragments_path}`);
 
         debug.info(fragments_path);
@@ -101,18 +101,29 @@ export const register = (cli: CLI.Argv) => {
         for (const key in fragments) {
             const resolved = utils.substitute(fragments[key], fragments);
             fragments[key] = resolved;
-            // isDebug && debug.info(`resolve ${key} to ${resolved}`);
+            if (key === 'detail') {
+                isDebug && debug.info(`resolve ${key} to ${resolved}`);
+            }
+        }
+
+        for (const key in fragments) {
+            const resolved = utils.substitute(fragments[key], fragments);
+            fragments[key] = resolved;
+            if (key === 'detail') {
+                // isDebug && debug.info(`resolve ${key} to ${resolved}`);
+            }
         }
 
         let config_yaml = read(path.resolve(`${machine_path}/config.yaml`), 'string') as any || "";
+        config_yaml = utils.substitute(config_yaml, fragments);
 
         const products_description = utils.substitute(fragments.machine, fragments);
-        
+
         let content = machine_header(fragments['product_name'],
             fragments['category'],
             `/pp/products/${fragments['slug']}/renderings/perspective.JPG`,
             fragments['slug'],
-            config.description || "", 
+            config.description || "",
             config.tagline || "",
             config_yaml);
 

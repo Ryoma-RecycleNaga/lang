@@ -93,9 +93,19 @@ exports.register = (cli) => {
         for (const key in fragments) {
             const resolved = utils.substitute(fragments[key], fragments);
             fragments[key] = resolved;
-            // isDebug && debug.info(`resolve ${key} to ${resolved}`);
+            if (key === 'detail') {
+                isDebug && debug.info(`resolve ${key} to ${resolved}`);
+            }
+        }
+        for (const key in fragments) {
+            const resolved = utils.substitute(fragments[key], fragments);
+            fragments[key] = resolved;
+            if (key === 'detail') {
+                // isDebug && debug.info(`resolve ${key} to ${resolved}`);
+            }
         }
         let config_yaml = lib_1.read(path.resolve(`${machine_path}/config.yaml`), 'string') || "";
+        config_yaml = utils.substitute(config_yaml, fragments);
         const products_description = utils.substitute(fragments.machine, fragments);
         let content = lib_1.machine_header(fragments['product_name'], fragments['category'], `/pp/products/${fragments['slug']}/renderings/perspective.JPG`, fragments['slug'], config.description || "", config.tagline || "", config_yaml);
         content += products_description;
