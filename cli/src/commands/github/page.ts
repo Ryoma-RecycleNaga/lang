@@ -3,6 +3,10 @@ import * as debug from '../..';
 import * as utils from '../../lib/common/strings';
 import * as path from 'path';
 import { files, dir, read, write, toHTML, exists, machine_header, images, gallery_image } from '../../lib';
+import { isArray } from 'util';
+
+
+const md_tables = require('markdown-table');
 
 const defaultOptions = (yargs: CLI.Argv) => {
     return yargs.option('src', {
@@ -46,6 +50,7 @@ export const register = (cli: CLI.Argv) => {
         const config = read(cPath, 'json') as any || {};
 
         const src_path = path.resolve(`${argv.src}`);
+        let parsed = path.parse(src_path);
 
         const dst_path = path.resolve(`${argv.dst}`);
         
@@ -59,7 +64,19 @@ export const register = (cli: CLI.Argv) => {
             return;
         }
 
+
         let fragments: any = { ...config };
+
+        let page_config = read(path.resolve(`${parsed.dir}/${parsed.name}.json`), 'json') as any || {};
+        if(Object.keys(page_config)){
+            for (const key in page_config) {
+                if(isArray(page_config[key])){
+                    page_config[key] = md_tables(page_config[key]);
+                }
+            }
+            fragments = {...fragments, ...page_config};
+        }
+
 
         // read all global fragments
         isDebug && debug.info(`Read global fragments at ${templates_path}`);
@@ -82,8 +99,6 @@ export const register = (cli: CLI.Argv) => {
         }
 
         let src = read(path.resolve(`${src_path}`), 'string') as any || "";
-
-        let parsed = path.parse(src_path);
 
         let page_yaml = read(path.resolve(`${parsed.dir}/${parsed.name}.yaml`), 'string') as any || "";
         page_yaml = utils.substitute(page_yaml, fragments);

@@ -13,6 +13,8 @@ const debug = require("../..");
 const utils = require("../../lib/common/strings");
 const path = require("path");
 const lib_1 = require("../../lib");
+const util_1 = require("util");
+const md_tables = require('markdown-table');
 const defaultOptions = (yargs) => {
     return yargs.option('src', {
         default: '',
@@ -50,6 +52,7 @@ exports.register = (cli) => {
         isDebug && debug.info(`read config at ${cPath}`);
         const config = lib_1.read(cPath, 'json') || {};
         const src_path = path.resolve(`${argv.src}`);
+        let parsed = path.parse(src_path);
         const dst_path = path.resolve(`${argv.dst}`);
         const templates_path = path.resolve(`${argv.templates}`);
         isDebug && debug.info(`\n Generate page for ${src_path},
@@ -59,6 +62,15 @@ exports.register = (cli) => {
             return;
         }
         let fragments = Object.assign({}, config);
+        let page_config = lib_1.read(path.resolve(`${parsed.dir}/${parsed.name}.json`), 'json') || {};
+        if (Object.keys(page_config)) {
+            for (const key in page_config) {
+                if (util_1.isArray(page_config[key])) {
+                    page_config[key] = md_tables(page_config[key]);
+                }
+            }
+            fragments = Object.assign(Object.assign({}, fragments), page_config);
+        }
         // read all global fragments
         isDebug && debug.info(`Read global fragments at ${templates_path}`);
         let tepmplate_files = lib_1.files(templates_path, '*.html');
@@ -75,7 +87,6 @@ exports.register = (cli) => {
             fragments[key] = resolved;
         }
         let src = lib_1.read(path.resolve(`${src_path}`), 'string') || "";
-        let parsed = path.parse(src_path);
         let page_yaml = lib_1.read(path.resolve(`${parsed.dir}/${parsed.name}.yaml`), 'string') || "";
         page_yaml = utils.substitute(page_yaml, fragments);
         const content = utils.substitute(src, fragments);
