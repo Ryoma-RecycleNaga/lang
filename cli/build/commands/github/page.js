@@ -65,8 +65,24 @@ exports.register = (cli) => {
         let page_config = lib_1.read(path.resolve(`${parsed.dir}/${parsed.name}.json`), 'json') || {};
         if (Object.keys(page_config)) {
             for (const key in page_config) {
-                if (util_1.isArray(page_config[key])) {
-                    page_config[key] = md_tables(page_config[key]);
+                let val = page_config[key];
+                if (util_1.isArray(val)) {
+                    page_config[key] = md_tables(val);
+                }
+                else if (util_1.isString(val)) {
+                    if (val.endsWith('.csv')) {
+                        let csv = path.resolve(`${parsed.dir}/${val}`);
+                        if (lib_1.exists(csv)) {
+                            csv = lib_1.read(csv) || "";
+                            try {
+                                csv = lib_1.csvToMarkdown(csv);
+                                page_config[key] = md_tables(val);
+                            }
+                            catch (e) {
+                                debug.error(`Error converting csv to md ${val}`);
+                            }
+                        }
+                    }
                 }
             }
             fragments = Object.assign(Object.assign({}, fragments), page_config);

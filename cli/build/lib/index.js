@@ -7,4 +7,5 @@ __export(require("./fs"));
 __export(require("./content/html"));
 __export(require("./content/front"));
 __export(require("./common/strings"));
+__export(require("./content/tables"));
 //# sourceMappingURL=index.js.map
