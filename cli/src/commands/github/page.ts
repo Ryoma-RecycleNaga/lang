@@ -81,7 +81,7 @@ export const register = (cli: CLI.Argv) => {
                             csv = read(csv) || "";
                             try{
                                 csv = csvToMarkdown(csv);
-                                page_config[key] = md_tables(val);
+                                page_config[key] = csv;
                             }catch(e){
                                 debug.error(`Error converting csv to md ${val}`);
                             }

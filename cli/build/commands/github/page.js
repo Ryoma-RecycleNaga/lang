@@ -76,7 +76,7 @@ exports.register = (cli) => {
                             csv = lib_1.read(csv) || "";
                             try {
                                 csv = lib_1.csvToMarkdown(csv);
-                                page_config[key] = md_tables(val);
+                                page_config[key] = csv;
                             }
                             catch (e) {
                                 debug.error(`Error converting csv to md ${val}`);
