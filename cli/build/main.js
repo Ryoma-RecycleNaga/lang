@@ -30,6 +30,8 @@ const product_index_1 = require("./commands/github/product_index");
 product_index_1.register(cli);
 const md_thumbs_1 = require("./commands/github/md_thumbs");
 md_thumbs_1.register(cli);
+const page_1 = require("./commands/github/page");
+page_1.register(cli);
 const argv = cli.argv;
 if (argv.h || argv.help) {
     cli.showHelp();
