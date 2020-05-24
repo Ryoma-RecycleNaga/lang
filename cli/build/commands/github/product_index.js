@@ -23,11 +23,7 @@ const defaultOptions = (yargs) => {
     }).option('format', {
         default: 'html',
         describe: 'selects the output format, can be \'html\' or \'md\''
-    }).option('old', {
-        default: 'false',
-        describe: 'output markdown for the old bazar'
-    })
-        .option('debug', {
+    }).option('debug', {
         default: 'true',
         describe: 'Enable internal debug message'
     });
@@ -47,6 +43,12 @@ exports.register = (cli) => {
         const config = lib_1.read(cPath, 'json');
         // jekyll machine pages root
         const machines_directory = path.resolve(`${argv.products}/_machines/`);
+        const templates_path = path.resolve(`${argv.products}/templates/jekyll`);
+        if (!lib_1.exists(templates_path)) {
+            debug.error(`\t Cant find templates at ${templates_path}, path doesn't exists`);
+            return;
+        }
+        const template_path = path.resolve(`${templates_path}/machine.md`);
         // machine directory
         const machine_path = path.resolve(`${argv.products || config.products_path}/products/${argv.product}`);
         const fragments_path = path.resolve(`${config.fragments_path}`);
@@ -100,9 +102,6 @@ exports.register = (cli) => {
         for (const key in fragments) {
             const resolved = utils.substitute(fragments[key], fragments);
             fragments[key] = resolved;
-            if (key === 'detail') {
-                // isDebug && debug.info(`resolve ${key} to ${resolved}`);
-            }
         }
         let config_yaml = lib_1.read(path.resolve(`${machine_path}/config.yaml`), 'string') || "";
         config_yaml = utils.substitute(config_yaml, fragments);

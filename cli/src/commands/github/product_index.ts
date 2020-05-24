@@ -14,14 +14,10 @@ const defaultOptions = (yargs: CLI.Argv) => {
     }).option('format', {
         default: 'html',
         describe: 'selects the output format, can be \'html\' or \'md\''
-    }).option('old', {
-        default: 'false',
-        describe: 'output markdown for the old bazar'
+    }).option('debug', {
+        default: 'true',
+        describe: 'Enable internal debug message'
     })
-        .option('debug', {
-            default: 'true',
-            describe: 'Enable internal debug message'
-        })
 };
 
 let options = (yargs: CLI.Argv) => defaultOptions(yargs);
@@ -42,6 +38,15 @@ export const register = (cli: CLI.Argv) => {
 
         // jekyll machine pages root
         const machines_directory = path.resolve(`${argv.products}/_machines/`);
+
+        const templates_path = path.resolve(`${argv.products}/templates/jekyll`);
+        if (!exists(templates_path)) {
+            debug.error(`\t Cant find templates at ${templates_path}, path doesn't exists`);
+            return;
+        }
+
+        const template_path = path.resolve(`${templates_path}/machine.md`);
+
 
         // machine directory
         const machine_path = path.resolve(`${argv.products || config.products_path}/products/${argv.product}`);
@@ -109,9 +114,6 @@ export const register = (cli: CLI.Argv) => {
         for (const key in fragments) {
             const resolved = utils.substitute(fragments[key], fragments);
             fragments[key] = resolved;
-            if (key === 'detail') {
-                // isDebug && debug.info(`resolve ${key} to ${resolved}`);
-            }
         }
 
         let config_yaml = read(path.resolve(`${machine_path}/config.yaml`), 'string') as any || "";
@@ -123,7 +125,7 @@ export const register = (cli: CLI.Argv) => {
         if (fragments['gallery'] !== false && exists(path.resolve(`${machine_path}/media`))) {
             gallery = "gallery:"
             let _images = images(path.resolve(`${machine_path}/media`));
-            _images = _images.map((f)=>{
+            _images = _images.map((f) => {
                 let _path = `/products/${fragments['slug']}/media/${path.parse(f).base}`;
                 return `${gallery_image(_path)}`;
             }).join("") as any;
@@ -134,7 +136,7 @@ export const register = (cli: CLI.Argv) => {
         if (fragments['gallery_social'] !== false && exists(path.resolve(`${machine_path}/media/social`))) {
             gallery_social = "\ngallery_social:"
             let _images = images(path.resolve(`${machine_path}/media/social`));
-            _images = _images.map((f)=>{
+            _images = _images.map((f) => {
                 let _path = `/products/${fragments['slug']}/media/social/${path.parse(f).base}`;
                 return `${gallery_image(_path)}`;
             }).join("") as any;
@@ -147,8 +149,8 @@ export const register = (cli: CLI.Argv) => {
             fragments['slug'],
             config.description || "",
             config.tagline || "",
-            config_yaml+
-            gallery+
+            config_yaml +
+            gallery +
             gallery_social);
 
         content += products_description;
