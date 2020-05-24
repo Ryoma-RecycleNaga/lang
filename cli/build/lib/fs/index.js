@@ -70,7 +70,7 @@ exports.thumbs = (source, meta = true, sep = "<hr/>") => {
                 content += "\n";
             }
         }
-        content += html_1.img(`./${path.parse(f).base}`);
+        content += html_1.img(`./${path.parse(f).base}`, path.parse(f).base);
         content += "\n";
         content += sep;
     });

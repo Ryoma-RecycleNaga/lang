@@ -60,8 +60,8 @@ export const thumbs = (source: string, meta: boolean = true, sep: string = "<hr/
                 content += "\n";
             }
         }
-        
-        content += img(`./${path.parse(f).base}`);
+
+        content += img(`./${path.parse(f).base}`, path.parse(f).base);
         content += "\n";
         content += sep;
     });
