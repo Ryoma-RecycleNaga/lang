@@ -5,7 +5,7 @@ import * as CLI from 'yargs';
 
 import * as utils from '../../lib/common/strings';
 import { files, dir, read, write, csvToMarkdown, toHTML, exists, machine_header, images, gallery_image } from '../../lib/';
-
+import { html_beautify } from 'js-beautify';
 
 const md_tables = require('markdown-table');
 
@@ -34,13 +34,20 @@ export const parse_config = (config, root) => {
   }
 }
 
-export const read_fragments = (src, config) => {
+export const md_edit_wrap = (content, f, prefix = '', context = '') => {
+  return html_beautify(`<div prefix="${prefix}" file="${path.parse(f).base}" context="${context}" class="fragment">${content}</div>`);
+}
+
+export const read_fragments = (src, config, prefix = '', context = '') => {
 
   let fragments = files(src, '*.html');
-  fragments.map((f) => config[path.parse(f).name] = toHTML(f, true));
+  fragments.map((f) => {
+    config[path.parse(f).name] = md_edit_wrap(toHTML(f, true), f, prefix, context);
+  });
 
   fragments = files(src, '*.md');
-  fragments.map((f) => config[path.parse(f).name] = toHTML(f, false));
-
+  fragments.map((f) => {
+    config[path.parse(f).name] = md_edit_wrap(toHTML(f, false), f, prefix, context);
+  });
   return config;
 }

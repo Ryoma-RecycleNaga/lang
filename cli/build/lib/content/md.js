@@ -31,11 +31,18 @@ exports.parse_config = (config, root) => {
         }
     }
 };
-exports.read_fragments = (src, config) => {
+exports.md_edit_wrap = (content, f, prefix = '', context = '') => {
+    return `<div prefix="${prefix}" file="${path.parse(f).base}" context="${context}" class="fragment">${content}</div>`;
+};
+exports.read_fragments = (src, config, prefix = '', context = '') => {
     let fragments = lib_1.files(src, '*.html');
-    fragments.map((f) => config[path.parse(f).name] = lib_1.toHTML(f, true));
+    fragments.map((f) => {
+        config[path.parse(f).name] = exports.md_edit_wrap(lib_1.toHTML(f, true), f, prefix, context);
+    });
     fragments = lib_1.files(src, '*.md');
-    fragments.map((f) => config[path.parse(f).name] = lib_1.toHTML(f, false));
+    fragments.map((f) => {
+        config[path.parse(f).name] = exports.md_edit_wrap(lib_1.toHTML(f, false), f, prefix, context);
+    });
     return config;
 };
 //# sourceMappingURL=md.js.map

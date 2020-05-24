@@ -87,7 +87,7 @@ export const register = (cli: CLI.Argv) => {
         let header = read(path.resolve(`${templates_path}/howto.header.md`), 'string') as any || "";
         let footer = read(path.resolve(`${templates_path}/howto.footer.md`), 'string') as any || "";
 
-        read_fragments(source_path, config);
+        read_fragments(source_path, config, rel, "md:thumbs");
 
         parse_config(config, path.parse(source_path));
 
