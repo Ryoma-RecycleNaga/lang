@@ -37,6 +37,27 @@ export const register = (cli: CLI.Argv) => {
 
         const source_path = path.resolve(argv.source as any);
         const root_path = path.resolve(argv.root as any);
+        if (!exists(root_path)) {
+            debug.error(`\t Cant find root path at ${root_path}, path doesn't exists`);
+            return;
+        }
+
+        const templates_path = path.resolve(`${root_path}/templates/jekyll`);
+        if (!exists(templates_path)) {
+            debug.error(`\t Cant find templates at ${templates_path}, path doesn't exists`);
+            return;
+        }
+
+        const template_path = path.resolve(`${templates_path}/howto.md`);
+
+        if (!exists(template_path)) {
+            debug.error(`\t Cant find template at ${template_path}, path doesn't exists`);
+            return;
+        }
+
+        const template = read(template_path, 'string');
+
+
         const target_path = `${source_path}/${argv.outfile}`;
         const _images = images(source_path);
         isDebug && debug.info(`\n Generate thumbs from ${source_path} to ${target_path}`);
@@ -47,32 +68,36 @@ export const register = (cli: CLI.Argv) => {
         }
         resize && await resize_images(_images);
         let content;
-        if(exists(path.resolve(`${source_path}/Readme.md`))){
+        if (exists(path.resolve(`${source_path}/Readme.md`))) {
             content = toHTML(path.resolve(`${source_path}/Readme.md`), true);
-        }else{
+        } else {
             content = thumbs(source_path, true);
         }
-        
+
         let title = path.parse(source_path).base.toLowerCase().replace('-', ' ').replace('_', ' ').replace(/\b\w/g, l => l.toUpperCase());
         let rel = path.relative(root_path, source_path);
         const image = '/pp/' + slash(rel) + '/' + path.parse(tail_image(_images) as any).base;
-        
+
         const config = read(path.resolve(`${source_path}/config.json`), 'json') as any || {};
 
         let config_yaml = read(path.resolve(`${source_path}/config.yaml`), 'string') as any || "";
 
-        let header = read(path.resolve(`${root_path}/templates/jekyll/howto.header.md`), 'string') as any || "";
-        let footer = read(path.resolve(`${root_path}/templates/jekyll/howto.footer.md`), 'string') as any || "";
+        let header = read(path.resolve(`${templates_path}/howto.header.md`), 'string') as any || "";
+        let footer = read(path.resolve(`${templates_path}/howto.footer.md`), 'string') as any || "";
 
         header = substitute(header, config);
         footer = substitute(footer, config);
-
-        const fmHead = howto_header(config.title || title, config.category || "", config.image || image, config.description || "", config.tagline || "", config_yaml);
-        content = fmHead + '\n\n' + header + content + footer;
-        // debug.info('test' , path.resolve(`${root_path}/_howto/how-to-${path.parse(source_path).name}.md`));
-        write(target_path, content);
-
-        // write(path.resolve(`${root_path}/_howto/how-to-${path.parse(source_path).name}.md`), content);
+        let out = substitute(template, {
+            ...config,
+            image: image,
+            title,
+            header,
+            footer,
+            content,
+            config: config_yaml,
+            description: config.description || ""
+        })
+        write(target_path, out);
     });
 };
 

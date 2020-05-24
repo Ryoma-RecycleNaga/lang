@@ -40,6 +40,21 @@ exports.register = (cli) => {
         const resize = argv.resize === 'true';
         const source_path = path.resolve(argv.source);
         const root_path = path.resolve(argv.root);
+        if (!lib_1.exists(root_path)) {
+            debug.error(`\t Cant find root path at ${root_path}, path doesn't exists`);
+            return;
+        }
+        const templates_path = path.resolve(`${root_path}/templates/jekyll`);
+        if (!lib_1.exists(templates_path)) {
+            debug.error(`\t Cant find templates at ${templates_path}, path doesn't exists`);
+            return;
+        }
+        const template_path = path.resolve(`${templates_path}/howto.md`);
+        if (!lib_1.exists(template_path)) {
+            debug.error(`\t Cant find template at ${template_path}, path doesn't exists`);
+            return;
+        }
+        const template = lib_1.read(template_path, 'string');
         const target_path = `${source_path}/${argv.outfile}`;
         const _images = lib_1.images(source_path);
         isDebug && debug.info(`\n Generate thumbs from ${source_path} to ${target_path}`);
@@ -60,15 +75,15 @@ exports.register = (cli) => {
         const image = '/pp/' + slash(rel) + '/' + path.parse(lib_1.tail_image(_images)).base;
         const config = lib_1.read(path.resolve(`${source_path}/config.json`), 'json') || {};
         let config_yaml = lib_1.read(path.resolve(`${source_path}/config.yaml`), 'string') || "";
-        let header = lib_1.read(path.resolve(`${root_path}/templates/jekyll/howto.header.md`), 'string') || "";
-        let footer = lib_1.read(path.resolve(`${root_path}/templates/jekyll/howto.footer.md`), 'string') || "";
+        let header = lib_1.read(path.resolve(`${templates_path}/howto.header.md`), 'string') || "";
+        let footer = lib_1.read(path.resolve(`${templates_path}/howto.footer.md`), 'string') || "";
         header = strings_1.substitute(header, config);
         footer = strings_1.substitute(footer, config);
-        const fmHead = lib_1.howto_header(config.title || title, config.category || "", config.image || image, config.description || "", config.tagline || "", config_yaml);
-        content = fmHead + '\n\n' + header + content + footer;
-        // debug.info('test' , path.resolve(`${root_path}/_howto/how-to-${path.parse(source_path).name}.md`));
-        lib_1.write(target_path, content);
-        // write(path.resolve(`${root_path}/_howto/how-to-${path.parse(source_path).name}.md`), content);
+        let out = strings_1.substitute(template, Object.assign(Object.assign({}, config), { image: image, title,
+            header,
+            footer,
+            content, config: config_yaml, description: config.description || "" }));
+        lib_1.write(target_path, out);
     }));
 };
 //# sourceMappingURL=md_thumbs.js.map

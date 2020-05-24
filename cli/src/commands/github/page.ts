@@ -4,7 +4,7 @@ import * as utils from '../../lib/common/strings';
 import * as path from 'path';
 import { files, dir, read, write, toHTML, exists, machine_header, images, gallery_image, csvToMarkdown } from '../../lib';
 import { isArray, isString } from 'util';
-import ifElse from 'ramda/es/ifElse';
+
 
 
 const md_tables = require('markdown-table');
