@@ -50,12 +50,14 @@ export const register = (cli: CLI.Argv) => {
 
         const template_path = path.resolve(`${templates_path}/howto.md`);
 
+        const template_local = read(path.resolve(`${source_path}/teamplate.md`), 'string') || '';
+
         if (!exists(template_path)) {
             debug.error(`\t Cant find template at ${template_path}, path doesn't exists`);
             return;
         }
 
-        const template = read(template_path, 'string');
+        const template = template_local || read(template_path, 'string');
 
 
         const target_path = `${source_path}/${argv.outfile}`;
@@ -85,15 +87,21 @@ export const register = (cli: CLI.Argv) => {
         let header = read(path.resolve(`${templates_path}/howto.header.md`), 'string') as any || "";
         let footer = read(path.resolve(`${templates_path}/howto.footer.md`), 'string') as any || "";
 
-        header = substitute(header, config);
-        footer = substitute(footer, config);
+        config.header = substitute(header, config);
+        config.footer = substitute(footer, config);
+
+        for (const key in config) {
+            const resolved = substitute(config[key], config);
+            config[key] = resolved;
+        }
+
         let out = substitute(template, {
             ...config,
             image: image,
             title,
             header,
             footer,
-            content,
+            thumbs: content,
             config: config_yaml,
             description: config.description || ""
         })
