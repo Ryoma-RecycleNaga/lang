@@ -1,7 +1,10 @@
 import * as debug from '../..';
 import * as path from 'path';
-import { read, exists, csvToMarkdown } from '../../lib';
 import { isArray, isString } from 'util';
+import * as CLI from 'yargs';
+
+import * as utils from '../../lib/common/strings';
+import { files, dir, read, write, csvToMarkdown, toHTML, exists, machine_header, images, gallery_image } from '../../lib/';
 
 
 const md_tables = require('markdown-table');
@@ -29,4 +32,15 @@ export const parse_config = (config, root) => {
       }
     }
   }
+}
+
+export const read_fragments = (src, config) => {
+
+  let fragments = files(src, '*.html');
+  fragments.map((f) => config[path.parse(f).name] = toHTML(f, true));
+
+  fragments = files(src, '*.md');
+  fragments.map((f) => config[path.parse(f).name] = toHTML(f, false));
+
+  return config;
 }

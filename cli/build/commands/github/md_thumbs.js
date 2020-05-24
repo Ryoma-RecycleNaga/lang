@@ -50,7 +50,7 @@ exports.register = (cli) => {
             return;
         }
         const template_path = path.resolve(`${templates_path}/howto.md`);
-        const template_local = lib_1.read(path.resolve(`${source_path}/teamplate.md`), 'string') || '';
+        const template_local = lib_1.read(path.resolve(`${source_path}/template.md`), 'string') || '';
         if (!lib_1.exists(template_path)) {
             debug.error(`\t Cant find template at ${template_path}, path doesn't exists`);
             return;
@@ -78,16 +78,16 @@ exports.register = (cli) => {
         let config_yaml = lib_1.read(path.resolve(`${source_path}/config.yaml`), 'string') || "";
         let header = lib_1.read(path.resolve(`${templates_path}/howto.header.md`), 'string') || "";
         let footer = lib_1.read(path.resolve(`${templates_path}/howto.footer.md`), 'string') || "";
+        lib_1.read_fragments(source_path, config);
         lib_1.parse_config(config, path.parse(source_path));
-        config.header = strings_1.substitute(header, config);
-        config.footer = strings_1.substitute(footer, config);
+        config.header_global = strings_1.substitute(header, config);
+        config.footer_global = strings_1.substitute(footer, config);
         for (const key in config) {
             const resolved = strings_1.substitute(config[key], config);
             config[key] = resolved;
+            // console.log('key '  + key,config[key]);
         }
-        let out = strings_1.substitute(template, Object.assign(Object.assign({}, config), { image: image, title,
-            header,
-            footer, thumbs: content, config: config_yaml, description: config.description || "" }));
+        let out = strings_1.substitute(template, Object.assign(Object.assign({}, config), { image: image, title, thumbs: content, config: config_yaml, description: config.description || "" }));
         lib_1.write(target_path, out);
     }));
 };

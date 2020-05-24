@@ -4,7 +4,7 @@ import { capitalize, substitute } from '../../lib/common/strings';
 import * as path from 'path';
 const slash = require('slash');
 
-import { write, exists, read, thumbs, images, resize_images, tail_image, howto_header, toHTML, parse_config } from '../../lib/';
+import { write, exists, read, thumbs, images, resize_images, tail_image, howto_header, toHTML, parse_config, read_fragments } from '../../lib/';
 import { parse } from 'querystring';
 
 const defaultOptions = (yargs: CLI.Argv) => {
@@ -51,7 +51,7 @@ export const register = (cli: CLI.Argv) => {
 
         const template_path = path.resolve(`${templates_path}/howto.md`);
 
-        const template_local = read(path.resolve(`${source_path}/teamplate.md`), 'string') || '';
+        const template_local = read(path.resolve(`${source_path}/template.md`), 'string') || '';
 
         if (!exists(template_path)) {
             debug.error(`\t Cant find template at ${template_path}, path doesn't exists`);
@@ -59,7 +59,6 @@ export const register = (cli: CLI.Argv) => {
         }
 
         const template = template_local || read(template_path, 'string');
-
 
         const target_path = `${source_path}/${argv.outfile}`;
         const _images = images(source_path);
@@ -88,15 +87,18 @@ export const register = (cli: CLI.Argv) => {
         let header = read(path.resolve(`${templates_path}/howto.header.md`), 'string') as any || "";
         let footer = read(path.resolve(`${templates_path}/howto.footer.md`), 'string') as any || "";
 
+        read_fragments(source_path, config);
 
-        parse_config(config,path.parse(source_path));
-        
-        config.header = substitute(header, config);
-        config.footer = substitute(footer, config);
+        parse_config(config, path.parse(source_path));
+
+        config.header_global = substitute(header, config);
+        config.footer_global = substitute(footer, config);
 
         for (const key in config) {
             const resolved = substitute(config[key], config);
             config[key] = resolved;
+
+            // console.log('key '  + key,config[key]);
         }
 
 
@@ -104,8 +106,6 @@ export const register = (cli: CLI.Argv) => {
             ...config,
             image: image,
             title,
-            header,
-            footer,
             thumbs: content,
             config: config_yaml,
             description: config.description || ""

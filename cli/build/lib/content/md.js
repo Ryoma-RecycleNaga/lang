@@ -2,8 +2,8 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const debug = require("../..");
 const path = require("path");
-const lib_1 = require("../../lib");
 const util_1 = require("util");
+const lib_1 = require("../../lib/");
 const md_tables = require('markdown-table');
 exports.parse_config = (config, root) => {
     if (Object.keys(config)) {
@@ -30,5 +30,12 @@ exports.parse_config = (config, root) => {
             }
         }
     }
+};
+exports.read_fragments = (src, config) => {
+    let fragments = lib_1.files(src, '*.html');
+    fragments.map((f) => config[path.parse(f).name] = lib_1.toHTML(f, true));
+    fragments = lib_1.files(src, '*.md');
+    fragments.map((f) => config[path.parse(f).name] = lib_1.toHTML(f, false));
+    return config;
 };
 //# sourceMappingURL=md.js.map
