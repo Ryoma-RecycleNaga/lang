@@ -4,7 +4,8 @@ import { capitalize, substitute } from '../../lib/common/strings';
 import * as path from 'path';
 const slash = require('slash');
 
-import { write, exists, read, thumbs, images, resize_images, tail_image, howto_header, toHTML } from '../../lib/';
+import { write, exists, read, thumbs, images, resize_images, tail_image, howto_header, toHTML, parse_config } from '../../lib/';
+import { parse } from 'querystring';
 
 const defaultOptions = (yargs: CLI.Argv) => {
     return yargs.option('source', {
@@ -87,6 +88,9 @@ export const register = (cli: CLI.Argv) => {
         let header = read(path.resolve(`${templates_path}/howto.header.md`), 'string') as any || "";
         let footer = read(path.resolve(`${templates_path}/howto.footer.md`), 'string') as any || "";
 
+
+        parse_config(config,path.parse(source_path));
+        
         config.header = substitute(header, config);
         config.footer = substitute(footer, config);
 
@@ -94,6 +98,7 @@ export const register = (cli: CLI.Argv) => {
             const resolved = substitute(config[key], config);
             config[key] = resolved;
         }
+
 
         let out = substitute(template, {
             ...config,

@@ -78,6 +78,7 @@ exports.register = (cli) => {
         let config_yaml = lib_1.read(path.resolve(`${source_path}/config.yaml`), 'string') || "";
         let header = lib_1.read(path.resolve(`${templates_path}/howto.header.md`), 'string') || "";
         let footer = lib_1.read(path.resolve(`${templates_path}/howto.footer.md`), 'string') || "";
+        lib_1.parse_config(config, path.parse(source_path));
         config.header = strings_1.substitute(header, config);
         config.footer = strings_1.substitute(footer, config);
         for (const key in config) {

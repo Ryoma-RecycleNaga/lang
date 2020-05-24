@@ -2,10 +2,8 @@ import * as CLI from 'yargs';
 import * as debug from '../..';
 import * as utils from '../../lib/common/strings';
 import * as path from 'path';
-import { files, dir, read, write, toHTML, exists, machine_header, images, gallery_image, csvToMarkdown } from '../../lib';
+import { files, read, write, toHTML, exists, csvToMarkdown, parse_config } from '../../lib';
 import { isArray, isString } from 'util';
-
-
 
 const md_tables = require('markdown-table');
 
@@ -70,25 +68,7 @@ export const register = (cli: CLI.Argv) => {
 
         let page_config = read(path.resolve(`${parsed.dir}/${parsed.name}.json`), 'json') as any || {};
         if(Object.keys(page_config)){
-            for (const key in page_config) {
-                let val = page_config[key];
-                if(isArray(val)){
-                    page_config[key] = md_tables(val);
-                }else if(isString(val)){
-                    if(val.endsWith('.csv')){
-                        let csv = path.resolve(`${parsed.dir}/${val}`) as any;
-                        if(exists(csv)){
-                            csv = read(csv) || "";
-                            try{
-                                csv = csvToMarkdown(csv);
-                                page_config[key] = csv;
-                            }catch(e){
-                                debug.error(`Error converting csv to md ${val}`);
-                            }
-                        }
-                    }
-                }
-            }
+            parse_config(page_config,parsed.dir);
             fragments = {...fragments, ...page_config};
         }
 
