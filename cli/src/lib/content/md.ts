@@ -1,10 +1,8 @@
 import * as debug from '../..';
 import * as path from 'path';
 import { isArray, isString } from 'util';
-import * as CLI from 'yargs';
 
-import * as utils from '../../lib/common/strings';
-import { files, dir, read, write, csvToMarkdown, toHTML, exists, machine_header, images, gallery_image } from '../../lib/';
+import { files, read, csvToMarkdown, toHTML, exists } from '../../lib/';
 import { html_beautify } from 'js-beautify';
 
 const md_tables = require('markdown-table');
@@ -17,8 +15,9 @@ export const parse_config = (config, root) => {
         config[key] = md_tables(val);
       } else if (isString(val)) {
         if (val.endsWith('.csv')) {
+          debug.info("parsing CSV " + val);
           const parsed = path.parse(root);
-          let csv = path.resolve(`${parsed.dir}/${val}`) as any;
+          let csv = path.resolve(`${parsed.dir}/${parsed.base}/${val}`) as any;
           if (exists(csv)) {
             csv = read(csv) || "";
             try {
@@ -27,6 +26,8 @@ export const parse_config = (config, root) => {
             } catch (e) {
               debug.error(`Error converting csv to md ${val}`);
             }
+          }else{
+            debug.error(`Can't find CSV file at ${csv}`,parsed);
           }
         }
       }

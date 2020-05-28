@@ -1,9 +1,11 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.read_fragments = exports.md_edit_wrap = exports.parse_config = void 0;
 const debug = require("../..");
 const path = require("path");
 const util_1 = require("util");
 const lib_1 = require("../../lib/");
+const js_beautify_1 = require("js-beautify");
 const md_tables = require('markdown-table');
 exports.parse_config = (config, root) => {
     if (Object.keys(config)) {
@@ -14,8 +16,9 @@ exports.parse_config = (config, root) => {
             }
             else if (util_1.isString(val)) {
                 if (val.endsWith('.csv')) {
+                    debug.info("parsing CSV " + val);
                     const parsed = path.parse(root);
-                    let csv = path.resolve(`${parsed.dir}/${val}`);
+                    let csv = path.resolve(`${parsed.dir}/${parsed.base}/${val}`);
                     if (lib_1.exists(csv)) {
                         csv = lib_1.read(csv) || "";
                         try {
@@ -26,13 +29,16 @@ exports.parse_config = (config, root) => {
                             debug.error(`Error converting csv to md ${val}`);
                         }
                     }
+                    else {
+                        debug.error(`Can't find CSV file at ${csv}`, parsed);
+                    }
                 }
             }
         }
     }
 };
 exports.md_edit_wrap = (content, f, prefix = '', context = '') => {
-    return `<div prefix="${prefix}" file="${path.parse(f).base}" context="${context}" class="fragment">${content}</div>`;
+    return js_beautify_1.html_beautify(`<div prefix="${prefix}" file="${path.parse(f).base}" context="${context}" class="fragment">${content}</div>`);
 };
 exports.read_fragments = (src, config, prefix = '', context = '') => {
     let fragments = lib_1.files(src, '*.html');

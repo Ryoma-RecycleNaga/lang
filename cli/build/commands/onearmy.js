@@ -9,6 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.register = void 0;
 const crawler_1 = require("../lib/net/crawler");
 const path = require("path");
 const exists_1 = require("@xblox/fs/exists");

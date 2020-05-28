@@ -9,6 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.register = void 0;
 const debug = require("../..");
 const utils = require("../../lib/common/strings");
 const path = require("path");
@@ -91,6 +92,7 @@ exports.register = (cli) => {
             fragments = Object.assign(Object.assign({}, fragments), lib_1.read(path.resolve(`${machine_path}/config.json`), 'json'));
             isDebug && debug.info(`Loaded machine variables`);
         }
+        lib_1.parse_config(fragments, machine_path);
         // compile and write out
         for (const key in fragments) {
             const resolved = utils.substitute(fragments[key], fragments);

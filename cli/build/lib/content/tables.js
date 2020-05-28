@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.csvToMarkdown = void 0;
 /**
  * Converts CSV to Markdown Table
  *
@@ -8,7 +9,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
  * @param {boolean} hasHeader - Whether to use the first row of Data as headers
  * @returns {string}
  */
-function csvToMarkdown(csvContent, delimiter = "\t", hasHeader = false) {
+function csvToMarkdown(csvContent, delimiter = ",", hasHeader = true) {
     if (delimiter != "\t") {
         csvContent = csvContent.replace(/\t/g, "    ");
     }
@@ -63,7 +64,7 @@ function csvToMarkdown(csvContent, delimiter = "\t", hasHeader = false) {
             rowOutput += "| \n";
         }
     });
-    return `${headerOutput}${seperatorOutput}${rowOutput}`;
+    return `\n\n ${headerOutput}${seperatorOutput}${rowOutput} \n\n`;
 }
 exports.csvToMarkdown = csvToMarkdown;
 //# sourceMappingURL=tables.js.map

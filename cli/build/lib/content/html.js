@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.img = void 0;
 exports.img = (file, id = '') => {
     return `<div class="thumb">
             <a href="${file}" _target="_blank" >

@@ -9,6 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.register = void 0;
 const debug = require("../..");
 const strings_1 = require("../../lib/common/strings");
 const path = require("path");

@@ -9,6 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.Helper = exports.Process = exports.STATUS = void 0;
 const debug = require("../../log");
 const child_process_1 = require("child_process");
 const platform_1 = require("../common/platform");

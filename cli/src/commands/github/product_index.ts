@@ -2,7 +2,7 @@ import * as CLI from 'yargs';
 import * as debug from '../..';
 import * as utils from '../../lib/common/strings';
 import * as path from 'path';
-import { files, dir, read, write, toHTML, exists, machine_header, images, gallery_image } from '../../lib/';
+import { files, dir, read, write, toHTML, exists, machine_header, images, gallery_image, parse_config } from '../../lib/';
 
 const defaultOptions = (yargs: CLI.Argv) => {
     return yargs.option('gh-product-index', {
@@ -101,6 +101,8 @@ export const register = (cli: CLI.Argv) => {
             isDebug && debug.info(`Loaded machine variables`);
         }
 
+        parse_config(fragments, machine_path);
+
         // compile and write out
 
         for (const key in fragments) {
@@ -119,6 +121,7 @@ export const register = (cli: CLI.Argv) => {
         let config_yaml = read(path.resolve(`${machine_path}/config.yaml`), 'string') as any || "";
         config_yaml = utils.substitute(config_yaml, fragments);
 
+        
         const products_description = utils.substitute(fragments.machine, fragments);
 
         let gallery = "";
