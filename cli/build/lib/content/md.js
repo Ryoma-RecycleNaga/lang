@@ -12,7 +12,7 @@ exports.parse_config = (config, root) => {
         for (const key in config) {
             let val = config[key];
             if (util_1.isArray(val)) {
-                config[key] = md_tables(val);
+                config[key] = lib_1.md2html(md_tables(val));
             }
             else if (util_1.isString(val)) {
                 if (val.endsWith('.csv')) {

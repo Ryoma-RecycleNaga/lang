@@ -12,7 +12,7 @@ export const parse_config = (config, root) => {
     for (const key in config) {
       let val = config[key];
       if (isArray(val)) {
-        config[key] = md_tables(val);
+        config[key] = md2html(md_tables(val));
       } else if (isString(val)) {
         if (val.endsWith('.csv')) {
           debug.info("parsing CSV " + val);
