@@ -38,6 +38,13 @@ export async function resize_images (files) {
     });
 }
 
+export const md2html = (content) => {
+    let converter = new Converter({ tables: true });
+    converter.setOption('literalMidWordUnderscores', 'true');
+    return converter.makeHtml(content);
+}
+
+
 export const toHTML = (path, markdown) => {
     const content = read(path, 'string') as string;
     if (!markdown) {

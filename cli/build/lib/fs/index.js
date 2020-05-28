@@ -9,7 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.thumbs = exports.toHTML = exports.resize_images = exports.tail_image = exports.head_image = exports.images = exports.files = void 0;
+exports.thumbs = exports.toHTML = exports.md2html = exports.resize_images = exports.tail_image = exports.head_image = exports.images = exports.files = void 0;
 const fg = require('fast-glob');
 const path = require("path");
 const bluebird = require("bluebird");
@@ -49,6 +49,11 @@ function resize_images(files) {
     });
 }
 exports.resize_images = resize_images;
+exports.md2html = (content) => {
+    let converter = new showdown_1.Converter({ tables: true });
+    converter.setOption('literalMidWordUnderscores', 'true');
+    return converter.makeHtml(content);
+};
 exports.toHTML = (path, markdown) => {
     const content = read_1.sync(path, 'string');
     if (!markdown) {

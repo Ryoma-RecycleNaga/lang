@@ -2,7 +2,7 @@ import * as debug from '../..';
 import * as path from 'path';
 import { isArray, isString } from 'util';
 
-import { files, read, csvToMarkdown, toHTML, exists } from '../../lib/';
+import { files, read, csvToMarkdown, toHTML, md2html, exists } from '../../lib/';
 import { html_beautify } from 'js-beautify';
 
 const md_tables = require('markdown-table');
@@ -21,7 +21,7 @@ export const parse_config = (config, root) => {
           if (exists(csv)) {
             csv = read(csv) || "";
             try {
-              csv = csvToMarkdown(csv);
+              csv = md2html(csvToMarkdown(csv));
               config[key] = csv;
             } catch (e) {
               debug.error(`Error converting csv to md ${val}`);

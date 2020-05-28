@@ -22,7 +22,7 @@ exports.parse_config = (config, root) => {
                     if (lib_1.exists(csv)) {
                         csv = lib_1.read(csv) || "";
                         try {
-                            csv = lib_1.csvToMarkdown(csv);
+                            csv = lib_1.md2html(lib_1.csvToMarkdown(csv));
                             config[key] = csv;
                         }
                         catch (e) {
