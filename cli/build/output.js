@@ -1,6 +1,5 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.render = exports.file = exports.stdout = void 0;
 const write_1 = require("@xblox/fs/write");
 const types_1 = require("./types");
 const log_1 = require("./log");

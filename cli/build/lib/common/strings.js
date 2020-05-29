@@ -1,6 +1,5 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.utf8 = exports.hex = exports.base64 = exports.ascii = exports.substitute = exports.replace = exports.replaceAll = exports.multipleReplace = exports.findOcurrences = exports.escapeRegExp = exports.createUUID = exports.escapeXml = exports.escapeRegExpEx = exports.getJson = exports.capitalize = exports.LOW_SURROGATE_MAX = exports.LOW_SURROGATE_MIN = exports.HIGH_SURROGATE_MAX = exports.HIGH_SURROGATE_MIN = exports.disableFlag = exports.hasFlagHex = exports.hasFlag = exports.DefaultDelimiter = void 0;
 const primitives_1 = require("./primitives");
 const lodash_1 = require("lodash");
 const escapeRegExpPattern = /[[\]{}()|\/\\^$.*+?]/g;

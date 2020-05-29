@@ -1,6 +1,5 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.firstOf = exports.lastOf = void 0;
 /**
  * Return last element
  * @private
