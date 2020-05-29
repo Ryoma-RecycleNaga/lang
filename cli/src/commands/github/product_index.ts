@@ -51,7 +51,7 @@ export const register = (cli: CLI.Argv) => {
         // machine directory
         const machine_path = path.resolve(`${argv.products || config.products_path}/products/${argv.product}`);
 
-        const fragments_path = path.resolve(`${config.fragments_path}`);
+        const fragments_path = path.resolve(`${templates_path}`);
 
         debug.info(fragments_path);
 
@@ -109,7 +109,7 @@ export const register = (cli: CLI.Argv) => {
             const resolved = utils.substitute(fragments[key], fragments);
             fragments[key] = resolved;
             if (key === 'detail') {
-                isDebug && debug.info(`resolve ${key} to ${resolved}`);
+                // isDebug && debug.info(`resolve ${key} to ${resolved}`);
             }
         }
 
@@ -122,6 +122,11 @@ export const register = (cli: CLI.Argv) => {
         config_yaml = utils.substitute(config_yaml, fragments);
 
         
+        if(!fragments.machine){
+            debug.error(`Have no machine template! : ${machine_path} - ${templates_path}`);
+            return;
+        }
+
         const products_description = utils.substitute(fragments.machine, fragments);
 
         let gallery = "";
@@ -146,6 +151,18 @@ export const register = (cli: CLI.Argv) => {
             gallery_social += _images;
         }
 
+        let gallery_drawings = "";
+        if (fragments['gallery_drawings'] !== false && exists(path.resolve(`${machine_path}/drawings`))) {
+            gallery_drawings = "\ngallery_drawings:"
+            let _images = images(path.resolve(`${machine_path}/drawings`));
+            debug.info(`Read drawings at ${path.resolve(`${machine_path}/drawings`)} ${_images.length}` );
+            _images = _images.map((f) => {
+                let _path = `/products/${fragments['slug']}/drawings/${path.parse(f).base}`;
+                return `${gallery_image(_path)}`;
+            }).join("") as any;
+            gallery_drawings += _images;
+        }
+
         let content = machine_header(fragments['product_name'],
             fragments['category'],
             fragments['product_perspective'] ? fragments['product_perspective'] : `/pp/products/${fragments['slug']}/renderings/perspective.JPG`,
@@ -154,7 +171,8 @@ export const register = (cli: CLI.Argv) => {
             config.tagline || "",
             config_yaml +
             gallery +
-            gallery_social);
+            gallery_social + 
+            gallery_drawings);
 
         content += products_description;
 

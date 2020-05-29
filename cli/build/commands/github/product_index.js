@@ -52,7 +52,7 @@ exports.register = (cli) => {
         const template_path = path.resolve(`${templates_path}/machine.md`);
         // machine directory
         const machine_path = path.resolve(`${argv.products || config.products_path}/products/${argv.product}`);
-        const fragments_path = path.resolve(`${config.fragments_path}`);
+        const fragments_path = path.resolve(`${templates_path}`);
         debug.info(fragments_path);
         isDebug && debug.info(`\n Generate machine description for ${argv.product}, reading from ${machine_path},
             using fragments at ${fragments_path}`);
@@ -98,7 +98,7 @@ exports.register = (cli) => {
             const resolved = utils.substitute(fragments[key], fragments);
             fragments[key] = resolved;
             if (key === 'detail') {
-                isDebug && debug.info(`resolve ${key} to ${resolved}`);
+                // isDebug && debug.info(`resolve ${key} to ${resolved}`);
             }
         }
         for (const key in fragments) {
@@ -107,6 +107,10 @@ exports.register = (cli) => {
         }
         let config_yaml = lib_1.read(path.resolve(`${machine_path}/config.yaml`), 'string') || "";
         config_yaml = utils.substitute(config_yaml, fragments);
+        if (!fragments.machine) {
+            debug.error(`Have no machine template! : ${machine_path} - ${templates_path}`);
+            return;
+        }
         const products_description = utils.substitute(fragments.machine, fragments);
         let gallery = "";
         if (fragments['gallery'] !== false && lib_1.exists(path.resolve(`${machine_path}/media`))) {
@@ -128,9 +132,21 @@ exports.register = (cli) => {
             }).join("");
             gallery_social += _images;
         }
+        let gallery_drawings = "";
+        if (fragments['gallery_drawings'] !== false && lib_1.exists(path.resolve(`${machine_path}/drawings`))) {
+            gallery_drawings = "\ngallery_drawings:";
+            let _images = lib_1.images(path.resolve(`${machine_path}/drawings`));
+            debug.info(`Read drawings at ${path.resolve(`${machine_path}/drawings`)} ${_images.length}`);
+            _images = _images.map((f) => {
+                let _path = `/products/${fragments['slug']}/drawings/${path.parse(f).base}`;
+                return `${lib_1.gallery_image(_path)}`;
+            }).join("");
+            gallery_drawings += _images;
+        }
         let content = lib_1.machine_header(fragments['product_name'], fragments['category'], fragments['product_perspective'] ? fragments['product_perspective'] : `/pp/products/${fragments['slug']}/renderings/perspective.JPG`, fragments['slug'], config.description || "", config.tagline || "", config_yaml +
             gallery +
-            gallery_social);
+            gallery_social +
+            gallery_drawings);
         content += products_description;
         let out_path = path.resolve(`${machines_directory}/${fragments['slug']}.md`);
         isDebug && debug.info(`Write jekyll machine page ${out_path}`);
