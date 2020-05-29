@@ -59,6 +59,7 @@ export const toHTML = (path, markdown) => {
 }
 
 const jekyllNop = "---\n#jekyll\n---\n";
+const frontMatter = /^---[.\r\n]*---/;
 
 export const thumbs = (source: string, meta: boolean = true, sep: string = "<hr/>") => {
     let pictures = images(source);
