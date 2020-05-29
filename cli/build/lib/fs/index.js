@@ -75,8 +75,8 @@ exports.thumbs = (source, meta = true, sep = "<hr/>") => {
             let picMD = path.resolve(path.join(path.parse(f).dir, path.sep, path.parse(f).name + '.md'));
             if (exists_1.sync(picMD)) {
                 const picMDContent = read_1.sync(picMD, "string");
-                if (picMDContent.length > 3) {
-                    content += exports.toHTML(picMD, true);
+                if (picMDContent.length > 3 && picMDContent !== jekyllNop) {
+                    content += picMDContent.substr(picMDContent.lastIndexOf('---') + 3, picMDContent.length);
                     content += "\n";
                 }
                 else {

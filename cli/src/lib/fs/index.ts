@@ -63,15 +63,15 @@ const jekyllNop = "---\n#jekyll\n---\n";
 export const thumbs = (source: string, meta: boolean = true, sep: string = "<hr/>") => {
     let pictures = images(source);
     let content = "";
-    pictures.forEach((f,i) => {
+    pictures.forEach((f, i) => {
         if (meta) {
             let picMD = path.resolve(path.join(path.parse(f).dir, path.sep, path.parse(f).name + '.md'));
             if (exists(picMD)) {
                 const picMDContent = read(picMD, "string") as string;
-                if (picMDContent.length > 3) {
-                    content += toHTML(picMD, true);
+                if (picMDContent.length > 3 && picMDContent !== jekyllNop) {
+                    content += picMDContent.substr(picMDContent.lastIndexOf('---') + 3, picMDContent.length)
                     content += "\n";
-                }else{
+                } else {
                     write(picMD, jekyllNop);
                 }
             } else {
