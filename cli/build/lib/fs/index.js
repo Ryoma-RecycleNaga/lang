@@ -25,6 +25,7 @@ var dir_1 = require("@xblox/fs/dir");
 Object.defineProperty(exports, "dir", { enumerable: true, get: function () { return dir_1.sync; } });
 var write_1 = require("@xblox/fs/write");
 Object.defineProperty(exports, "write", { enumerable: true, get: function () { return write_1.sync; } });
+const write_2 = require("@xblox/fs/write");
 const index_1 = require("../process/index");
 const array_1 = require("../common/array");
 const html_1 = require("../content/html");
@@ -72,8 +73,14 @@ exports.thumbs = (source, meta = true, sep = "<hr/>") => {
         if (meta) {
             let picMD = path.resolve(path.join(path.parse(f).dir, path.sep, path.parse(f).name + '.md'));
             if (exists_1.sync(picMD)) {
-                content += exports.toHTML(picMD, true);
-                content += "\n";
+                const picMDContent = read_1.sync(picMD, "string");
+                if (picMDContent.length) {
+                    content += exports.toHTML(picMD, true);
+                    content += "\n";
+                }
+            }
+            else {
+                write_2.sync(picMD, "");
             }
         }
         content += html_1.img(`./${path.parse(f).base}`, path.parse(f).base);

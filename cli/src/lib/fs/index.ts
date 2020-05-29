@@ -12,6 +12,8 @@ export { sync as exists } from '@xblox/fs/exists';
 export { sync as dir } from '@xblox/fs/dir';
 export { sync as write } from '@xblox/fs/write';
 
+import { sync as write } from '@xblox/fs/write';
+
 import { Helper } from '../process/index';
 import { firstOf, lastOf } from '../common/array';
 import { img } from '../content/html';
@@ -23,17 +25,17 @@ export const images = (source) => files(source, IMAGES_GLOB) as any[];
 export const head_image = (_images) => firstOf(_images);
 export const tail_image = (_images) => lastOf(_images);
 
-export async function resize_images (files) {
+export async function resize_images(files) {
     return bluebird.mapSeries(files, (file: string) => {
         const inParts = path.parse(file);
         const promise = Helper.run(inParts.dir, 'convert',
-        [
-            `"${inParts.base}"`,
-            '-quality 70',
-            '-resize 1980',
-            '-sharpen 0x1.0',
-            `"${inParts.name}${inParts.ext}"`
-        ]);
+            [
+                `"${inParts.base}"`,
+                '-quality 70',
+                '-resize 1980',
+                '-sharpen 0x1.0',
+                `"${inParts.name}${inParts.ext}"`
+            ]);
         return promise;
     });
 }
@@ -63,8 +65,13 @@ export const thumbs = (source: string, meta: boolean = true, sep: string = "<hr/
         if (meta) {
             let picMD = path.resolve(path.join(path.parse(f).dir, path.sep, path.parse(f).name + '.md'));
             if (exists(picMD)) {
-                content += toHTML(picMD, true);
-                content += "\n";
+                const picMDContent = read(picMD, "string") as string;
+                if (picMDContent.length) {
+                    content += toHTML(picMD, true);
+                    content += "\n";
+                }
+            } else {
+                write(picMD, "")
             }
         }
 

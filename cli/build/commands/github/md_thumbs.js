@@ -40,6 +40,7 @@ exports.register = (cli) => {
         const isDebug = argv.debug === 'true';
         const resize = argv.resize === 'true';
         const source_path = path.resolve(argv.source);
+        debug.info(`Generating Howto for ${source_path}`);
         const root_path = path.resolve(argv.root);
         if (!lib_1.exists(root_path)) {
             debug.error(`\t Cant find root path at ${root_path}, path doesn't exists`);
@@ -86,7 +87,6 @@ exports.register = (cli) => {
         for (const key in config) {
             const resolved = strings_1.substitute(config[key], config);
             config[key] = resolved;
-            // console.log('key '  + key,config[key]);
         }
         let out = strings_1.substitute(template, Object.assign(Object.assign({}, config), { image: image, title, thumbs: content, config: config_yaml, description: config.description || "" }));
         lib_1.write(target_path, out);
