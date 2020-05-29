@@ -71,7 +71,7 @@ exports.register = (cli) => {
             content = lib_1.toHTML(path.resolve(`${source_path}/Readme.md`), true);
         }
         else {
-            content = lib_1.thumbs(source_path, true);
+            content = `<div class="thumbs">${lib_1.thumbs(source_path, true)}</div>`;
         }
         let title = path.parse(source_path).base.toLowerCase().replace('-', ' ').replace('_', ' ').replace(/\b\w/g, l => l.toUpperCase());
         let rel = path.relative(root_path, source_path);

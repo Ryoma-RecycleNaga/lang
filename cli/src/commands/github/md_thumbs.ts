@@ -38,7 +38,7 @@ export const register = (cli: CLI.Argv) => {
 
 
         const source_path = path.resolve(argv.source as any);
-        
+
         debug.info(`Generating Howto for ${source_path}`);
 
         const root_path = path.resolve(argv.root as any);
@@ -73,11 +73,12 @@ export const register = (cli: CLI.Argv) => {
             return;
         }
         resize && await resize_images(_images);
+
         let content;
         if (exists(path.resolve(`${source_path}/Readme.md`))) {
             content = toHTML(path.resolve(`${source_path}/Readme.md`), true);
         } else {
-            content = thumbs(source_path, true);
+            content = `<div class="thumbs">${thumbs(source_path, true)}</div>`;
         }
 
         let title = path.parse(source_path).base.toLowerCase().replace('-', ' ').replace('_', ' ').replace(/\b\w/g, l => l.toUpperCase());
@@ -102,7 +103,7 @@ export const register = (cli: CLI.Argv) => {
             const resolved = substitute(config[key], config);
             config[key] = resolved;
         }
-        
+
         let out = substitute(template, {
             ...config,
             image: image,

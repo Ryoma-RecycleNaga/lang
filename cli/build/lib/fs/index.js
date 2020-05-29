@@ -66,21 +66,25 @@ exports.toHTML = (path, markdown) => {
         return content;
     }
 };
+const jekyllNop = "---\n#jekyll\n---\n";
 exports.thumbs = (source, meta = true, sep = "<hr/>") => {
     let pictures = exports.images(source);
     let content = "";
-    pictures.forEach((f) => {
+    pictures.forEach((f, i) => {
         if (meta) {
             let picMD = path.resolve(path.join(path.parse(f).dir, path.sep, path.parse(f).name + '.md'));
             if (exists_1.sync(picMD)) {
                 const picMDContent = read_1.sync(picMD, "string");
-                if (picMDContent.length) {
+                if (picMDContent.length > 3) {
                     content += exports.toHTML(picMD, true);
                     content += "\n";
                 }
+                else {
+                    write_2.sync(picMD, jekyllNop);
+                }
             }
             else {
-                write_2.sync(picMD, "");
+                write_2.sync(picMD, jekyllNop);
             }
         }
         content += html_1.img(`./${path.parse(f).base}`, path.parse(f).base);
