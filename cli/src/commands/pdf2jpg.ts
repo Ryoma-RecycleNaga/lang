@@ -41,7 +41,10 @@ export const register = (cli: CLI.Argv) => {
     return cli.command('pdf2jpg', '', options, async (argv: CLI.Arguments) => {
         if (argv.help) { return; }
         const src = path.resolve('' + argv.input);
-        const files = fg.sync('*.pdf', { dot: true, cwd: src, absolute: true });
+        if (argv.debug) {
+            debug(`Begin convert PDF files${src}`);
+        }
+        const files = fg.sync('*.pdf|*.PDF', { dot: true, cwd: src, absolute: true });
         await convertFiles(files);
         if (argv.debug) {
             debug(`Converted ${files.length} files`);

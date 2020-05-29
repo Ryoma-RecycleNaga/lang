@@ -51,7 +51,10 @@ exports.register = (cli) => {
             return;
         }
         const src = path.resolve('' + argv.input);
-        const files = fg.sync('*.pdf', { dot: true, cwd: src, absolute: true });
+        if (argv.debug) {
+            __1.debug(`Begin convert PDF files${src}`);
+        }
+        const files = fg.sync('*.pdf|*.PDF', { dot: true, cwd: src, absolute: true });
         yield convertFiles(files);
         if (argv.debug) {
             __1.debug(`Converted ${files.length} files`);
