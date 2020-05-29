@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.machine_header = exports.gallery_image = exports.howto_header = void 0;
+exports.machine_header = exports.drawing_image = exports.gallery_image = exports.howto_header = void 0;
 const strings_1 = require("../common/strings");
 exports.howto_header = (title, category, image, description = "", tagline = "", config = "") => {
     return `---
@@ -14,8 +14,15 @@ ${config}
 };
 exports.gallery_image = (path, title = "", alt = "") => {
     return `
- - url: ${path}
-   image_path: ${path}
+ - url: "${path}"
+   image_path: "${path}"
+   alt: "${alt}"
+   title: "${title}"`;
+};
+exports.drawing_image = (path, pdf, title = "", alt = "") => {
+    return `
+ - url: "${pdf}"
+   image_path: "${path}"
    alt: "${alt}"
    title: "${title}"`;
 };

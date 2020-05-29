@@ -13,8 +13,16 @@ ${config}
 
 export const gallery_image = (path, title= "", alt ="") =>{
    return `
- - url: ${path}
-   image_path: ${path}
+ - url: "${path}"
+   image_path: "${path}"
+   alt: "${alt}"
+   title: "${title}"`;
+}
+
+export const drawing_image = (path, pdf, title= "", alt ="") =>{
+   return `
+ - url: "${pdf}"
+   image_path: "${path}"
    alt: "${alt}"
    title: "${title}"`;
 }

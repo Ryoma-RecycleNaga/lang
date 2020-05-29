@@ -139,7 +139,8 @@ exports.register = (cli) => {
             debug.info(`Read drawings at ${path.resolve(`${machine_path}/drawings`)} ${_images.length}`);
             _images = _images.map((f) => {
                 let _path = `/products/${fragments['slug']}/drawings/${path.parse(f).base}`;
-                return `${lib_1.gallery_image(_path)}`;
+                let _pdf = `/products/${fragments['slug']}/drawings/${path.parse(f).name}.PDF`;
+                return `${lib_1.drawing_image(_path, _pdf)}`;
             }).join("");
             gallery_drawings += _images;
         }

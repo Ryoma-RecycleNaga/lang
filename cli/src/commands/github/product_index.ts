@@ -2,7 +2,7 @@ import * as CLI from 'yargs';
 import * as debug from '../..';
 import * as utils from '../../lib/common/strings';
 import * as path from 'path';
-import { files, dir, read, write, toHTML, exists, machine_header, images, gallery_image, parse_config } from '../../lib/';
+import { files, dir, read, write, toHTML, exists, machine_header, images, gallery_image, parse_config, drawing_image } from '../../lib/';
 
 const defaultOptions = (yargs: CLI.Argv) => {
     return yargs.option('gh-product-index', {
@@ -158,7 +158,8 @@ export const register = (cli: CLI.Argv) => {
             debug.info(`Read drawings at ${path.resolve(`${machine_path}/drawings`)} ${_images.length}` );
             _images = _images.map((f) => {
                 let _path = `/products/${fragments['slug']}/drawings/${path.parse(f).base}`;
-                return `${gallery_image(_path)}`;
+                let _pdf = `/products/${fragments['slug']}/drawings/${path.parse(f).name}.PDF`;
+                return `${drawing_image(_path,_pdf)}`;
             }).join("") as any;
             gallery_drawings += _images;
         }
