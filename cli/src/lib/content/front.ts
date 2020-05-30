@@ -28,12 +28,13 @@ export const drawing_image = (path, pdf, title= "", alt ="") =>{
 }
 
 
-export const machine_header = (title, category, image, slug, description: string = "", tagline: string = "", config: string = "") => {
+export const machine_header = (title, category, image, slug, rel, description: string = "", tagline: string = "", config: string = "") => {
    return `---
 image: ${image}
 category: "${category}"
 title: "${title}"
 permalink: /machines/${slug}
+product_rel: "/pp/${rel}"
 tagline: ${tagline || '""'}
 description: ${description || `"Precious Plastic - Machine : ${capitalize(category)} :: ${title}"` }
 ${config}

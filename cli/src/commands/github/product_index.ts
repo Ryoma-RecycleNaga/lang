@@ -31,6 +31,11 @@ export const register = (cli: CLI.Argv) => {
 
         const isDebug = argv.debug === 'true';
 
+        const product_rel_path = argv.product;
+        const product_rel_path_name = `${path.parse(product_rel_path as string).dir}/${path.parse(product_rel_path as string).name}/`;
+        
+         debug.info('rel', path.parse(product_rel_path as string));
+        
         // global config
         const cPath = argv.products ? path.resolve(`${argv.products}/templates/jekyll/config.json`) : path.resolve('./config.json');
         isDebug && debug.info(`read config at ${cPath}`);
@@ -49,7 +54,7 @@ export const register = (cli: CLI.Argv) => {
 
 
         // machine directory
-        const machine_path = path.resolve(`${argv.products || config.products_path}/products/${argv.product}`);
+        const machine_path = path.resolve(`${argv.products || config.products_path}/${argv.product}`);
 
         const fragments_path = path.resolve(`${templates_path}`);
 
@@ -101,7 +106,10 @@ export const register = (cli: CLI.Argv) => {
             isDebug && debug.info(`Loaded machine variables`);
         }
 
+        fragments['product_rel'] = product_rel_path_name;
+        
         parse_config(fragments, machine_path);
+
 
         // compile and write out
 
@@ -134,7 +142,7 @@ export const register = (cli: CLI.Argv) => {
             gallery = "gallery:"
             let _images = images(path.resolve(`${machine_path}/media`));
             _images = _images.map((f) => {
-                let _path = `/products/${fragments['slug']}/media/${path.parse(f).base}`;
+                let _path = `/${product_rel_path}/media/${path.parse(f).base}`;
                 return `${gallery_image(_path)}`;
             }).join("") as any;
             gallery += _images;
@@ -145,7 +153,7 @@ export const register = (cli: CLI.Argv) => {
             gallery_social = "\ngallery_social:"
             let _images = images(path.resolve(`${machine_path}/media/social`));
             _images = _images.map((f) => {
-                let _path = `/products/${fragments['slug']}/media/social/${path.parse(f).base}`;
+                let _path = `/${product_rel_path}/media/social/${path.parse(f).base}`;
                 return `${gallery_image(_path)}`;
             }).join("") as any;
             gallery_social += _images;
@@ -157,8 +165,8 @@ export const register = (cli: CLI.Argv) => {
             let _images = images(path.resolve(`${machine_path}/drawings`));
             debug.info(`Read drawings at ${path.resolve(`${machine_path}/drawings`)} ${_images.length}` );
             _images = _images.map((f) => {
-                let _path = `/products/${fragments['slug']}/drawings/${path.parse(f).base}`;
-                let _pdf = `/products/${fragments['slug']}/drawings/${path.parse(f).name}.PDF`;
+                let _path = `/${product_rel_path}/drawings/${path.parse(f).base}`;
+                let _pdf = `/${product_rel_path}/drawings/${path.parse(f).name}.PDF`;
                 return `${drawing_image(_path,_pdf)}`;
             }).join("") as any;
             gallery_drawings += _images;
@@ -168,6 +176,7 @@ export const register = (cli: CLI.Argv) => {
             fragments['category'],
             fragments['product_perspective'] ? fragments['product_perspective'] : `/pp/products/${fragments['slug']}/renderings/perspective.JPG`,
             fragments['slug'],
+            fragments['product_rel'],
             config.description || "",
             config.tagline || "",
             config_yaml +

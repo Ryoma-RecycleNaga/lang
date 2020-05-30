@@ -9,6 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.register = void 0;
 const debug = require("../..");
 const utils = require("../../lib/common/strings");
 const path = require("path");
@@ -37,6 +38,9 @@ exports.register = (cli) => {
         }
         const markdown = true;
         const isDebug = argv.debug === 'true';
+        const product_rel_path = argv.product;
+        const product_rel_path_name = `${path.parse(product_rel_path).dir}/${path.parse(product_rel_path).name}/`;
+        debug.info('rel', path.parse(product_rel_path));
         // global config
         const cPath = argv.products ? path.resolve(`${argv.products}/templates/jekyll/config.json`) : path.resolve('./config.json');
         isDebug && debug.info(`read config at ${cPath}`);
@@ -50,7 +54,7 @@ exports.register = (cli) => {
         }
         const template_path = path.resolve(`${templates_path}/machine.md`);
         // machine directory
-        const machine_path = path.resolve(`${argv.products || config.products_path}/products/${argv.product}`);
+        const machine_path = path.resolve(`${argv.products || config.products_path}/${argv.product}`);
         const fragments_path = path.resolve(`${templates_path}`);
         debug.info(fragments_path);
         isDebug && debug.info(`\n Generate machine description for ${argv.product}, reading from ${machine_path},
@@ -91,6 +95,7 @@ exports.register = (cli) => {
             fragments = Object.assign(Object.assign({}, fragments), lib_1.read(path.resolve(`${machine_path}/config.json`), 'json'));
             isDebug && debug.info(`Loaded machine variables`);
         }
+        fragments['product_rel'] = product_rel_path_name;
         lib_1.parse_config(fragments, machine_path);
         // compile and write out
         for (const key in fragments) {
@@ -116,7 +121,7 @@ exports.register = (cli) => {
             gallery = "gallery:";
             let _images = lib_1.images(path.resolve(`${machine_path}/media`));
             _images = _images.map((f) => {
-                let _path = `/products/${fragments['slug']}/media/${path.parse(f).base}`;
+                let _path = `/${product_rel_path}/media/${path.parse(f).base}`;
                 return `${lib_1.gallery_image(_path)}`;
             }).join("");
             gallery += _images;
@@ -126,7 +131,7 @@ exports.register = (cli) => {
             gallery_social = "\ngallery_social:";
             let _images = lib_1.images(path.resolve(`${machine_path}/media/social`));
             _images = _images.map((f) => {
-                let _path = `/products/${fragments['slug']}/media/social/${path.parse(f).base}`;
+                let _path = `/${product_rel_path}/media/social/${path.parse(f).base}`;
                 return `${lib_1.gallery_image(_path)}`;
             }).join("");
             gallery_social += _images;
@@ -137,13 +142,13 @@ exports.register = (cli) => {
             let _images = lib_1.images(path.resolve(`${machine_path}/drawings`));
             debug.info(`Read drawings at ${path.resolve(`${machine_path}/drawings`)} ${_images.length}`);
             _images = _images.map((f) => {
-                let _path = `/products/${fragments['slug']}/drawings/${path.parse(f).base}`;
-                let _pdf = `/products/${fragments['slug']}/drawings/${path.parse(f).name}.PDF`;
+                let _path = `/${product_rel_path}/drawings/${path.parse(f).base}`;
+                let _pdf = `/${product_rel_path}/drawings/${path.parse(f).name}.PDF`;
                 return `${lib_1.drawing_image(_path, _pdf)}`;
             }).join("");
             gallery_drawings += _images;
         }
-        let content = lib_1.machine_header(fragments['product_name'], fragments['category'], fragments['product_perspective'] ? fragments['product_perspective'] : `/pp/products/${fragments['slug']}/renderings/perspective.JPG`, fragments['slug'], config.description || "", config.tagline || "", config_yaml +
+        let content = lib_1.machine_header(fragments['product_name'], fragments['category'], fragments['product_perspective'] ? fragments['product_perspective'] : `/pp/products/${fragments['slug']}/renderings/perspective.JPG`, fragments['slug'], fragments['product_rel'], config.description || "", config.tagline || "", config_yaml +
             gallery +
             gallery_social +
             gallery_drawings);
