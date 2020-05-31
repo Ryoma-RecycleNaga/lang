@@ -1,6 +1,5 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.render = void 0;
 const types_1 = require("./types");
 const log_1 = require("./log");
 exports.render = (result, options) => {

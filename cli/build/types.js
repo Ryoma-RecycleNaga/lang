@@ -1,6 +1,5 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.OutputFormat = exports.OutputTarget = void 0;
 /////////////////////////////////////////////////////
 //
 //  Application types

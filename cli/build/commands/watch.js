@@ -9,7 +9,6 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.register = exports.updateTSX = exports.parseHTML = void 0;
 const chokidar = require("chokidar");
 const path = require("path");
 const __1 = require("..");

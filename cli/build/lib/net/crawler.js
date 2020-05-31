@@ -9,7 +9,6 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.crawler = void 0;
 /**
  * This example demonstrates how to use [`PuppeteerCrawler`](../api/puppeteercrawler)
  * in combination with [`RequestQueue`](../api/requestqueue) to recursively scrape the

@@ -9,7 +9,6 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.register = void 0;
 const sheets_1 = require("../../lib/net/sheets");
 // reads google sheet to convert BOMs to production parts
 const defaultOptions = (yargs) => {

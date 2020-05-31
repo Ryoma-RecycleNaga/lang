@@ -72,11 +72,10 @@ export const register = (cli: CLI.Argv) => {
 
         // read all global fragments
         isDebug && debug.info(`Read global fragments at ${fragments_path}`);
-        let bazar_fragment_files = files(fragments_path, '*.html');
-        bazar_fragment_files.map((f) => fragments[path.parse(f).name] = toHTML(f, markdown));
+        
+        
+        read_fragments(fragments_path, fragments, '/templates/jekyll/', "machine global");
 
-        bazar_fragment_files = files(fragments_path, '*.md');
-        bazar_fragment_files.map((f) => fragments[path.parse(f).name] = toHTML(f, markdown));
 
         // read all product specific fragments
         const product_fragments_path = path.resolve(`${machine_path}/templates/jekyll`);

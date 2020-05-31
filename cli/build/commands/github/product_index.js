@@ -9,7 +9,6 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.register = void 0;
 const debug = require("../..");
 const utils = require("../../lib/common/strings");
 const path = require("path");
@@ -66,10 +65,7 @@ exports.register = (cli) => {
         let fragments = Object.assign({}, config);
         // read all global fragments
         isDebug && debug.info(`Read global fragments at ${fragments_path}`);
-        let bazar_fragment_files = lib_1.files(fragments_path, '*.html');
-        bazar_fragment_files.map((f) => fragments[path.parse(f).name] = lib_1.toHTML(f, markdown));
-        bazar_fragment_files = lib_1.files(fragments_path, '*.md');
-        bazar_fragment_files.map((f) => fragments[path.parse(f).name] = lib_1.toHTML(f, markdown));
+        lib_1.read_fragments(fragments_path, fragments, '/templates/jekyll/', "machine global");
         // read all product specific fragments
         const product_fragments_path = path.resolve(`${machine_path}/templates/jekyll`);
         if (!lib_1.exists(product_fragments_path)) {

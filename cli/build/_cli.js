@@ -1,6 +1,5 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.defaults = void 0;
 // tweaks and handlers
 exports.defaults = () => {
     // default command

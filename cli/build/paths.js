@@ -1,6 +1,5 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.default_trace_path = exports.default_path = exports.TRACE_SUFFIX = exports.STATS_SUFFIX = void 0;
 const path = require("path");
 const url_1 = require("url");
 exports.STATS_SUFFIX = '_stats.json';

@@ -1,6 +1,5 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.sizeToString = void 0;
 exports.sizeToString = (bytes, si = true) => {
     var units;
     var u;
