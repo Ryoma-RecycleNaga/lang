@@ -1,11 +1,19 @@
 "use strict";
-function __export(m) {
-    for (var p in m) if (!exports.hasOwnProperty(p)) exports[p] = m[p];
-}
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    Object.defineProperty(o, k2, { enumerable: true, get: function() { return m[k]; } });
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __exportStar = (this && this.__exportStar) || function(m, exports) {
+    for (var p in m) if (p !== "default" && !exports.hasOwnProperty(p)) __createBinding(exports, m, p);
+};
 Object.defineProperty(exports, "__esModule", { value: true });
-__export(require("./paths"));
-__export(require("./format"));
-__export(require("./log"));
-__export(require("./types"));
-__export(require("./formatter"));
+__exportStar(require("./paths"), exports);
+__exportStar(require("./format"), exports);
+__exportStar(require("./log"), exports);
+__exportStar(require("./types"), exports);
+__exportStar(require("./formatter"), exports);
+__exportStar(require("./main"), exports);
 //# sourceMappingURL=index.js.map

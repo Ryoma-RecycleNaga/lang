@@ -8,6 +8,8 @@ const markdown_1 = require("./commands/markdown");
 markdown_1.register(cli);
 const pdf2jpg_1 = require("./commands/pdf2jpg");
 pdf2jpg_1.register(cli);
+const svg2jpg_1 = require("./commands/svg2jpg");
+svg2jpg_1.register(cli);
 const watch_1 = require("./commands/watch");
 watch_1.register(cli);
 const academy_1 = require("./commands/academy");

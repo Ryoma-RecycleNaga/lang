@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.spinner = exports.inspect = exports.stack = exports.debug = exports.warn = exports.error = exports.info = exports.log = void 0;
 const chalk_1 = require("chalk");
 const _ora = require("ora");
 // tslint:disable-next-line:no-var-requires

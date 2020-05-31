@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.LOGGING_FLAGS = exports.LOGGING_SIGNAL = exports.COMMANDS = exports.EVENTS = void 0;
 exports.EVENTS = {};
 var COMMANDS;
 (function (COMMANDS) {
