@@ -79,13 +79,7 @@ exports.register = (cli) => {
         else {
             isDebug && debug.info(`read machine fragments at ${product_fragments_path}`);
         }
-        let products_fragment_files = lib_1.files(product_fragments_path, '*.html');
-        products_fragment_files.map((f) => fragments[path.parse(f).name] = lib_1.toHTML(f, markdown));
-        products_fragment_files = lib_1.files(product_fragments_path, '*.md');
-        products_fragment_files.map((f) => {
-            fragments[path.parse(f).name] = lib_1.toHTML(f, false);
-            isDebug && debug.info(`\t Read ${path.parse(f).name} from  ${f}`);
-        });
+        lib_1.read_fragments(product_fragments_path, fragments, product_rel_path_name, "machine");
         // read product variables
         if (!lib_1.exists(path.resolve(`${machine_path}/config.json`))) {
             isDebug && debug.warn(`product has no config.json, please ensure there is a config.json in ${machine_path}`);

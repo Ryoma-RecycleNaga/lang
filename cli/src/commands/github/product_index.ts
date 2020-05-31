@@ -2,7 +2,7 @@ import * as CLI from 'yargs';
 import * as debug from '../..';
 import * as utils from '../../lib/common/strings';
 import * as path from 'path';
-import { files, dir, read, write, toHTML, exists, machine_header, images, gallery_image, parse_config, drawing_image } from '../../lib/';
+import { files, dir, read, write, toHTML, exists, machine_header, images, gallery_image, parse_config, drawing_image, read_fragments } from '../../lib/';
 
 const defaultOptions = (yargs: CLI.Argv) => {
     return yargs.option('gh-product-index', {
@@ -33,9 +33,9 @@ export const register = (cli: CLI.Argv) => {
 
         const product_rel_path = argv.product;
         const product_rel_path_name = `${path.parse(product_rel_path as string).dir}/${path.parse(product_rel_path as string).name}/`;
-        
-         debug.info('rel', path.parse(product_rel_path as string));
-        
+
+        debug.info('rel', path.parse(product_rel_path as string));
+
         // global config
         const cPath = argv.products ? path.resolve(`${argv.products}/templates/jekyll/config.json`) : path.resolve('./config.json');
         isDebug && debug.info(`read config at ${cPath}`);
@@ -86,15 +86,8 @@ export const register = (cli: CLI.Argv) => {
         } else {
             isDebug && debug.info(`read machine fragments at ${product_fragments_path}`);
         }
-
-        let products_fragment_files = files(product_fragments_path, '*.html');
-        products_fragment_files.map((f) => fragments[path.parse(f).name] = toHTML(f, markdown));
-
-        products_fragment_files = files(product_fragments_path, '*.md');
-        products_fragment_files.map((f) => {
-            fragments[path.parse(f).name] = toHTML(f, false);
-            isDebug && debug.info(`\t Read ${path.parse(f).name} from  ${f}`);
-        });
+        
+        read_fragments(product_fragments_path, fragments, product_rel_path_name, "machine");
 
 
         // read product variables
@@ -107,7 +100,7 @@ export const register = (cli: CLI.Argv) => {
         }
 
         fragments['product_rel'] = product_rel_path_name;
-        
+
         parse_config(fragments, machine_path);
 
 
@@ -129,8 +122,8 @@ export const register = (cli: CLI.Argv) => {
         let config_yaml = read(path.resolve(`${machine_path}/config.yaml`), 'string') as any || "";
         config_yaml = utils.substitute(config_yaml, fragments);
 
-        
-        if(!fragments.machine){
+
+        if (!fragments.machine) {
             debug.error(`Have no machine template! : ${machine_path} - ${templates_path}`);
             return;
         }
@@ -163,11 +156,11 @@ export const register = (cli: CLI.Argv) => {
         if (fragments['gallery_drawings'] !== false && exists(path.resolve(`${machine_path}/drawings`))) {
             gallery_drawings = "\ngallery_drawings:"
             let _images = images(path.resolve(`${machine_path}/drawings`));
-            debug.info(`Read drawings at ${path.resolve(`${machine_path}/drawings`)} ${_images.length}` );
+            debug.info(`Read drawings at ${path.resolve(`${machine_path}/drawings`)} ${_images.length}`);
             _images = _images.map((f) => {
                 let _path = `/${product_rel_path}/drawings/${path.parse(f).base}`;
                 let _pdf = `/${product_rel_path}/drawings/${path.parse(f).name}.PDF`;
-                return `${drawing_image(_path,_pdf)}`;
+                return `${drawing_image(_path, _pdf)}`;
             }).join("") as any;
             gallery_drawings += _images;
         }
@@ -181,7 +174,7 @@ export const register = (cli: CLI.Argv) => {
             config.tagline || "",
             config_yaml +
             gallery +
-            gallery_social + 
+            gallery_social +
             gallery_drawings);
 
         content += products_description;
