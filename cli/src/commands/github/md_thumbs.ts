@@ -5,7 +5,6 @@ import * as path from 'path';
 const slash = require('slash');
 
 import { write, exists, read, thumbs, images, resize_images, tail_image, howto_header, toHTML, parse_config, read_fragments } from '../../lib/';
-import { parse } from 'querystring';
 
 const defaultOptions = (yargs: CLI.Argv) => {
     return yargs.option('source', {
