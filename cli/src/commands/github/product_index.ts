@@ -1,7 +1,7 @@
 import * as CLI from 'yargs';
 import * as debug from '../..';
 import * as path from 'path';
-import {  dir, read, write, exists, machine_header, images, gallery_image, parse_config, drawing_image, read_fragments, substitute } from '../../lib/';
+import { git_status, dir, read, write, exists, machine_header, images, gallery_image, parse_config, drawing_image, read_fragments, substitute } from '../../lib/';
 
 const defaultOptions = (yargs: CLI.Argv) => {
     return yargs.option('gh-product-index', {

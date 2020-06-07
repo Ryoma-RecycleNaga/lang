@@ -16,4 +16,5 @@ __exportStar(require("./content/front"), exports);
 __exportStar(require("./content/md"), exports);
 __exportStar(require("./common/strings"), exports);
 __exportStar(require("./content/tables"), exports);
+__exportStar(require("./git/log"), exports);
 //# sourceMappingURL=index.js.map

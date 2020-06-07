@@ -1,0 +1,35 @@
+"use strict";
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.git_log = exports.git_status = void 0;
+const debug = require("../..");
+const path = require("path");
+const simple_git_1 = require("simple-git");
+function git_status(cwd, dir) {
+    return __awaiter(this, void 0, void 0, function* () {
+        let statusSummary = null;
+        try {
+            statusSummary = yield simple_git_1.default(cwd).log(['--stat', path.resolve(dir)]);
+        }
+        catch (e) {
+            debug.error('Error Git', e);
+        }
+        return statusSummary;
+    });
+}
+exports.git_status = git_status;
+function git_log(cwd, dir) {
+    return __awaiter(this, void 0, void 0, function* () {
+    });
+}
+exports.git_log = git_log;
+;
+//# sourceMappingURL=log.js.map
