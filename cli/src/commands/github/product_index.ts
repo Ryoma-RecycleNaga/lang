@@ -1,7 +1,7 @@
 import * as CLI from 'yargs';
 import * as debug from '../..';
 import * as path from 'path';
-import { git_status, dir, read, write, exists, machine_header, images, gallery_image, parse_config, drawing_image, read_fragments, substitute } from '../../lib/';
+import { git_log, changelog, dir, read, write, exists, machine_header, images, gallery_image, parse_config, drawing_image, read_fragments, substitute } from '../../lib/';
 
 const defaultOptions = (yargs: CLI.Argv) => {
     return yargs.option('gh-product-index', {
@@ -34,6 +34,8 @@ export const register = (cli: CLI.Argv) => {
         const product_rel_path_name = `${path.parse(product_rel_path as string).dir}/${path.parse(product_rel_path as string).name}/`;
 
         debug.info('rel', path.parse(product_rel_path as string));
+
+        const root = path.resolve(`${argv.products}`);
 
         // global config
         const cPath = argv.products ? path.resolve(`${argv.products}/templates/jekyll/config.json`) : path.resolve('./config.json');
@@ -71,8 +73,8 @@ export const register = (cli: CLI.Argv) => {
 
         // read all global fragments
         isDebug && debug.info(`Read global fragments at ${fragments_path}`);
-        
-        
+
+
         read_fragments(fragments_path, fragments, '/templates/jekyll/', "machine global");
 
 
@@ -85,6 +87,13 @@ export const register = (cli: CLI.Argv) => {
             isDebug && debug.info(`read machine fragments at ${product_fragments_path}`);
         }
         
+        const _git_log = await git_log(root, product_rel_path);
+        // debug.info('log', _git_log );
+        const change_log_html = changelog(_git_log);
+
+        const change_log_path = path.resolve(`${machine_path}/templates/jekyll/changelog.html`);
+        write(change_log_path,change_log_html);
+
         read_fragments(product_fragments_path, fragments, product_rel_path_name, "machine");
 
 

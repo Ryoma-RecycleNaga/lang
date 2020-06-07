@@ -11,13 +11,15 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.git_log = exports.git_status = void 0;
 const debug = require("../..");
+const constants_1 = require("../../constants");
 const path = require("path");
-const simple_git_1 = require("simple-git");
+const simpleGit = require("simple-git/promise");
 function git_status(cwd, dir) {
     return __awaiter(this, void 0, void 0, function* () {
+        const git = simpleGit(cwd);
         let statusSummary = null;
         try {
-            statusSummary = yield simple_git_1.default(cwd).log(['--stat', path.resolve(dir)]);
+            statusSummary = yield git.log(['--stat', path.resolve(dir)]);
         }
         catch (e) {
             debug.error('Error Git', e);
@@ -28,6 +30,20 @@ function git_status(cwd, dir) {
 exports.git_status = git_status;
 function git_log(cwd, dir) {
     return __awaiter(this, void 0, void 0, function* () {
+        const stats = yield git_status(cwd, dir);
+        let changelogs = stats.all.filter((e) => e.message.trim().startsWith(constants_1.GIT_CHANGELOG_MESSAGE_PREFIX));
+        if (!changelogs.length) {
+            return [];
+        }
+        let pretty = changelogs.map((e) => {
+            return {
+                files: e.diff.files.map((f) => { return { path: f.file }; }),
+                msg: e.message.replace(constants_1.GIT_CHANGELOG_MESSAGE_PREFIX, '').trim(),
+                hash: e.hash,
+                date: new Date(e.date).toISOString().split('T')[0]
+            };
+        });
+        return pretty;
     });
 }
 exports.git_log = git_log;

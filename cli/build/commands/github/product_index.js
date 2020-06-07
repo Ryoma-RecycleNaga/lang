@@ -40,6 +40,7 @@ exports.register = (cli) => {
         const product_rel_path = argv.product;
         const product_rel_path_name = `${path.parse(product_rel_path).dir}/${path.parse(product_rel_path).name}/`;
         debug.info('rel', path.parse(product_rel_path));
+        const root = path.resolve(`${argv.products}`);
         // global config
         const cPath = argv.products ? path.resolve(`${argv.products}/templates/jekyll/config.json`) : path.resolve('./config.json');
         isDebug && debug.info(`read config at ${cPath}`);
@@ -75,6 +76,11 @@ exports.register = (cli) => {
         else {
             isDebug && debug.info(`read machine fragments at ${product_fragments_path}`);
         }
+        const _git_log = yield lib_1.git_log(root, product_rel_path);
+        // debug.info('log', _git_log );
+        const change_log_html = lib_1.changelog(_git_log);
+        const change_log_path = path.resolve(`${machine_path}/templates/jekyll/changelog.html`);
+        lib_1.write(change_log_path, change_log_html);
         lib_1.read_fragments(product_fragments_path, fragments, product_rel_path_name, "machine");
         // read product variables
         if (!lib_1.exists(path.resolve(`${machine_path}/config.json`))) {

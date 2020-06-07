@@ -1,3 +1,5 @@
+import { GIT_REPO } from '../../constants';
+import { html_beautify } from 'js-beautify';
 export const img = (file, label, id = '') => {
     return `<div class="thumb">
             <a href="${file}" _target="_blank" >
@@ -5,4 +7,20 @@ export const img = (file, label, id = '') => {
             </a>
             <span class="thumb-label">${label}</span>
         </div>`;
+}
+
+export const changelog_entry = (e) => {
+    return `<div class="change_log_entry">
+        <span>${e.date}</span><span><a href="${GIT_REPO}/commit/${e.hash}">${e.msg}</a></span>
+        <ul>
+        ${e.files.map((f) => {
+            return `<li>${f.path}</li>`
+        })}
+        </ul>
+    </div>
+    `
+}
+
+export const changelog = (log: any[]) => {
+    return html_beautify(log.map(changelog_entry).join('<br/>'));
 }
