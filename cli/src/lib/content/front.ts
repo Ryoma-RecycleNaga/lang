@@ -34,7 +34,7 @@ image: ${image}
 category: "${category}"
 title: "${title}"
 permalink: /machines/${slug}
-product_rel: "/pp/${rel}"
+product_rel: "/${rel}"
 tagline: ${tagline || '""'}
 description: ${description || `"Precious Plastic - Machine : ${capitalize(category)} :: ${title}"` }
 ${config}

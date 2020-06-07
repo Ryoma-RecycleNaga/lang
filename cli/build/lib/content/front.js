@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.machine_header = exports.drawing_image = exports.gallery_image = exports.howto_header = void 0;
 const strings_1 = require("../common/strings");
 exports.howto_header = (title, category, image, description = "", tagline = "", config = "") => {
     return `---
@@ -31,7 +32,7 @@ image: ${image}
 category: "${category}"
 title: "${title}"
 permalink: /machines/${slug}
-product_rel: "/pp/${rel}"
+product_rel: "/${rel}"
 tagline: ${tagline || '""'}
 description: ${description || `"Precious Plastic - Machine : ${strings_1.capitalize(category)} :: ${title}"`}
 ${config}

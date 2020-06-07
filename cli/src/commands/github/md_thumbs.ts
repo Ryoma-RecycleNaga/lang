@@ -1,10 +1,9 @@
 import * as CLI from 'yargs';
 import * as debug from '../..';
-import { capitalize, substitute } from '../../lib/common/strings';
 import * as path from 'path';
 const slash = require('slash');
 
-import { write, exists, read, thumbs, images, resize_images, tail_image, howto_header, toHTML, parse_config, read_fragments } from '../../lib/';
+import { write, exists, read, thumbs, images, resize_images, tail_image, howto_header, substitute, toHTML, parse_config, read_fragments } from '../../lib/';
 
 const defaultOptions = (yargs: CLI.Argv) => {
     return yargs.option('source', {
@@ -82,7 +81,7 @@ export const register = (cli: CLI.Argv) => {
 
         let title = path.parse(source_path).base.toLowerCase().replace('-', ' ').replace('_', ' ').replace(/\b\w/g, l => l.toUpperCase());
         let rel = path.relative(root_path, source_path);
-        const image = '/pp/' + slash(rel) + '/' + path.parse(tail_image(_images) as any).base;
+        const image = '/' + slash(rel) + '/' + path.parse(tail_image(_images) as any).base;
 
         const config = read(path.resolve(`${source_path}/config.json`), 'json') as any || {};
 

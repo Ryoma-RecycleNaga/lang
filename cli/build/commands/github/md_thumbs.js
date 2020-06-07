@@ -11,7 +11,6 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.register = void 0;
 const debug = require("../..");
-const strings_1 = require("../../lib/common/strings");
 const path = require("path");
 const slash = require('slash');
 const lib_1 = require("../../lib/");
@@ -75,20 +74,20 @@ exports.register = (cli) => {
         }
         let title = path.parse(source_path).base.toLowerCase().replace('-', ' ').replace('_', ' ').replace(/\b\w/g, l => l.toUpperCase());
         let rel = path.relative(root_path, source_path);
-        const image = '/pp/' + slash(rel) + '/' + path.parse(lib_1.tail_image(_images)).base;
+        const image = '/' + slash(rel) + '/' + path.parse(lib_1.tail_image(_images)).base;
         const config = lib_1.read(path.resolve(`${source_path}/config.json`), 'json') || {};
         let config_yaml = lib_1.read(path.resolve(`${source_path}/config.yaml`), 'string') || "";
         let header = lib_1.read(path.resolve(`${templates_path}/howto.header.md`), 'string') || "";
         let footer = lib_1.read(path.resolve(`${templates_path}/howto.footer.md`), 'string') || "";
         lib_1.read_fragments(source_path, config, rel, "md:thumbs");
         lib_1.parse_config(config, path.parse(source_path));
-        config.header_global = strings_1.substitute(header, config);
-        config.footer_global = strings_1.substitute(footer, config);
+        config.header_global = lib_1.substitute(header, config);
+        config.footer_global = lib_1.substitute(footer, config);
         for (const key in config) {
-            const resolved = strings_1.substitute(config[key], config);
+            const resolved = lib_1.substitute(config[key], config);
             config[key] = resolved;
         }
-        let out = strings_1.substitute(template, Object.assign(Object.assign({}, config), { image: image, title, thumbs: content, config: config_yaml, description: config.description || "" }));
+        let out = lib_1.substitute(template, Object.assign(Object.assign({}, config), { image: image, title, thumbs: content, config: config_yaml, description: config.description || "" }));
         lib_1.write(target_path, out);
     }));
 };

@@ -11,7 +11,6 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.register = void 0;
 const debug = require("../..");
-const utils = require("../../lib/common/strings");
 const path = require("path");
 const lib_1 = require("../../lib/");
 const defaultOptions = (yargs) => {
@@ -90,23 +89,20 @@ exports.register = (cli) => {
         lib_1.parse_config(fragments, machine_path);
         // compile and write out
         for (const key in fragments) {
-            const resolved = utils.substitute(fragments[key], fragments);
+            const resolved = lib_1.substitute(fragments[key], fragments);
             fragments[key] = resolved;
-            if (key === 'detail') {
-                // isDebug && debug.info(`resolve ${key} to ${resolved}`);
-            }
         }
         for (const key in fragments) {
-            const resolved = utils.substitute(fragments[key], fragments);
+            const resolved = lib_1.substitute(fragments[key], fragments);
             fragments[key] = resolved;
         }
         let config_yaml = lib_1.read(path.resolve(`${machine_path}/config.yaml`), 'string') || "";
-        config_yaml = utils.substitute(config_yaml, fragments);
+        config_yaml = lib_1.substitute(config_yaml, fragments);
         if (!fragments.machine) {
             debug.error(`Have no machine template! : ${machine_path} - ${templates_path}`);
             return;
         }
-        const products_description = utils.substitute(fragments.machine, fragments);
+        const products_description = lib_1.substitute(fragments.machine, fragments);
         let gallery = "";
         if (fragments['gallery'] !== false && lib_1.exists(path.resolve(`${machine_path}/media`))) {
             gallery = "gallery:";
@@ -139,7 +135,7 @@ exports.register = (cli) => {
             }).join("");
             gallery_drawings += _images;
         }
-        let content = lib_1.machine_header(fragments['product_name'], fragments['category'], fragments['product_perspective'] ? fragments['product_perspective'] : `/pp/products/${fragments['slug']}/renderings/perspective.JPG`, fragments['slug'], fragments['product_rel'], config.description || "", config.tagline || "", config_yaml +
+        let content = lib_1.machine_header(fragments['product_name'], fragments['category'], fragments['product_perspective'] ? fragments['product_perspective'] : `/products/${fragments['slug']}/renderings/perspective.JPG`, fragments['slug'], fragments['product_rel'], config.description || "", config.tagline || "", config_yaml +
             gallery +
             gallery_social +
             gallery_drawings);

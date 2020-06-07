@@ -1,8 +1,7 @@
 import * as CLI from 'yargs';
 import * as debug from '../..';
-import * as utils from '../../lib/common/strings';
 import * as path from 'path';
-import { files, dir, read, write, toHTML, exists, machine_header, images, gallery_image, parse_config, drawing_image, read_fragments } from '../../lib/';
+import {  dir, read, write, exists, machine_header, images, gallery_image, parse_config, drawing_image, read_fragments, substitute } from '../../lib/';
 
 const defaultOptions = (yargs: CLI.Argv) => {
     return yargs.option('gh-product-index', {
@@ -106,20 +105,17 @@ export const register = (cli: CLI.Argv) => {
         // compile and write out
 
         for (const key in fragments) {
-            const resolved = utils.substitute(fragments[key], fragments);
+            const resolved = substitute(fragments[key], fragments);
             fragments[key] = resolved;
-            if (key === 'detail') {
-                // isDebug && debug.info(`resolve ${key} to ${resolved}`);
-            }
         }
 
         for (const key in fragments) {
-            const resolved = utils.substitute(fragments[key], fragments);
+            const resolved = substitute(fragments[key], fragments);
             fragments[key] = resolved;
         }
 
         let config_yaml = read(path.resolve(`${machine_path}/config.yaml`), 'string') as any || "";
-        config_yaml = utils.substitute(config_yaml, fragments);
+        config_yaml = substitute(config_yaml, fragments);
 
 
         if (!fragments.machine) {
@@ -127,7 +123,7 @@ export const register = (cli: CLI.Argv) => {
             return;
         }
 
-        const products_description = utils.substitute(fragments.machine, fragments);
+        const products_description = substitute(fragments.machine, fragments);
 
         let gallery = "";
         if (fragments['gallery'] !== false && exists(path.resolve(`${machine_path}/media`))) {
@@ -166,7 +162,7 @@ export const register = (cli: CLI.Argv) => {
 
         let content = machine_header(fragments['product_name'],
             fragments['category'],
-            fragments['product_perspective'] ? fragments['product_perspective'] : `/pp/products/${fragments['slug']}/renderings/perspective.JPG`,
+            fragments['product_perspective'] ? fragments['product_perspective'] : `/products/${fragments['slug']}/renderings/perspective.JPG`,
             fragments['slug'],
             fragments['product_rel'],
             config.description || "",
