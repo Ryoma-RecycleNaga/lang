@@ -31,7 +31,6 @@ exports.machine_header = (title, category, image, slug, rel, description = "", t
 image: ${image}
 category: "${category}"
 title: "${title}"
-permalink: /machines/${slug}
 product_rel: "/${rel}"
 tagline: ${tagline || '""'}
 description: ${description || `"Precious Plastic - Machine : ${strings_1.capitalize(category)} :: ${title}"`}

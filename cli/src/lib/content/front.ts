@@ -33,7 +33,6 @@ export const machine_header = (title, category, image, slug, rel, description: s
 image: ${image}
 category: "${category}"
 title: "${title}"
-permalink: /machines/${slug}
 product_rel: "/${rel}"
 tagline: ${tagline || '""'}
 description: ${description || `"Precious Plastic - Machine : ${capitalize(category)} :: ${title}"` }

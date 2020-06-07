@@ -92,9 +92,8 @@ export const register = (cli: CLI.Argv) => {
         for (const key in fragments) {
             const resolved = utils.substitute(fragments[key], fragments);
             fragments[key] = resolved;
-            isDebug && debug.info(`resolve ${key} to ${resolved}`);
+            // isDebug && debug.info(`resolve ${key} to ${resolved}`);
         }
-
         const products_description = utils.substitute(fragments.product, fragments);
 
         if(!exists(path.resolve(`${product_path}/bazar/out/`))){
