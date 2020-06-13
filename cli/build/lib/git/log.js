@@ -14,6 +14,7 @@ const debug = require("../..");
 const constants_1 = require("../../constants");
 const path = require("path");
 const simpleGit = require("simple-git/promise");
+const moment = require("moment");
 function git_status(cwd, dir) {
     return __awaiter(this, void 0, void 0, function* () {
         const git = simpleGit(cwd);
@@ -40,7 +41,7 @@ function git_log(cwd, dir) {
                 files: e.diff.files.map((f) => { return { path: f.file }; }),
                 msg: e.message.replace(constants_1.GIT_CHANGELOG_MESSAGE_PREFIX, '').trim(),
                 hash: e.hash,
-                date: new Date(e.date).toISOString().split('T')[0]
+                date: moment(e.date).format('LLLL')
             };
         });
         return pretty;

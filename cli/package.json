@@ -65,7 +65,7 @@
         "jsome": "^2.5.0",
         "lodash": "^4.17.10",
         "markdown-table": "^2.0.0",
-        "moment": "^2.22.2",
+        "moment": "^2.26.0",
         "monocle-ts": "^1.2.0",
         "ora": "^2.1.0",
         "partial.lenses": "^13.13.2",

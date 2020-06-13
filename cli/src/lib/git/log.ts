@@ -5,6 +5,7 @@ import * as path from 'path';
 
 import * as simpleGit from 'simple-git/promise';
 import { SimpleGit, ListLogSummary } from 'simple-git';
+import * as moment from 'moment';
 
 export async function git_status(cwd, dir) {
 
@@ -31,7 +32,7 @@ export async function git_log(cwd, dir) {
             files: e.diff.files.map((f)=>{ return {path:f.file}}),
             msg: e.message.replace(GIT_CHANGELOG_MESSAGE_PREFIX, '').trim(),
             hash: e.hash,
-            date: new Date(e.date).toISOString().split('T')[0]
+            date: moment(e.date).format('LLLL')
         }
     });
     return pretty;
