@@ -39,7 +39,7 @@ function git_log(cwd, dir) {
         let pretty = changelogs.map((e) => {
             return {
                 files: e.diff.files.map((f) => { return { path: f.file }; }),
-                msg: e.message.replace(constants_1.GIT_CHANGELOG_MESSAGE_PREFIX, '').trim(),
+                msg: e.message.toLowerCase().replace(constants_1.GIT_CHANGELOG_MESSAGE_PREFIX.toLowerCase(), '').trim(),
                 hash: e.hash,
                 date: moment(e.date).format('LLLL')
             };

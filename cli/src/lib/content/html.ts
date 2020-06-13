@@ -14,7 +14,7 @@ export const changelog_entry = (e) => {
         <span><pre>${e.date}&nbsp;</pre></span><span><a href="${GIT_REPO}/commit/${e.hash}">${e.msg}</a></span>
         <ul>
         ${e.files.map((f) => {
-            return `<li>${f.path}</li>`
+            return `<li><a href="${GIT_REPO}/blob/master/${f.path}>${f.path}</a></li>`
         })}
         </ul>
     </div>
