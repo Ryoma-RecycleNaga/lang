@@ -11,7 +11,7 @@ export const img = (file, label, id = '') => {
 
 export const changelog_entry = (e) => {
     return `<div class="change_log_entry">
-        <span>${e.date}</span><span><a href="${GIT_REPO}/commit/${e.hash}">${e.msg}</a></span>
+        <span><pre>${e.date}&nbsp;</pre></span><span><a href="${GIT_REPO}/commit/${e.hash}">${e.msg}</a></span>
         <ul>
         ${e.files.map((f) => {
             return `<li>${f.path}</li>`

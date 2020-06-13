@@ -31,7 +31,7 @@ exports.git_status = git_status;
 function git_log(cwd, dir) {
     return __awaiter(this, void 0, void 0, function* () {
         const stats = yield git_status(cwd, dir);
-        let changelogs = stats.all.filter((e) => e.message.trim().startsWith(constants_1.GIT_CHANGELOG_MESSAGE_PREFIX));
+        let changelogs = stats.all.filter((e) => e.message.trim().toLowerCase().startsWith(constants_1.GIT_CHANGELOG_MESSAGE_PREFIX.toLowerCase()));
         if (!changelogs.length) {
             return [];
         }

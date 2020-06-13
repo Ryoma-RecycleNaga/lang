@@ -21,7 +21,7 @@ export async function git_status(cwd, dir) {
 
 export async function git_log(cwd, dir) {
     const stats = await git_status(cwd, dir);
-    let changelogs = stats.all.filter((e) => e.message.trim().startsWith(GIT_CHANGELOG_MESSAGE_PREFIX));
+    let changelogs = stats.all.filter((e) => e.message.trim().toLowerCase().startsWith(GIT_CHANGELOG_MESSAGE_PREFIX.toLowerCase()));
     if (!changelogs.length) {
         return [];
     }
